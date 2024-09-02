@@ -139,6 +139,7 @@ img {
     display: flex;
 }
 
+
 /*header*/
 .header{
     background-color: var(--primario);
@@ -151,6 +152,9 @@ img {
     z-index: 1000;
 }
 
+.header img {
+    height: 100px;
+}
 
 .header a{
     font-weight: 600;
@@ -170,10 +174,6 @@ img {
     height: 100px;
 }
 
-.logo img{
-    height: 30rem;
-    width: 30rem;
-}
 
 .logo, .navegacion-enlace {
     display: flex;
@@ -243,6 +243,7 @@ header .navegacion-enlace:hover{
         left: 0px;
         transform: translateX(-100%); /* Oculto inicialmente */
         transition: transform 0.5s ease-out; /* Suaviza la transición */
+        padding-top: 100px;
     }
 
     .navegacion.show {
@@ -266,11 +267,9 @@ header .navegacion-enlace:hover{
         margin-top: auto;
         display: block;
         height: 150px;
-    }
-
-    .header img {
-        width: 20rem;
-        height: 20rem;
+        display: flex;
+        justify-content: center;
+        align-items: end;
     }
 
     .iniciar-sesion-icono {
@@ -323,7 +322,6 @@ header .navegacion-enlace:hover{
 }
 
 
-
 /* Estilos generales */
 .overlay {
     position: fixed;
@@ -340,4 +338,28 @@ header .navegacion-enlace:hover{
     .overlay.show {
         display: block; /* Muestra la superposición cuando se abra el menú */
     }
+}
+
+.menu-close {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    background: transparent;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    color: #fff; /* Cambia el color según tu diseño */
+    z-index: 1050; /* Asegúrate de que esté encima del menú */
+    transition: transform 0.3s ease;
+    height: 10rem;
+}
+@media (min-width: 768px) {
+   .menu-close{
+    display: none;
+   }
+}
+
+
+.menu-close:hover {
+    transform: scale(1.2); /* Aumenta un poco el tamaño al pasar el cursor */
 }
