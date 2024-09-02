@@ -4,22 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cardelli Neumaticos</title>
-    <link rel="stylesheet" href="./cardelli_frontend/assets/styles.css">
+    <link rel="stylesheet" href="../cardelli_frontend/assets/styles.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <!-- Reemplaza con tu logo -->
-            <img src="ruta/al/logo.png" alt="Logo del negocio">
+    <header class="header">
+        <div class="contenedor">
+            <div class="barra">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="menu-toggle icon icon-tabler icon-tabler-menu-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M4 6l16 0" />
+                        <path d="M4 12l16 0" />
+                        <path d="M4 18l16 0" />
+                    </svg>
+
+                    <a href="index.html" class="logo">
+                        <img src="assets/statics/LogoCneumaticosTransparente.png" alt="">
+                    </a> 
+
+
+                <nav class="navegacion">
+                    <a class="navegacion-enlace" href="#contenedor-menu">Neumáticos</a>
+                    <a class="navegacion-enlace" href="#servicios">Promociones</a>
+                    <a class="navegacion-enlace" href="#contacto">Contacto</a>
+                    <a class="navegacion-enlace" href="#mapa">Nosotros</a>
+                </nav>
+                <a href="#" class="inciar-sesion-icono">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                    </svg>
+                </a>
+
+
+
+            </div>
         </div>
-        <nav>
-            <ul>
-                <li><a href="#neumaticos">Neumáticos</a></li>
-                <li><a href="#promociones">Promociones</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-                <li><a href="#nosotros">Nosotros</a></li>
-            </ul>
-        </nav>
     </header>
     <div id="contenido-principal">
 
@@ -27,5 +47,7 @@
     <footer>
 
     </footer>
+
+    <script src="../main.js"></script>
 </body>
 </html>
