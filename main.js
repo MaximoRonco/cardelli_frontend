@@ -1,44 +1,32 @@
-/* Menu hamburguesa */
 document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.querySelector('.menu-toggle');
     const navegacion = document.querySelector('.navegacion');
+    const overlay = document.querySelector('.overlay');
+    const menuClose = document.querySelector('.menu-close');
 
-
-    menuToggle.addEventListener('click', function() {
+    // Abrir menú al hacer clic en el botón de menú
+    menuToggle.addEventListener('click', function(event) {
         navegacion.classList.toggle('show');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navegacion = document.querySelector('.navegacion');
-
-    // Mostrar el menú cuando se hace clic en el ícono de menú
-    menuToggle.addEventListener('click', function() {
-        navegacion.classList.add('show');
-        navegacion.classList.remove('hide');
-    });
-
-    // Cerrar el menú cuando se hace clic fuera de él
-    document.addEventListener('click', function(event) {
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navegacion = document.querySelector('.navegacion');
-        const overlay = document.querySelector('.overlay');
         overlay.classList.toggle('show');
-        
-        const isClickInside = navegacion.contains(event.target) || menuToggle.contains(event.target);
+        event.stopPropagation();
+    });
 
-        if (!isClickInside) {
-            navegacion.classList.add('hide');
+    // Cerrar menú al hacer clic en la cruz
+    menuClose.addEventListener('click', function() {
+        navegacion.classList.remove('show');
+        overlay.classList.remove('show');
+    });
+
+    // Cerrar menú al hacer clic fuera de él
+    document.addEventListener('click', function(event) {
+        if (!navegacion.contains(event.target) && !menuToggle.contains(event.target)) {
             navegacion.classList.remove('show');
-            navegacion.classList.toggle('show');    
-            
-            // Esperar a que la animación de salida termine antes de quitar la clase
-            setTimeout(() => {
-                navegacion.classList.remove('hide');
-            }, 800); // Duración de la animación (800ms)
+            overlay.classList.remove('show');
         }
     });
+
+    // Evitar que el clic dentro del menú cierre el menú
+    navegacion.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
 });
-
-
