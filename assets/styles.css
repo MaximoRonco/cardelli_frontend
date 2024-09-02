@@ -135,6 +135,10 @@ img {
     margin: 0px;
 }
 
+.flex{
+    display: flex;
+}
+
 /*header*/
 .header{
     background-color: var(--primario);
@@ -167,9 +171,9 @@ img {
 }
 
 .logo img{
-    height: 10rem;
+    height: 30rem;
+    width: 30rem;
 }
-
 
 .logo, .navegacion-enlace {
     display: flex;
@@ -189,7 +193,6 @@ header .navegacion-enlace:hover{
 }
 
 .menu-toggle {
-
     cursor: pointer;
     display: none;
 }
@@ -199,30 +202,142 @@ header .navegacion-enlace:hover{
     gap: 2rem;
 }
 
+.inciar-sesion-icono i{
+    width: 100px;
+    height: 100px;
+    color: white;
+}
+
+.iconos-header{
+    width: 80px;
+}
+
+.iconos-header i{
+    margin-left: 35px;
+}
+
+.links-header{
+    display: flex;
+    width: 650px;
+    justify-content: space-around;
+}
+
+#iniciarSesion{
+    display: none;
+}
 
 @media (max-width: 768px) {
-
     .menu-toggle {
         display: block;
     }
-    
+
     .navegacion {
         z-index: 1050;
         display: none; 
-        flex-direction: column;
         position: absolute;
-        top: 80px;
+        top: 0px;
         background: var(--primario);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 1rem;
         gap: 1rem;
-        left: 10px;
+        left: 0px;
+        transform: translateX(-100%); /* Oculto inicialmente */
+        transition: transform 0.5s ease-out; /* Suaviza la transición */
     }
-
 
     .navegacion.show {
         display: flex;
+        background: var(--primario);
+        flex-direction: column;
+        height: 100vh;
+        animation: slideInFromLeft 0.5s ease-out forwards;
+    }
+
+
+
+    .links-header {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+        justify-content: space-around;
+    }
+
+    #iniciarSesion {
+        margin-top: auto;
+        display: block;
+        height: 150px;
+    }
+
+    .header img {
+        width: 20rem;
+        height: 20rem;
+    }
+
+    .iniciar-sesion-icono {
+        display: none;
+    }
+
+    .iconos-header {
+        width: 50px;
+    }
+
+    .iconos-header i {
+        margin-left: 0px;
+    }
+
+    .navegacion.hide {
+        animation: slideOutToLeft 0.5s ease-in forwards; /* Anima el deslizamiento hacia la izquierda */
     }
 }
 
 
+
+
+/*Animacion menu hamburguesa*/
+
+
+/*Entrada del menu*/
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%); /* Empieza fuera de la pantalla a la izquierda */
+        opacity: 0; /* Opcional: Oculto al inicio */
+    }
+    100% {
+        transform: translateX(0); /* Llega a su posición final */
+        opacity: 1; /* Opcional: Totalmente visible */
+    }
+}
+
+/*Salida del menu*/
+
+@keyframes slideOutToLeft {
+    0% {
+        transform: translateX(0); /* Empieza en la posición actual */
+        opacity: 1; /* Totalmente visible */
+    }
+    100% {
+        transform: translateX(-100%); /* Desliza hacia la izquierda */
+        opacity: 0; /* Oculto al final */
+    }
+}
+
+
+
+/* Estilos generales */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Color de la superposición */
+    z-index: 1040; /* Asegúrate de que esté debajo del menú */
+    display: none; /* Oculto por defecto */
+}
+
+@media (max-width: 768px) {
+    .overlay.show {
+        display: block; /* Muestra la superposición cuando se abra el menú */
+    }
+}
