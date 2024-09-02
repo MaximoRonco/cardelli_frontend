@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardelli Neumaticos</title>
-    <link rel="stylesheet" href="./assets/styles.css">
+    <link rel="stylesheet" href="assets/styles.css">
     <script src="https://kit.fontawesome.com/80682cd68b.js" crossorigin="anonymous"></script>
+    <title>Document</title>
 </head>
 <body>
     <header class="header">
@@ -47,13 +47,49 @@
             </div>
         </div>
     </header>
-    <div id="contenido-principal">
 
-    </div>
-    <footer>
 
-    </footer>
+     <!--CONTACTO-->
+     <h2 class="centrar-texto" id="contacto">Contacto</h2>
 
-    <script src="main.js"></script>
+     <div class="redes">
+         <a class="navegacion-enlace" href="#"><i class="fab fa-facebook"></i></a>
+         <a class="navegacion-enlace" href="https://www.instagram.com/arremiami?igsh=MTA2MnN1YmExZndhdQ%3D%3D&utm_source=qr"><i class="fab fa-instagram"></i></a>
+         <a class="navegacion-enlace" href="#"><i class="fab fa-whatsapp"></i></a>
+     </div>
+ 
+ 
+     <div class="contacto">
+        <img src="assets/statics/Cardelli Neumaticos.png" alt="">
+ 
+         <form class="formulario" action="https://formspree.io/f/xdoqrpzy" method="POST">
+                 <div class="campo">
+                     <label class="campo__label" for="name">Nombre</label>
+                     <input name="Name" class="campo__field" type="text" id="name" placeholder="Your Name">
+                 </div>
+ 
+                 <div class="campo">
+                     <label class="campo__label" for="telefono">Telefono</label>
+                     <input name="Telefono" class="campo__field" type="number" id="telefono" placeholder="Your Surname">
+                 </div>
+ 
+                 <div class="campo">
+                     <label class="campo__label" for="email">Email</label>
+                     <input name="Email" class="campo__field" type="text" id="email" placeholder="Your Email">
+                 </div>
+ 
+                 <div class="campo">
+                     <label class="campo__label" for="message">Mensaje</label>
+                     <textarea name="Message" class="campo__label--textarea" id="message"></textarea>
+                 </div>
+
+                 
+ 
+                 <div class="campo">
+                     <input type="submit" value="SEND" class="boton">
+                 </div>
+             </div>
+         </form>
+     </div>
 </body>
 </html>
