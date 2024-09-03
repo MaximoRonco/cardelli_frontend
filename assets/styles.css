@@ -238,6 +238,26 @@ header .navegacion-enlace:hover{
     display: none;
 }
 
+@media (max-width: 975px){
+    .links-header{
+        display: flex;
+        width: 500px;
+        justify-content: none;
+    }
+    
+    .links-header a{
+        font-size: 17px !important;
+    }
+    
+    .navegacion-enlace{
+        justify-content: none !important;
+    }
+
+    header img{
+        height: 80px !important;
+    }
+}
+
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;
