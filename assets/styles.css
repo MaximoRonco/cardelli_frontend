@@ -31,6 +31,7 @@ body {
     font-family: var(--fuenteParrafos) !important;
     font-size: 1.6rem !important;
     line-height: 2 !important;
+
 }
 
 a {
@@ -105,6 +106,12 @@ p {
     body .welcome p{
         font-size: 1.8rem !important;
     }
+}
+
+.titulo{
+    margin-top: 5rem;
+    margin-bottom: 3rem;
+    padding: 3rem;
 }
 
 /* Media Queries para tamaños de pantalla pequeños */
@@ -912,4 +919,102 @@ footer p{
     .carousel-editor{
         width: 80% !important;
     }
+}
+
+/* servicios */
+
+#title-servicios{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.servicios {
+    text-align: center;
+    /*background-color: var(--gris);*/
+    width: 90%;
+    margin: 0 auto;
+    border-radius: .5rem;
+    margin-bottom: 3rem;
+    padding: 1rem;
+    /*-webkit-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+    -moz-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+    box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);*/
+}
+
+.item {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin: 10px;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-radius: .5rem;
+    border: 2px solid var(--primario);
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.item:hover {
+    transition: 500ms all;
+    border: 2px solid black;
+}
+
+.item h3{
+    margin-top: 10px;
+    color: var(--primario);
+}
+
+.item:last-child{
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 918px) {
+    .servicios {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        column-gap: 10px;
+    }
+
+    .item {
+        margin-bottom: 2rem;
+    }
+}
+
+.item_icono{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item_icono svg{
+    width: 50%;
+    margin-bottom: 30px;
+}
+
+
+/*marcas*/
+
+.marcas{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    width: 90%;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+   .marcas{
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: repeat(2,150px);
+    gap: 5rem;
+   }
+}
+
+.nuestras_marcas{
+    background-color: var(--gris);
+    margin-bottom: 10rem;
+    
 }
