@@ -4,6 +4,8 @@
     --blanco: #ffffff;
     --fuenteHeading: "Poppins", sans-serif; /* Fuente similar a Flatory Sans para encabezados */
     --fuenteParrafos: "Poppins", sans-serif; /* Fuente similar para párrafos */
+    --verde: #27a844;
+    --rojo: #dc3546;
 }
 
 .contenedor {
@@ -820,5 +822,70 @@ footer p{
     #contenidoSesion i{
         font-size: 1.5rem;
         margin-right: 10px;
+    }
+}
+
+
+/* Botones */
+
+.carousel-editor{
+    margin-top: 20px;
+    width: 50% !important;
+    height: 130px !important;
+}
+
+.div-input-carrousel{
+    height: 40px;
+}
+
+#btnsImgCarousel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#addImageBtn, #deleteImageBtn{
+    height: 50px;
+    width: 250px;
+    border-radius: 5px !important;
+}
+
+#addImageBtn{
+    background-color: var(--verde);
+}
+
+#deleteImageBtn{
+    background-color: var(--rojo);
+    margin-left: 20px;
+}
+
+#addImageBtn:hover{
+    background-color: #1b9235;
+    transform: scale(1.02);
+}
+
+#deleteImageBtn:hover{
+    background-color: #ad2331;
+    transform: scale(1.02);
+}
+
+/* Input carrousel */
+.form-control {
+    font-size: 24px !important;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+   #addImageBtn, #deleteImageBtn{
+        height: 40px;
+    }
+
+    .form-control{
+        font-size: 20px !important;
+    }
+
+    .carousel-editor{
+        width: 80% !important;
     }
 }
