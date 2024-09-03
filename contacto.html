@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/styles.css">
     <script src="https://kit.fontawesome.com/80682cd68b.js" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <title>Contacto</title>
 </head>
 <body>
     <header class="header">
@@ -19,11 +19,14 @@
                     </svg>
                     
                     <a href="index.html" class="logo">
-                        <img src="assets/statics/logo transparente.png" alt="">
+                        <img src="assets/statics/logo_transparente.png" alt="">
                     </a> 
 
                 <div class="overlay"></div>
                 <nav class="navegacion">
+                    <a href="index.html" class="logo noneFlex logo-menu">
+                        <img src="./assets/statics/logo_transparente.png" alt="">
+                    </a> 
                     <button class="menu-close">X</button> <!-- Botón para cerrar el menú -->
                     <div class="links-header">
                         <a class="navegacion-enlace" href="#contenedor-menu">Neumáticos</a>
@@ -32,7 +35,7 @@
                         <a class="navegacion-enlace" href="#mapa">Nosotros</a>
                     </div>
                     <div id="iniciarSesion">
-                        <a class="navegacion-enlace" href="#">Iniciar Sesión</a>
+                        <a id="link-sesion" class="navegacion-enlace" href="#"><i class="fas fa-user"></i>Iniciar Sesión</a>
                     </div>
                 </nav>
                 <div class="flex iconos-header">
@@ -65,17 +68,17 @@
          <form class="formulario" action="https://formspree.io/f/xdoqrpzy" method="POST">
                  <div class="campo">
                      <label class="campo__label" for="name">Nombre</label>
-                     <input name="Name" class="campo__field" type="text" id="name" placeholder="Your Name">
+                     <input name="Name" class="campo__field" type="text" id="name" >
                  </div>
  
                  <div class="campo">
                      <label class="campo__label" for="telefono">Telefono</label>
-                     <input name="Telefono" class="campo__field" type="number" id="telefono" placeholder="Your Surname">
+                     <input name="Telefono" class="campo__field" type="number" id="telefono" >
                  </div>
  
                  <div class="campo">
                      <label class="campo__label" for="email">Email</label>
-                     <input name="Email" class="campo__field" type="text" id="email" placeholder="Your Email">
+                     <input name="Email" class="campo__field" type="text" id="email" >
                  </div>
  
                  <div class="campo">
@@ -90,6 +93,7 @@
                  </div>
              </div>
          </form>
+         <button id="btnWpp"><i class="fab fa-whatsapp"></i></button>
      </div>
 
      <footer class="footer">
@@ -101,14 +105,14 @@
             </div>
             <div class="content-footer">
                 <nav class="nav-footer">
-                    <h3>Main</h3>
+                    <h3>Menú</h3>
                     <a class="navegacion-enlace" href="#contenedor-menu">Neumáticos</a>
                     <a class="navegacion-enlace" href="#servicios">Promociones</a>
                     <a class="navegacion-enlace" href="contacto.html">Contacto</a>
                     <a class="navegacion-enlace" href="#mapa">Nosotros</a>
                 </nav>
                 <div class="contact-footer">
-                    <h3>Contact us</h3>
+                    <h3>Contáctanos</h3>
                     <div class="content-contact-footer">
                         <div class="iconos-contacto">
                             <i class="far fa-envelope"></i>
@@ -121,7 +125,7 @@
                     </div>
                 </div>
                 <div class="redes-footer">
-                        <h3>Our networks</h3>
+                        <h3>Nuestras Redes</h3>
                         <div>
                             <a class="navegacion-enlace" href="#"><i class="fab fa-facebook"></i></a>
                             <a class="navegacion-enlace" href="https://www.instagram.com/arremiami?igsh=MTA2MnN1YmExZndhdQ%3D%3D&utm_source=qr "><i class="fab fa-instagram"></i></a>
@@ -130,7 +134,7 @@
                 </div>
             </div>
         </div>
-        <p id="derechos" class="centrar-texto">Todos los derechos reservados CARDELLI NEUMÁTICOS &copy;</p>
+        <p id="derechos" class="centrar-texto">Todos los derechos reservados &copy; 2024 CARDELLI NEUMÁTICOS</p>
     </footer>
 
     <script src="main.js"></script>

@@ -1,14 +1,18 @@
-:root{
+:root {
     --primario: #2F2F8F;
     --gris: #e1e1e1;
     --blanco: #ffffff;
-    --fuenteHeading: 'Roboto Condensed' !important; /* Fuente para encabezados */;
-    --fuenteParrafos: "Roboto Condensed", sans-serif;
+    --fuenteHeading: "Poppins", sans-serif; /* Fuente similar a Flatory Sans para encabezados */
+    --fuenteParrafos: "Poppins", sans-serif; /* Fuente similar para párrafos */
 }
 
 .contenedor {
     max-width: 120rem;
     margin: 0 auto;
+}
+
+.noneFlex {
+    display: none !important;
 }
 
 html {
@@ -40,6 +44,7 @@ h1, h2, h3 {
     color: var(--secundario);
     text-align: center;
 }
+
 
 
 /* Estilos base para los títulos en desktop */
@@ -189,11 +194,12 @@ header .navegacion-enlace{
 }
 
 header .navegacion-enlace:hover{
-    color: gray;
-    border-bottom: 3px solid gray;
+    transform: scale(1.02);
+    border-bottom: 3px solid rgb(255, 255, 255);
     border-bottom-width: 50% !important;
-    transition: all 100ms;
+    transition: all 50ms;
 }
+
 
 .menu-toggle {
     cursor: pointer;
@@ -213,6 +219,11 @@ header .navegacion-enlace:hover{
 
 .iconos-header i{
     margin-left: 35px;
+}
+
+.iconos-header i:hover{
+    transform: scale(1.12);
+    transition: all 50ms;
 }
 
 .links-header{
@@ -254,22 +265,28 @@ header .navegacion-enlace:hover{
         width: 80%;
     }
 
-
+    .navegacion-enlace {
+        display: flex;
+        justify-content: start;
+        margin-left: 10px;
+    }
 
     .links-header {
         display: flex;
         flex-direction: column;
         width: 300px;
+        margin-top: 20px;
         justify-content: space-around;
     }
 
     #iniciarSesion {
         margin-top: auto;
         display: block;
-        height: 150px;
-        display: flex;
         justify-content: center;
         align-items: end;
+        border-top: 2px solid white;
+        padding-top: 10px;
+        width: 100%;
     }
 
     .iniciar-sesion-icono {
@@ -286,6 +303,23 @@ header .navegacion-enlace:hover{
 
     .navegacion.hide {
         animation: slideOutToLeft 0.5s ease-in forwards; /* Anima el deslizamiento hacia la izquierda */
+    }
+    #iniciarSesion i {
+        margin-right: 15px;
+    }
+
+    #link-sesion{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #iniciarSesion a{
+        margin: 0px;
+    }
+
+    .noneFlex{
+        display: block !important;
     }
 }
 
@@ -342,11 +376,11 @@ header .navegacion-enlace:hover{
 
 .menu-close {
     position: absolute;
-    top: 5px;
-    left: 20px;
+    top: 0px;
+    left: 280px;
     background: transparent;
     border: none;
-    font-size: 40px;
+    font-size: 28px;
     cursor: pointer;
     color: #fff; /* Cambia el color según tu diseño */
     z-index: 1050; /* Asegúrate de que esté encima del menú */
@@ -362,6 +396,12 @@ header .navegacion-enlace:hover{
 
 .menu-close:hover {
     transform: scale(1.2); /* Aumenta un poco el tamaño al pasar el cursor */
+}
+
+.logo-menu{
+    position: absolute;
+    top: 5px !important;
+    left: 50px;
 }
 
 /*Contacto */
@@ -477,12 +517,12 @@ header .navegacion-enlace:hover{
     color: var(--primario);
 }
 
-/* footer */
+
 
 /* Footer */
 
 footer{
-    background-color: #929292;
+    background-color: #474747;
 }
 
 footer .navegacion-enlace{
@@ -611,4 +651,174 @@ footer p{
 
 .none{
     display: none !important;
+}
+
+
+/*Boton de wpp*/
+
+#btnWpp {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    margin: 20px;
+    border: none;
+    color: white;
+    background-color: #25D366;
+    height: 50px;
+    width: 50px;
+    font-size: 30px;
+    border-radius: 100%;
+}
+
+#btnWpp:hover {
+    cursor: pointer;
+    background-color: #128C7E;
+    transition: all 300ms;
+}
+
+/* Inicio de Sesión */
+
+#contenidoSesion i{
+    font-size: 1.8rem;
+    margin-right: 10px;
+    color: var(--primario);
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.input-container i {
+    margin-right: 5px;
+}
+
+.input-container input {
+    border: none;
+    outline: none;
+}
+
+#contenedorSesion{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#contenedorSesion img{
+    width: 100%;
+    height: 200px;
+}
+
+#usuario, #contraseña{
+    display: flex;
+    width: 80%;
+}
+
+#iniciar-Sesion input{
+    height: 3rem;
+    width: 80%;
+}
+
+#iniciar-Sesion{
+    height: 500px;
+    width: 50%;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+    -moz-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+    box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 0.1px solid rgba(138, 138, 138, 0.336);
+}
+.barraSesion{
+    display: flex;
+    justify-content: center;
+
+}
+
+#imgSesion{
+    margin-top: 40px;
+}
+
+#iniciar-Sesion h2{
+    margin-top: 10px;
+    font-size: 30px !important;
+    color: #3f3f3f;
+}
+
+#contenidoSesion{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#iniciar-Sesion button{
+    height: 3rem;
+    font-size: 15px;
+    font-weight:bold;
+    width: 80%;
+    border: none;
+    background-color: var(--primario);
+    color: var(--blanco);
+}
+
+#iniciar-Sesion input::placeholder{
+    font-size: 15px;
+}
+
+#iniciar-Sesion input{
+    font-size: 20px;
+}
+
+#iniciar-Sesion button:hover{
+    transform: scale(1.02);
+    transition: all 200ms;
+    background-color: #474747;
+}
+
+
+@media (max-width: 768px) {
+    #contenidoSesion h2{
+        font-size: 25px !important;
+        margin: 20px;
+    }
+
+    #iniciar-Sesion{
+        height: 540px;
+        width: 80%;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #usuario, #contraseña{
+        width: 80%;
+    }
+
+    #iniciar-Sesion button{
+        height: 3rem;
+        font-size: 15px;
+        font-weight:bold;
+        width: 80%;
+        border: none;
+        background-color: var(--primario);
+        color: var(--blanco);
+
+    }
+    #iniciar-Sesion input::placeholder{
+        font-size: 12px;
+    }
+    #contenidoSesion i{
+        font-size: 1.5rem;
+        margin-right: 10px;
+    }
 }
