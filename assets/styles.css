@@ -1000,7 +1000,7 @@ footer p{
 
 .marcas{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
     width: 90%;
     margin: 0 auto;
@@ -1008,7 +1008,7 @@ footer p{
 
 @media (min-width: 768px) {
    .marcas{
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
     gap: 5rem;
    }
