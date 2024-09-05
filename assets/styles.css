@@ -44,7 +44,7 @@ h1, h2, h3 {
     font-family: var(--fuenteHeading) !important;
     line-height: 1.2 !important;
     text-transform: uppercase;
-    color: var(--secundario);
+    color: black;
     text-align: center;
 }
 
@@ -109,9 +109,10 @@ p {
 }
 
 .titulo{
-    margin-top: 5rem;
-    margin-bottom: 3rem;
-    padding: 3rem;
+    font-weight: 700;
+}
+.margin-botomm{
+    margin-bottom: 50px;
 }
 
 /* Media Queries para tamaños de pantalla pequeños */
@@ -1016,5 +1017,7 @@ footer p{
 .nuestras_marcas{
     background-color: var(--gris);
     margin-bottom: 10rem;
+    padding-top: 30px;
+    padding-bottom: 30px;
     
 }
