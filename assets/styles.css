@@ -6,6 +6,7 @@
     --fuenteParrafos: "Poppins", sans-serif; /* Fuente similar para párrafos */
     --verde: #27a844;
     --rojo: #dc3546;
+    --azul: #007bff;
 }
 
 .contenedor {
@@ -877,13 +878,13 @@ footer p{
     margin-top: 20px;
 }
 
-#addImageBtn, #deleteImageBtn{
+#addImageBtn, #deleteImageBtn, #agregarMedida, .edit, .delete, .add, #agregarCate{
     height: 50px;
     width: 250px;
     border-radius: 5px !important;
 }
 
-#addImageBtn{
+#addImageBtn, #agregarMedida, .add, #agregarCate{
     background-color: var(--verde);
 }
 
@@ -892,14 +893,22 @@ footer p{
     margin-left: 20px;
 }
 
-#addImageBtn:hover{
+#addImageBtn:hover, #agregarMedida:hover, .add:hover, #agregarCate:hover{
     background-color: #1b9235;
     transform: scale(1.02);
+    transition: all 100ms;
 }
 
-#deleteImageBtn:hover{
+#deleteImageBtn:hover, .delete:hover{
     background-color: #ad2331;
     transform: scale(1.02);
+    transition: all 100ms;
+}
+
+.edit:hover{
+    background-color: #0064cf;
+    transform: scale(1.02);
+    transition: all 100ms;
 }
 
 /* Input carrousel */
@@ -1020,4 +1029,104 @@ footer p{
     padding-top: 30px;
     padding-bottom: 30px;
     
+}
+
+/* Admin medidas */
+
+.medida-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contenedorBotones {
+    display: flex;
+    gap: 10px;
+}
+
+.contenedorBotones button {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.edit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.delete {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#btnAddMedida {
+    margin: 20px;
+}
+
+#agregarMedida, .edit, .delete, .add, #agregarCate{
+    font-size: 22px;
+    color: white;
+    border: none;
+}
+
+/* Admin productos */
+
+#productos, #btnAddCategory{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#btnAddCategory button{
+    margin: 20px;
+}
+
+#productos button{
+    margin: 20px;
+}
+
+@media (max-width: 879px) {
+    #productos button{
+        width: 220px;
+        margin: 5px;
+    }
+}
+
+@media (max-width: 698px) {
+    #productos button, .cont-btnProd button{
+        width: 180px;
+        margin: 5px;
+    }
+}
+
+@media (max-width: 584px) {
+    #productos button, .cont-btnProd button{
+        width: 170px;
+        margin: 5px;
+    }
+}
+
+@media (max-width: 430px) {
+    #productos button{
+        width: 120px;
+        margin: 5px;
+        font-size: 15px;
+    }
+    .cont-btnProd{
+        text-align: center;
+    }
+    .cont-btnProd button{
+        width: 150px !important;
+    }
 }
