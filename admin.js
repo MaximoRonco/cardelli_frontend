@@ -6,34 +6,7 @@ function sweet(icon, text) {
     });
 }
 
-function sweet(icon, title){
-    if(icon === "error"){
-        Swal.fire({
-            icon: icon,
-            title: title,
-            customClass: {
-                popup: 'mi-popup',
-                title: 'mi-titulo',
-                content: 'mi-contenido',
-                confirmButton: 'mi-boton-confirmar'
-            }
-        });
-    }else{  
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Inicio de sesión exitoso",
-            showConfirmButton: false,
-            timer: 1500,
-            customClass: {
-                popup: 'mi-popup',
-                title: 'mi-titulo',
-                content: 'mi-contenido',
-                confirmButton: 'mi-boton-confirmar'
-            }
-        });
-    }
-}
+
 
 
 /* Inicio Login */
@@ -128,20 +101,21 @@ async function fetchWithAuth(url, options = {}) {
 
 
 /*Productos */
-
+/*GET DE PRODUCTOS*/
 async function fetchProductos() {
     try {
         const response = await fetch('http://cardelli-backend.vercel.app/api/cardelli/productos/');
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
-        const { data } = response;
+        const data = await response.json();  // Convertimos la respuesta a JSON
         displayProductos(data);
     } catch (error) {
         console.error('Error fetching productos:', error);
     }
 }
 
+/*MOSTRAR LOS PRODUCTOS */
 function displayProductos(data) {
     if (!Array.isArray(data)) {
         console.error('Los datos de los productos no son un array:', data);
@@ -149,11 +123,14 @@ function displayProductos(data) {
     }
 
     const productosDiv = document.getElementById('productos');
-    const barraBusquedaDiv = document.getElementById('barra-busqueda');
 
-    // Vaciar los contenedores
+    if (!productosDiv) {
+        console.error('No se encontró el elemento #productos en el DOM');
+        return;
+    }
+
+    // Vaciar el contenedor
     productosDiv.innerHTML = '';
-    barraBusquedaDiv.innerHTML = '';
 
     // Recorrer las categorías y agregarlas al DOM
     data.forEach(categoria => {
@@ -163,9 +140,9 @@ function displayProductos(data) {
         categoriaDiv.innerHTML = `
             <h2>${categoria.nombre}</h2>
             <div class="contenedorBotonesCat">
-            <button class="edit" onclick="editCategory(${categoria.id}, '${categoria.nombre}')"><i class="bi bi-pencil-square"></i> Categoria</button>
-            <button class="delete" onclick="deleteCategory(${categoria.id})"><i class="bi bi-trash"></i> Categoria</button>
-            <button class="add" onclick="addSubcategory(${categoria.id})"><i class="bi bi-plus-circle"></i> Subcategoría</button>
+                <button class="edit" onclick="editCategory(${categoria.id}, '${categoria.nombre}')"><i class="bi bi-pencil-square"></i> Categoria</button>
+                <button class="delete" onclick="deleteCategory(${categoria.id})"><i class="bi bi-trash"></i> Categoria</button>
+                <button class="add" onclick="addSubcategory(${categoria.id})"><i class="bi bi-plus-circle"></i> Subcategoría</button>
             </div>
         `;
 
@@ -191,7 +168,7 @@ function displayProductos(data) {
             const productsRowDiv = document.createElement('div');
             productsRowDiv.className = 'products-row';
 
-            subcategoria.Productos.forEach(producto => {
+            subcategoria.productos.forEach(producto => {
                 const productContainerDiv = document.createElement('div');
                 productContainerDiv.classList.add('product-container');
 
@@ -199,10 +176,12 @@ function displayProductos(data) {
                 productoDiv.classList.add('product-index');
                 productoDiv.id = `producto-${producto.id}`;
 
+                // Agregar la imagen del producto (si existe)
                 const productoImg = document.createElement('img');
-                productoImg.src = producto.foto;
+                productoImg.src = producto.fotos[0]?.url || '';  // Mostrar la primera foto si existe
                 productoImg.alt = producto.nombre;
 
+                // Información del producto
                 const productoInfoDiv = document.createElement('div');
                 productoInfoDiv.classList.add('product-info');
                 productoInfoDiv.innerHTML = `
@@ -211,17 +190,29 @@ function displayProductos(data) {
                     <div class="divPrecio">$${producto.precio}</div>
                 `;
 
+                // Medidas del producto
+                const medidasDiv = document.createElement('div');
+                medidasDiv.classList.add('medidas-info');
+                producto.medidas.forEach(medida => {
+                    const medidaSpan = document.createElement('span');
+                    medidaSpan.classList.add('medida-item');
+                    medidaSpan.textContent = medida.nombre;
+                    medidasDiv.appendChild(medidaSpan);
+                });
+
+                // Botones de acciones del producto
                 const productoButtonsDiv = document.createElement('div');
                 productoButtonsDiv.classList.add('product-buttons');
                 productoButtonsDiv.innerHTML = `
                     <div class="cont-btnProd">
-                        <button class="edit modProducto" onclick="editProduct(${producto.id}, '${producto.nombre}', ${producto.precio}, '${producto.descripcion}', '${producto.foto}')"><i class="bi bi-pencil-square"></i> Editar Producto</button>
-                        <button class="delete delProducto"onclick="deleteProduct(${producto.id})"><i class="bi bi-trash"></i> Eliminar Producto</button>
+                        <button class="edit modProducto" onclick="editProduct(${producto.id}, '${producto.nombre}', ${producto.precio}, '${producto.descripcion}', '${producto.fotos[0]?.url || ''}')"><i class="bi bi-pencil-square"></i> Editar Producto</button>
+                        <button class="delete delProducto" onclick="deleteProduct(${producto.id})"><i class="bi bi-trash"></i> Eliminar Producto</button>
                     </div>
                 `;
 
                 productoDiv.appendChild(productoImg);
                 productoDiv.appendChild(productoInfoDiv);
+                productoDiv.appendChild(medidasDiv);
                 productContainerDiv.appendChild(productoDiv);
                 productContainerDiv.appendChild(productoButtonsDiv);
                 productsRowDiv.appendChild(productContainerDiv);
@@ -232,26 +223,6 @@ function displayProductos(data) {
         });
 
         productosDiv.appendChild(categoriaDiv);
-
-        // Crear enlaces para las subcategorías
-        categoria.subcategorias.forEach(subcategoria => {
-            const subcategoriaLink = document.createElement('div');
-            subcategoriaLink.className = 'subcategory-link';
-            subcategoriaLink.innerHTML = subcategoria.nombre;
-            subcategoriaLink.onclick = () => {
-                const section = document.getElementById(`subcategoria-${subcategoria.id}`);
-                if (section) {
-                    const sectionPosition = section.getBoundingClientRect().top + window.scrollY;
-                    const offsetPosition = sectionPosition - 200;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            };
-            barraBusquedaDiv.appendChild(subcategoriaLink);
-        });
     });
 }
 
@@ -260,6 +231,8 @@ window.onload = () => {
 };
 
 
+/*CATEGORIAS */
+/*AGREGAR CATEGORIA */
 async function addCategory() {
     const { value: categoryName } = await Swal.fire({
         title: 'Agregar Categoría',
@@ -298,6 +271,7 @@ async function addCategory() {
     }
 }
 
+/* ELIMINAR CATEGORIA */
 async function deleteCategory(categoryId) {
     // Mostrar el diálogo de confirmación con SweetAlert
     Swal.fire({
@@ -329,6 +303,7 @@ async function deleteCategory(categoryId) {
     });
 }
 
+/*EDITAR CATEGORIA */
 async function editCategory(categoryId, currentCategoryName) {
     // Usar SweetAlert2 para pedir el nuevo nombre de la categoría
     const { value: newCategoryName } = await Swal.fire({
@@ -381,6 +356,8 @@ async function editCategory(categoryId, currentCategoryName) {
     }
 }
 
+
+/* CREAR ELEMENTO CATEGORIA */
 function createCategoryElement(categoryId, categoryTitle) {
     const productos = document.getElementById('productos');
     const categoryDiv = document.createElement('div');
@@ -399,6 +376,9 @@ function createCategoryElement(categoryId, categoryTitle) {
 
     productos.appendChild(categoryDiv);
 }
+
+
+
 
 
 
