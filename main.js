@@ -200,11 +200,6 @@ function displayCarrusel(data) {
     });
 }
 
-window.onload = () => {
-    fetchCarrusel();
-    //fetchCarta();
-};
-
 /* Fin Carrusel */
 
 
@@ -311,4 +306,5 @@ function displayProductos(data) {
 
 window.onload = () => {
     fetchProductos();
+    fetchCarrusel();
 };
