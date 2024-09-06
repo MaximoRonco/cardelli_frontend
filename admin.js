@@ -735,6 +735,9 @@ function createProductElement(subcategoryId, productId, name, price, description
     }
 }
 
+/* Inicio Medidas */
+
+
 /* Inicio Carrusel */
 
 async function fetchCarruselAdmin() {
