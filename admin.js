@@ -377,7 +377,363 @@ function createCategoryElement(categoryId, categoryTitle) {
     productos.appendChild(categoryDiv);
 }
 
+/* Inicio subcategorias */
 
+async function addSubcategory(categoryId) {
+    const { value: subcategoryTitle } = await Swal.fire({
+        title: 'Agregar Subcategoría',
+        input: 'text',
+        inputLabel: 'Nombre de la subcategoría',
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value) {
+                return '¡Debes escribir algo!';
+            }
+        }
+    });
+
+    if (subcategoryTitle) {
+        try {
+            const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/subcategorias_productos/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre: subcategoryTitle, idCategoriaProducto: categoryId }) // Corrected the key name to idCategoria
+            });
+
+            if (response.ok) {
+                const data = response.data;
+                
+                console.log("Respuesta de la API al agregar subcategoría:", data);
+                Swal.fire('Éxito', 'Subcategoria creada correctamente.', 'success');
+                createSubcategoryElement(categoryId, data.id, data.nombre);
+            } else {
+                Swal.fire('Error', response.data ? response.data.message : 'Hubo un error al crear la subcategoría', 'error');
+            }
+        } catch (error) {
+            console.error('Error al crear la subcategoría:', error);
+            Swal.fire('Error', 'Hubo un error al crear la subcategoría', 'error');
+        }
+    }
+}
+
+async function editSubcategory(categoryId, subcategoryId) {
+    const { value: subcategoryTitle } = await Swal.fire({
+        title: 'Editar Subcategoría',
+        input: 'text',
+        inputLabel: 'Nuevo nombre de la subcategoría',
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value) {
+                return '¡Debes escribir algo!';
+            }
+        }
+    });
+
+    if (subcategoryTitle) {
+        try {
+            const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/subcategorias_productos/${subcategoryId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre: subcategoryTitle })
+            });
+
+            if (response.ok) {
+                const subcategoryElement = document.querySelector(`#subcategoria-${subcategoryId} h3`);
+                if (subcategoryElement) {
+                    subcategoryElement.textContent = subcategoryTitle;
+                    Swal.fire('Éxito', 'Subcategoría modificada con éxito.', 'success');
+                } else {
+                    console.error(`No se encontró el elemento con id subcategoria-${subcategoryId}`);
+                }
+            } else {
+                Swal.fire('Error', response.data ? response.data.message : 'Hubo un error al editar la subcategoría', 'error');
+            }
+        } catch (error) {
+            console.error('Error al editar la subcategoría:', error);
+            Swal.fire('Error', 'Hubo un error al editar la subcategoría', 'error');
+        }
+    }
+}
+
+async function deleteSubcategory(categoryId, subcategoryId) {
+    // Mostrar el diálogo de confirmación con SweetAlert
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/subcategorias_productos/${subcategoryId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    // Mostrar mensaje de éxito
+                    Swal.fire('Eliminado', 'Subcategoría eliminada con éxito.', 'success');
+                    
+                    // Eliminar el elemento de la interfaz de usuario
+                    const subcategoryElement = document.getElementById(`subcategoria-${subcategoryId}`);
+                    if (subcategoryElement) {
+                        subcategoryElement.remove();
+                    } else {
+                        console.error(`No se encontró el elemento con id subcategoria-${subcategoryId}`);
+                    }
+                } else {
+                    // Mostrar mensaje de error
+                    Swal.fire('Error', response.data ? response.data.message : 'Hubo un error al eliminar la subcategoría', 'error');
+                }
+            } catch (error) {
+                console.error('Error al eliminar la subcategoría:', error);
+                Swal.fire('Error', 'Hubo un error al eliminar la subcategoría', 'error');
+            }
+        }
+    });
+}
+
+
+
+function createSubcategoryElement(categoryId, subcategoryId, subcategoryName) {
+    const categoryElement = document.getElementById(`category-${categoryId}`);
+
+    if (!categoryElement) {
+        console.error(`No se encontró el contenedor de subcategorías para la categoría con ID ${categoryId}`);
+        Swal.fire('Error', `No se encontró el contenedor de subcategorías para la categoría con ID ${categoryId}`, 'error');
+        return;
+    }
+
+    const subcategoryDiv = document.createElement('div');
+    subcategoryDiv.className = 'subcategory';
+    subcategoryDiv.id = `subcategoria-${subcategoryId}`;
+    subcategoryDiv.innerHTML = `
+    
+        <h3>${subcategoryName}</h3>
+        <div class="contenedorBotonesSub">
+            <button class="edit modSub subcategory-btn" onclick="editSubcategory(${categoryId}, ${subcategoryId}, '${subcategoryName}')"> <i class="bi bi-pencil-square"></i>Subcategoría</button>
+            <button class="delete delSub subcategory-btn" onclick="deleteSubcategory(${categoryId}, ${subcategoryId})"><i class="bi bi-trash"></i>Subcategoría</button>
+            <button class="add addProduct subcategory-btn" onclick="addProduct(${subcategoryId})"><i class="bi bi-plus-circle"></i>Producto</button>
+        </div>
+    `;
+
+    const productsRowDiv = document.createElement('div');
+    productsRowDiv.className = 'products-row';
+    subcategoryDiv.appendChild(productsRowDiv);
+
+    categoryElement.appendChild(subcategoryDiv);
+
+    // Crear enlace para la nueva subcategoría en la barra de búsqueda
+    const barraBusquedaDiv = document.getElementById('barra-busqueda');
+    if (barraBusquedaDiv) {
+        const subcategoriaLink = document.createElement('div');
+        subcategoriaLink.className = 'subcategory-link';
+        subcategoriaLink.innerHTML = subcategoryName;
+        subcategoriaLink.onclick = () => {
+            document.getElementById(`subcategoria-${subcategoryId}`).scrollIntoView({ behavior: 'smooth' });
+        };
+        barraBusquedaDiv.appendChild(subcategoriaLink);
+    }
+}
+
+
+/* Inicio crear productos */
+
+async function addProduct(subcategoryId) {
+    const { value: formValues } = await Swal.fire({
+        title: 'Agregar Producto',
+        html: `
+            <input id="product-name" class="swal2-input" placeholder="Nombre del producto">
+            <input id="product-price" type="number" class="swal2-input" placeholder="Precio del producto">
+            <input id="product-description" class="swal2-input" placeholder="Descripción del producto">
+            <input id="product-image" type="file" class="swal2-file">
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+            const name = document.getElementById('product-name').value;
+            const price = document.getElementById('product-price').value;
+            const description = document.getElementById('product-description').value;
+            const image = document.getElementById('product-image').files[0];
+            if (!name || !price || !description || !image) {
+                Swal.showValidationMessage('Todos los campos son obligatorios');
+                return false;
+            }
+            return { name, price, description, image };
+        }
+    });
+
+    if (formValues) {
+        const { name, price, description, image } = formValues;
+        const formData = new FormData();
+        formData.append('data', JSON.stringify({ nombre: name, precio: price, descripcion: description, idSubCategoria: subcategoryId }));
+        formData.append('file', image);
+
+        try {
+            const { data, ok } = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/productos/upload`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (ok) {
+                createProductElement(subcategoryId, data.id, data.nombre, data.precio, data.descripcion, data.foto);
+                Swal.fire('Éxito', 'Producto agregado con éxito.', 'success');
+            } else {
+                Swal.fire('Error', data.error || 'Hubo un error al agregar el producto', 'error');
+            }
+        } catch (error) {
+            console.error('Error al agregar el producto:', error);
+            Swal.fire('Error', 'Hubo un error al agregar el producto', 'error');
+        }
+    }
+}
+async function editProduct(productId, currentProductName, currentProductPrice, currentProductDescription, currentProductPhoto) {
+    // Usar SweetAlert2 para pedir los nuevos datos del producto
+    const { value: formValues } = await Swal.fire({
+        title: 'Editar Producto',
+        html: `
+            <input id="swal-input1" class="swal2-input" placeholder="Nombre" value="${currentProductName || ''}">
+            <input id="swal-input2" class="swal2-input" type="number" placeholder="Precio" value="${currentProductPrice || ''}">
+            <input id="swal-input3" class="swal2-input" placeholder="Descripción" value="${currentProductDescription || ''}">
+            <input id="swal-input4" class="swal2-file" type="file" accept="image/*">
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+            return {
+                nombre: document.getElementById('swal-input1').value,
+                precio: document.getElementById('swal-input2').value,
+                descripcion: document.getElementById('swal-input3').value,
+                foto: document.getElementById('swal-input4').files[0]
+            };
+        },
+        showCancelButton: true
+    });
+
+    if (formValues) {
+        try {
+            const formData = new FormData();
+            formData.append('data', JSON.stringify({
+                nombre: formValues.nombre,
+                precio: formValues.precio,
+                descripcion: formValues.descripcion
+            }));
+            if (formValues.foto) {
+                formData.append('file', formValues.foto);
+            }
+
+            const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/productos/${productId}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.ok) {
+                Swal.fire('Éxito', 'Producto editado con éxito.', 'success');
+                const cartaData = await fetchCarta();
+                if (Array.isArray(cartaData)) {
+                    displayCarta(cartaData);
+                } else {
+                    console.error('Los datos de la carta no son un array:', cartaData);
+                }
+            } else {
+                const errorData = await response.json();
+                Swal.fire('Error', errorData.error || 'Hubo un error al editar el producto.', 'error');
+            }
+        } catch (error) {
+            console.error('Error al editar el producto:', error);
+            Swal.fire('Error', 'Hubo un error al editar el producto.', 'error');
+        }
+    }
+}
+
+async function deleteProduct(productId) {
+    // Mostrar el diálogo de confirmación con SweetAlert
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/productos/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    Swal.fire('Éxito', 'Producto eliminado con éxito.', 'success');
+                    await fetchCarta(); // Actualizar la carta después de eliminar
+                } else {
+                    const errorData = await response.json();
+                    Swal.fire('Error', errorData.message || 'Hubo un error al eliminar el producto', 'error');
+                }
+            } catch (error) {
+                console.error('Error al eliminar el producto:', error);
+                Swal.fire('Error', 'Hubo un error al eliminar el producto', 'error');
+            }
+        }
+    });
+}
+
+
+
+
+function createProductElement(subcategoryId, productId, name, price, description, imageUrl) {
+    const subcategoryDiv = document.getElementById(`subcategoria-${subcategoryId}`);
+    if (subcategoryDiv) {
+        const productsRowDiv = subcategoryDiv.querySelector('.products-row');
+
+        // Crear el div contenedor del producto y los botones
+        const productContainerDiv = document.createElement('div');
+        productContainerDiv.classList.add('product-container');
+
+        // Crear el div del producto
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product-index');
+        productDiv.id = `product-${productId}`;
+
+        const productImg = document.createElement('img');
+        productImg.src = imageUrl;
+        productImg.alt = name;
+
+        const productInfoDiv = document.createElement('div');
+        productInfoDiv.classList.add('product-info');
+        productInfoDiv.innerHTML = `
+            <strong>${name}</strong> <br> 
+            <p>${description}</p> 
+            <div class="divPrecio"> $${price} </div>
+        `;
+
+        productDiv.appendChild(productImg);
+        productDiv.appendChild(productInfoDiv);
+
+        // Crear el div de los botones
+        const productButtonsDiv = document.createElement('div');
+        productButtonsDiv.classList.add('product-buttons');
+        productButtonsDiv.innerHTML = `
+            <div class="cont-btnProd">
+                <button class="edit modProducto" onclick="editProduct(${productId}, '${name}', ${price}, '${description}', '${imageUrl}')"><i class="bi bi-pencil-square"></i>Editar Producto</button>
+                <button class="delete delProducto" onclick="deleteProduct(${productId})"><i class="bi bi-trash"></i>Eliminar Producto</button>
+            </div>
+        `;
+
+        // Añadir el producto y los botones al contenedor del producto
+        productContainerDiv.appendChild(productDiv);
+        productContainerDiv.appendChild(productButtonsDiv);
+
+        // Añadir el contenedor del producto a la fila de productos
+        productsRowDiv.appendChild(productContainerDiv);
+    } else {
+        console.error(`No se encontró el elemento con id subcategoria-${subcategoryId}`);
+    }
+}
 
 /* Inicio Carrusel */
 
