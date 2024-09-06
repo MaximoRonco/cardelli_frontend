@@ -103,5 +103,4 @@ function displayProductos(data) {
 
 window.onload = () => {
     fetchProductos();
-    fetchCarrusel();
 };
