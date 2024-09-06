@@ -168,10 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /*llamada al carrusel */
-/*
+
 async function fetchCarrusel() {
     try {
-        const response = await fetch('https://arre-backend-one.vercel.app/api/cardelli/carrusel');
+        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/carrusel/images/urls');
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }

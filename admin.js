@@ -379,14 +379,11 @@ function createCategoryElement(categoryId, categoryTitle) {
 
 
 
-
-
-
 /* Inicio Carrusel */
-/*
+
 async function fetchCarruselAdmin() {
     try {
-        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/carrusel');
+        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/carrusel/images/urls');
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
@@ -422,7 +419,7 @@ function displayCarruselAdmin(data) {                                           
         img.onerror = () => {
             console.error(`Failed to load image: ${url}`);
         };*/ 
-/*
+
 
         itemDiv.appendChild(img);
         carouselInnerAdmin.appendChild(itemDiv);
