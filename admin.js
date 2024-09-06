@@ -817,13 +817,12 @@ async function addMedida() {
             if (response.ok) {
                 console.log(response);
                 
-                const data = await response.json();
+                const data = response.data;  // Accedemos directamente a los datos
                 Swal.fire('Éxito', 'Medida creada con éxito.', 'success');
                 console.log("Respuesta de la API al agregar medida:", data);
                 createMedidaElement(data.id, data.nombre); // Función para crear el elemento visual
             } else {
-                const errorData = await response.json();
-                Swal.fire('Error', errorData.message || 'Hubo un error al crear la medida', 'error');
+                Swal.fire('Error', response.data ? response.data.message : 'Hubo un error al crear la medida', 'error');
             }
         } catch (error) {
             console.error('Error al crear la medida:', error);
@@ -831,30 +830,6 @@ async function addMedida() {
         }
     }
 }
-
-/*
-function createMedidaElement(medidaId, medidaNombre) {
-    const medidasDiv = document.getElementById('medidas');
-
-    if (!medidasDiv) {
-        console.error('No se encontró el contenedor #medidas en el DOM');
-        Swal.fire('Error', 'No se encontró el contenedor para las medidas', 'error');
-        return;
-    }
-
-    const medidaDiv = document.createElement('div');
-    medidaDiv.className = 'medida-item';
-    medidaDiv.id = `medida-${medidaId}`;
-    medidaDiv.innerHTML = `
-        <h3>${medidaNombre}</h3>
-        <div class="contenedorBotonesMedida">
-            <button class="edit" onclick="editMedida(${medidaId}, '${medidaNombre}')"><i class="bi bi-pencil-square"></i> Editar Medida</button>
-            <button class="delete" onclick="deleteMedida(${medidaId})"><i class="bi bi-trash"></i> Eliminar Medida</button>
-        </div>
-    `;
-
-    medidasDiv.appendChild(medidaDiv);
-}*/
 
 
 // Editar medida
@@ -934,6 +909,28 @@ async function deleteMedida(medidaId) {
     });
 }
 
+function createMedidaElement(medidaId, medidaNombre) {
+    const medidasDiv = document.getElementById('medidas');
+
+    if (!medidasDiv) {
+        console.error('No se encontró el contenedor #medidas en el DOM');
+        Swal.fire('Error', 'No se encontró el contenedor para las medidas', 'error');
+        return;
+    }
+
+    const medidaDiv = document.createElement('div');
+    medidaDiv.className = 'medida-item';
+    medidaDiv.id = `medida-${medidaId}`;
+    medidaDiv.innerHTML = `
+        <h3>${medidaNombre}</h3>
+        <div class="contenedorBotonesMedida">
+            <button class="edit" onclick="editMedida(${medidaId}, '${medidaNombre}')"><i class="bi bi-pencil-square"></i> Editar Medida</button>
+            <button class="delete" onclick="deleteMedida(${medidaId})"><i class="bi bi-trash"></i> Eliminar Medida</button>
+        </div>
+    `;
+
+    medidasDiv.appendChild(medidaDiv);
+}
 
 /* Inicio Carrusel */
 
