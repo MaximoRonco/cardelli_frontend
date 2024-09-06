@@ -1,3 +1,14 @@
+// SweetAlert
+
+function sweet(icon, text) {
+    Swal.fire({
+        icon: icon,
+        text: text
+    });
+}
+
+
+/* menu hamburguesa */
 document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.querySelector('.menu-toggle');
     const navegacion = document.querySelector('.navegacion');
@@ -32,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-/* Inicio Login */
+
 // Login
 async function login() {
     const username = document.getElementById('username').value.trim();
@@ -52,7 +63,7 @@ async function login() {
     }
 
     try {
-        const response = await fetch('https://cardelli-backend.vercel.app/api/usuarios/login', {
+        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/usuarios/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -121,9 +132,8 @@ async function fetchWithAuth(url, options = {}) {
     return { data, ok: response.ok };
 }
 
-
 // Verificar si el usuario ha iniciado sesión
-/*function checkLoginStatus() {
+function checkLoginStatus() {
     if (localStorage.getItem('loggedIn') !== 'true') {
         alert('Debe iniciar sesión para acceder a esta página.');
         window.location.href = 'sesion.html'; // Redirigir a la página de inicio de sesión
@@ -131,7 +141,7 @@ async function fetchWithAuth(url, options = {}) {
 }
 
 // Ejecutar la verificación de sesión solo en index-admin.html y menu-admin.html
-if (window.location.pathname.endsWith('index-admin.html') || window.location.pathname.endsWith('menu-admin.html') || window.location.pathname.endsWith('index-admin') || window.location.pathname.endsWith('menu-admin')) {
+if (window.location.pathname.endsWith('index-admin.html') ||  window.location.pathname.endsWith('index-admin') ) {
     checkLoginStatus();
 }
 
@@ -139,41 +149,12 @@ if (window.location.pathname.endsWith('index-admin.html') || window.location.pat
 function logout() {
     localStorage.removeItem('loggedIn'); // Eliminar el estado de la sesión
 }
-*/
+/* FIN INCIO DE SESION */
 
-// SweetAlert
 
-function sweet(icon, title){
-    if(icon === "error"){
-        Swal.fire({
-            icon: icon,
-            title: title,
-            customClass: {
-                popup: 'mi-popup',
-                title: 'mi-titulo',
-                content: 'mi-contenido',
-                confirmButton: 'mi-boton-confirmar'
-            }
-        });
-    }else{  
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Inicio de sesión exitoso",
-            showConfirmButton: false,
-            timer: 1500,
-            customClass: {
-                popup: 'mi-popup',
-                title: 'mi-titulo',
-                content: 'mi-contenido',
-                confirmButton: 'mi-boton-confirmar'
-            }
-        });
-    }
-}
 
 /* Inicio Carrusel */
-
+/*
 //Establece la duracion del carrusel
 document.addEventListener('DOMContentLoaded', () => {
     // Función para inicializar el carrusel
@@ -186,9 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeCarousel();
 });
 
+/*llamada al carrusel */
+/*
 async function fetchCarrusel() {
     try {
-        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/carrusel/images/urls');
+        const response = await fetch('https://arre-backend-one.vercel.app/api/cardelli/carrusel');
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
@@ -223,3 +206,4 @@ window.onload = () => {
 };
 
 /* Fin Carrusel */
+

@@ -40,35 +40,12 @@
         </div>
     </header>
 
-    <div id="carouselExampleFade" class="carousel slide carousel-fade">
-        <div class="carousel-inner" id="carousel-inner">
-            <!-- Aquí se agregarán las imágenes del carrusel dinámicamente -->
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+    <div id="btnAddCategory">
+        <button id="agregarCate" onclick="addCategory()"><i class="bi bi-plus-circle"></i> Agregar Categoría</button>
     </div>
-    
-    <div class="carousel-editor container">
-        <div class="mb-3 div-input-carrousel">
+    <div id="productos"></div>
 
-            <input class="form-control" type="file" id="imageInput">
-        </div>
-        <div id="btnsImgCarousel" class="mb-3">
-            <button id="addImageBtn" class="boton"><i class="bi bi-plus-circle"></i> Agregar Imagen</button>
-            <button id="deleteImageBtn" class="boton"><i class="bi bi-trash"></i> Eliminar Imagen Actual</button>
-        </div>
-    </div>
-    
-    <div id="loading-screen" class="hidden">
-        <div class="spinner"></div>
-    </div>
-    
+
 
     <script src="./admin.js"></script>
     <script src="./main.js"></script>

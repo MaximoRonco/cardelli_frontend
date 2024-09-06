@@ -1,3 +1,41 @@
+/* sweet alert */
+function sweet(icon, text) {
+    Swal.fire({
+        icon: icon,
+        text: text
+    });
+}
+
+function sweet(icon, title){
+    if(icon === "error"){
+        Swal.fire({
+            icon: icon,
+            title: title,
+            customClass: {
+                popup: 'mi-popup',
+                title: 'mi-titulo',
+                content: 'mi-contenido',
+                confirmButton: 'mi-boton-confirmar'
+            }
+        });
+    }else{  
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Inicio de sesión exitoso",
+            showConfirmButton: false,
+            timer: 1500,
+            customClass: {
+                popup: 'mi-popup',
+                title: 'mi-titulo',
+                content: 'mi-contenido',
+                confirmButton: 'mi-boton-confirmar'
+            }
+        });
+    }
+}
+
+
 /* Inicio Login */
 
 async function login() {
@@ -18,7 +56,7 @@ async function login() {
     }
 
     try {
-        const response = await fetch('https://cardelli-backend.vercel.app/api/usuarios/login', {
+        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/usuarios/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -59,8 +97,6 @@ async function login() {
 }
 
 /* HASTA ACA TODO BIEN */
-
-
 /* ACA CAMBIA EL TOKEN EN EL HEADER */
 async function fetchWithAuth(url, options = {}) {
     const token = localStorage.getItem('authToken');
@@ -91,18 +127,286 @@ async function fetchWithAuth(url, options = {}) {
 }
 
 
-function sweet(icon, text) {
-    Swal.fire({
-        icon: icon,
-        text: text
+/*Productos */
+
+async function fetchProductos() {
+    try {
+        const response = await fetch('http://cardelli-backend.vercel.app/api/cardelli/productos/');
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        const { data } = response;
+        displayProductos(data);
+    } catch (error) {
+        console.error('Error fetching productos:', error);
+    }
+}
+
+function displayProductos(data) {
+    if (!Array.isArray(data)) {
+        console.error('Los datos de los productos no son un array:', data);
+        return;
+    }
+
+    const productosDiv = document.getElementById('productos');
+    const barraBusquedaDiv = document.getElementById('barra-busqueda');
+
+    // Vaciar los contenedores
+    productosDiv.innerHTML = '';
+    barraBusquedaDiv.innerHTML = '';
+
+    // Recorrer las categorías y agregarlas al DOM
+    data.forEach(categoria => {
+        const categoriaDiv = document.createElement('div');
+        categoriaDiv.className = 'category';
+        categoriaDiv.id = `category-${categoria.id}`;
+        categoriaDiv.innerHTML = `
+            <h2>${categoria.nombre}</h2>
+            <div class="contenedorBotonesCat">
+            <button class="edit" onclick="editCategory(${categoria.id}, '${categoria.nombre}')"><i class="bi bi-pencil-square"></i> Categoria</button>
+            <button class="delete" onclick="deleteCategory(${categoria.id})"><i class="bi bi-trash"></i> Categoria</button>
+            <button class="add" onclick="addSubcategory(${categoria.id})"><i class="bi bi-plus-circle"></i> Subcategoría</button>
+            </div>
+        `;
+
+        categoria.subcategorias.forEach(subcategoria => {
+            const subcategoriaDiv = document.createElement('div');
+            subcategoriaDiv.className = 'subcategory';
+            subcategoriaDiv.id = `subcategoria-${subcategoria.id}`;
+            subcategoriaDiv.innerHTML = `
+                <h3>${subcategoria.nombre}</h3>
+                <div class="contenedorBotonesSub">
+                    <button class="edit modSub subcategory-btn" onclick="editSubcategory(${categoria.id}, ${subcategoria.id}, '${subcategoria.nombre}')">
+                        <i class="bi bi-pencil-square"></i> Subcategoría
+                    </button>
+                    <button class="delete delSub subcategory-btn" onclick="deleteSubcategory(${categoria.id}, ${subcategoria.id})">
+                        <i class="bi bi-trash"></i> Subcategoría
+                    </button>
+                    <button class="add addProduct subcategory-btn" onclick="addProduct(${subcategoria.id})">
+                        <i class="bi bi-plus-circle"></i> Producto
+                    </button>
+                </div>
+            `;
+
+            const productsRowDiv = document.createElement('div');
+            productsRowDiv.className = 'products-row';
+
+            subcategoria.Productos.forEach(producto => {
+                const productContainerDiv = document.createElement('div');
+                productContainerDiv.classList.add('product-container');
+
+                const productoDiv = document.createElement('div');
+                productoDiv.classList.add('product-index');
+                productoDiv.id = `producto-${producto.id}`;
+
+                const productoImg = document.createElement('img');
+                productoImg.src = producto.foto;
+                productoImg.alt = producto.nombre;
+
+                const productoInfoDiv = document.createElement('div');
+                productoInfoDiv.classList.add('product-info');
+                productoInfoDiv.innerHTML = `
+                    <strong>${producto.nombre}</strong> <br> 
+                    <p>${producto.descripcion}</p> 
+                    <div class="divPrecio">$${producto.precio}</div>
+                `;
+
+                const productoButtonsDiv = document.createElement('div');
+                productoButtonsDiv.classList.add('product-buttons');
+                productoButtonsDiv.innerHTML = `
+                    <div class="cont-btnProd">
+                        <button class="edit modProducto" onclick="editProduct(${producto.id}, '${producto.nombre}', ${producto.precio}, '${producto.descripcion}', '${producto.foto}')"><i class="bi bi-pencil-square"></i> Editar Producto</button>
+                        <button class="delete delProducto"onclick="deleteProduct(${producto.id})"><i class="bi bi-trash"></i> Eliminar Producto</button>
+                    </div>
+                `;
+
+                productoDiv.appendChild(productoImg);
+                productoDiv.appendChild(productoInfoDiv);
+                productContainerDiv.appendChild(productoDiv);
+                productContainerDiv.appendChild(productoButtonsDiv);
+                productsRowDiv.appendChild(productContainerDiv);
+            });
+
+            subcategoriaDiv.appendChild(productsRowDiv);
+            categoriaDiv.appendChild(subcategoriaDiv);
+        });
+
+        productosDiv.appendChild(categoriaDiv);
+
+        // Crear enlaces para las subcategorías
+        categoria.subcategorias.forEach(subcategoria => {
+            const subcategoriaLink = document.createElement('div');
+            subcategoriaLink.className = 'subcategory-link';
+            subcategoriaLink.innerHTML = subcategoria.nombre;
+            subcategoriaLink.onclick = () => {
+                const section = document.getElementById(`subcategoria-${subcategoria.id}`);
+                if (section) {
+                    const sectionPosition = section.getBoundingClientRect().top + window.scrollY;
+                    const offsetPosition = sectionPosition - 200;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            };
+            barraBusquedaDiv.appendChild(subcategoriaLink);
+        });
     });
 }
 
-/* Inicio Carrusel */
+window.onload = () => {
+    fetchProductos();
+};
 
+
+async function addCategory() {
+    const { value: categoryName } = await Swal.fire({
+        title: 'Agregar Categoría',
+        input: 'text',
+        inputLabel: 'Nombre de la categoría',
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value) {
+                return '¡Debes escribir algo!';
+            }
+        }
+    });
+
+    if (categoryName) {
+        try {
+            const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/categorias_productos`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre: categoryName })
+            });
+
+            if (response.ok) {
+                const data = response.data;
+                sweet("success", "Categoría creada con éxito.");
+                console.log("Respuesta de la API al agregar categoría:", data);
+                createCategoryElement(data.id, data.nombre);
+            } else {
+                Swal.fire('Error', response.data ? response.data.message : 'Hubo un error al crear la categoría', 'error');
+            }
+        } catch (error) {
+            console.error('Error al crear la categoría:', error);
+            Swal.fire('Error', 'Hubo un error al crear la categoría', 'error');
+        }
+    }
+}
+
+async function deleteCategory(categoryId) {
+    // Mostrar el diálogo de confirmación con SweetAlert
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/categorias_productos/${categoryId}`, {
+                    method: 'DELETE'
+                });
+
+                sweet("success", "Categoría eliminada con éxito.");
+                // Aquí podrías agregar el código para actualizar la UI y remover la categoría eliminada
+                const categoryElement = document.getElementById(`category-${categoryId}`);
+                if (categoryElement) {
+                    categoryElement.remove();
+                }
+            } catch (error) {
+                console.error('Error al eliminar la categoría:', error);
+                sweet("error", "Hubo un error al eliminar la categoría.");
+            }
+        }
+    });
+}
+
+async function editCategory(categoryId, currentCategoryName) {
+    // Usar SweetAlert2 para pedir el nuevo nombre de la categoría
+    const { value: newCategoryName } = await Swal.fire({
+        title: 'Modificar Categoría',
+        input: 'text',
+        inputLabel: 'Nuevo nombre de la categoría',
+        inputValue: currentCategoryName,
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value) {
+                return '¡Debes escribir algo!';
+            }
+        }
+    });
+
+    if (newCategoryName) {
+        try {
+            const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/categorias_productos/${categoryId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre: newCategoryName })
+            });
+
+            if (response.ok) {
+                Swal.fire('Éxito', 'Categoría modificada con éxito.', 'success');
+
+                // Aquí podrías agregar el código para actualizar la UI con el nuevo nombre de la categoría
+                const categoryElement = document.querySelector(`#category-${categoryId} h2`);
+                if (categoryElement) {
+                    categoryElement.textContent = newCategoryName;
+                } else {
+                    console.error(`No se encontró el elemento con id category-${categoryId}`);
+                }
+
+                // También actualizamos el data-category-name del botón de editar
+                const editButton = document.querySelector(`#edit-category-${categoryId}`);
+                if (editButton) {
+                    editButton.dataset.categoryName = newCategoryName;
+                }
+            } else {
+                const errorData = await response.json();
+                Swal.fire('Error', errorData.message || 'Hubo un error al modificar la categoría', 'error');
+            }
+        } catch (error) {
+            console.error('Error al modificar la categoría:', error);
+            Swal.fire('Error', 'Hubo un error al modificar la categoría.', 'error');
+        }
+    }
+}
+
+function createCategoryElement(categoryId, categoryTitle) {
+    const productos = document.getElementById('productos');
+    const categoryDiv = document.createElement('div');
+    categoryDiv.classList.add('category');
+    categoryDiv.id = `category-${categoryId}`;
+
+    categoryDiv.innerHTML = `
+        <h2>${categoryTitle}</h2>
+        <div class="contenedorBotonesCat">
+        <button class="edit" onclick="editCategory('${categoryId}')"><i class="bi bi-pencil-square"></i> Editar Categoría</button>
+        <button class="delete" onclick="deleteCategory('${categoryId}')"><i class="bi bi-trash"></i> Eliminar Categoría</button>
+        <button class="add" onclick="addSubcategory('${categoryId}')"><i class="bi bi-plus-circle"></i>Agregar Subcategoría</button>
+        <div id="subcategories-${categoryId}" class="subcategories"></div>
+        </div>
+    `;
+
+    productos.appendChild(categoryDiv);
+}
+
+
+
+/* Inicio Carrusel */
+/*
 async function fetchCarruselAdmin() {
     try {
-        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/carrusel/images/urls');
+        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/carrusel');
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
@@ -137,7 +441,8 @@ function displayCarruselAdmin(data) {                                           
 
         img.onerror = () => {
             console.error(`Failed to load image: ${url}`);
-        };*/
+        };*/ 
+/*
 
         itemDiv.appendChild(img);
         carouselInnerAdmin.appendChild(itemDiv);
@@ -265,8 +570,6 @@ async function deleteImageFromCarousel() {
         }
     });
 }
-
-
 
 // Event listeners for buttons
 document.getElementById('addImageBtn').addEventListener('click', addImageToCarousel);
