@@ -1134,6 +1134,18 @@ footer p{
 
 /* Estilos de productos */
 
+.products-row {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias filas */
+    gap: 10px; /* Espacio entre los elementos, opcional */
+}
+
+.products-row > div {
+    flex: 1 1 calc(33.333% - 10px); /* Ajusta el tamaño de los divs */
+    box-sizing: border-box; /* Incluye el padding y el border en el tamaño total del elemento */
+}
+
+
 .destacados{
     display: flex;
     flex-direction: column;
@@ -1150,7 +1162,7 @@ footer p{
 }
 
 .product-index {
-    height: 300px;
+    height: 500px;
     border: 1px solid #e0e0e0; /* Borde gris claro */
     border-radius: 8px; /* Bordes redondeados */
     padding: 16px; /* Espaciado interno */
@@ -1160,7 +1172,6 @@ footer p{
     text-align: center; /* Centrar contenido */
     position: relative; /* Posición relativa para elementos internos */
     font-family: Arial, sans-serif; /* Fuente base */
-    margin-left: 40px;
 }
 
 .product-index img {
@@ -1196,4 +1207,59 @@ footer p{
 
 #title-destacados{
     margin-top: 20px;
+}
+
+
+
+
+
+
+
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.carousel-images {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-image {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.carousel-control.prev {
+    left: 0;
+}
+
+.carousel-control.next {
+    right: 0;
+}
+
+.medidas-info {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    /* Asegúrate de que no haya estilos que oculten el desplegable */
+    appearance: auto; /* O asegúrate de que no esté usando 'none' */
+    background-color: #fff;
 }

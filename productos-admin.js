@@ -15,7 +15,7 @@ async function fetchProductos() {
     }
 }
 
-/*MOSTRAR LOS PRODUCTOS */
+/*MOSTRAR LOS PRODUCTOS *//*
 function displayPromociones(data) {
     if (!Array.isArray(data)) {
         console.error('Los datos de los productos no son un array:', data);
@@ -124,7 +124,151 @@ function displayPromociones(data) {
 
         productosDiv.appendChild(categoriaDiv);
     });
+}*/
+
+function displayPromociones(data) {
+    if (!Array.isArray(data)) {
+        console.error('Los datos de los productos no son un array:', data);
+        return;
+    }
+
+    const productosDiv = document.getElementById('productos');
+
+    if (!productosDiv) {
+        console.error('No se encontró el elemento #productos en el DOM');
+        return;
+    }
+
+    // Vaciar el contenedor
+    productosDiv.innerHTML = '';
+
+    // Recorrer las categorías y agregarlas al DOM
+    data.forEach(categoria => {
+        const categoriaDiv = document.createElement('div');
+        categoriaDiv.className = 'category';
+        categoriaDiv.id = `category-${categoria.id}`;
+        categoriaDiv.innerHTML = `
+            <h2>${categoria.nombre}</h2>
+            <div class="contenedorBotonesCat">
+                <button class="edit" onclick="editCategory(${categoria.id}, '${categoria.nombre}')"><i class="bi bi-pencil-square"></i> Categoria</button>
+                <button class="delete" onclick="deleteCategory(${categoria.id})"><i class="bi bi-trash"></i> Categoria</button>
+                <button class="add" onclick="addSubcategory(${categoria.id})"><i class="bi bi-plus-circle"></i> Subcategoría</button>
+            </div>
+        `;
+
+        categoria.subcategorias.forEach(subcategoria => {
+            const subcategoriaDiv = document.createElement('div');
+            subcategoriaDiv.className = 'subcategory';
+            subcategoriaDiv.id = `subcategoria-${subcategoria.id}`;
+            subcategoriaDiv.innerHTML = `
+                <h3>${subcategoria.nombre}</h3>
+                <div class="contenedorBotonesSub">
+                    <button class="edit modSub subcategory-btn" onclick="editSubcategory(${categoria.id}, ${subcategoria.id}, '${subcategoria.nombre}')">
+                        <i class="bi bi-pencil-square"></i> Subcategoría
+                    </button>
+                    <button class="delete delSub subcategory-btn" onclick="deleteSubcategory(${categoria.id}, ${subcategoria.id})">
+                        <i class="bi bi-trash"></i> Subcategoría
+                    </button>
+                    <button class="add addProduct subcategory-btn" onclick="addProduct(${subcategoria.id})">
+                        <i class="bi bi-plus-circle"></i> Producto
+                    </button>
+                </div>
+            `;
+
+            const productsRowDiv = document.createElement('div');
+            productsRowDiv.className = 'products-row';
+
+            subcategoria.productos.forEach(producto => {
+                const productContainerDiv = document.createElement('div');
+                productContainerDiv.classList.add('product-container');
+
+                const productoDiv = document.createElement('div');
+                productoDiv.classList.add('product-index');
+                productoDiv.id = `producto-${producto.id}`;
+
+                // Crear el carrusel de imágenes
+                const carouselDiv = document.createElement('div');
+                carouselDiv.classList.add('carousel');
+
+                const carouselImagesDiv = document.createElement('div');
+                carouselImagesDiv.classList.add('carousel-images');
+                producto.fotos.forEach(foto => {
+                    const img = document.createElement('img');
+                    img.src = foto.url;
+                    img.alt = producto.nombre;
+                    img.classList.add('carousel-image');
+                    carouselImagesDiv.appendChild(img);
+                });
+
+                const prevButton = document.createElement('button');
+                prevButton.classList.add('carousel-control', 'prev');
+                prevButton.innerHTML = '&lt;';
+                prevButton.onclick = () => moveCarousel(-1, carouselImagesDiv);
+
+                const nextButton = document.createElement('button');
+                nextButton.classList.add('carousel-control', 'next');
+                nextButton.innerHTML = '&gt;';
+                nextButton.onclick = () => moveCarousel(1, carouselImagesDiv);
+
+                carouselDiv.appendChild(prevButton);
+                carouselDiv.appendChild(carouselImagesDiv);
+                carouselDiv.appendChild(nextButton);
+
+                // Información del producto
+                const productoInfoDiv = document.createElement('div');
+                productoInfoDiv.classList.add('product-info');
+                productoInfoDiv.innerHTML = `
+                    <strong>${producto.nombre}</strong> <br> 
+                    <p>${producto.descripcion}</p> 
+                    <div class="divPrecio">$${producto.precio}</div>
+                `;
+
+                // Medidas del producto (lista desplegable)
+                const medidasSelect = document.createElement('select');
+                medidasSelect.classList.add('medidas-info');
+                // Hacer que el select sea visible y funcional
+                producto.medidas.forEach(medida => {
+                    const option = document.createElement('option');
+                    option.value = medida.id;
+                    option.textContent = medida.nombre;
+                    medidasSelect.appendChild(option);
+                });
+
+                // Botones de acciones del producto
+                const productoButtonsDiv = document.createElement('div');
+                productoButtonsDiv.classList.add('product-buttons');
+                productoButtonsDiv.innerHTML = `
+                    <div class="cont-btnProd">
+                        <button class="edit modProducto" onclick="editProduct(${producto.id}, '${producto.nombre}', ${producto.precio}, '${producto.descripcion}', '${producto.fotos[0]?.url || ''}')"><i class="bi bi-pencil-square"></i> Editar Producto</button>
+                        <button class="delete delProducto" onclick="deleteProduct(${producto.id})"><i class="bi bi-trash"></i> Eliminar Producto</button>
+                    </div>
+                `;
+
+                productoDiv.appendChild(carouselDiv);
+                productoDiv.appendChild(productoInfoDiv);
+                productoDiv.appendChild(medidasSelect);
+                productContainerDiv.appendChild(productoDiv);
+                productContainerDiv.appendChild(productoButtonsDiv);
+                productsRowDiv.appendChild(productContainerDiv);
+            });
+
+            subcategoriaDiv.appendChild(productsRowDiv);
+            categoriaDiv.appendChild(subcategoriaDiv);
+        });
+
+        productosDiv.appendChild(categoriaDiv);
+    });
+
+    // Agregar el evento de clic para desplegar la lista de medidas
+    document.querySelectorAll('.medidas-info').forEach(select => {
+        select.addEventListener('click', function () {
+            this.removeAttribute('disabled');
+            this.focus();
+        });
+    });
 }
+
+
 
 /*CATEGORIAS */
 /*AGREGAR CATEGORIA */
@@ -440,45 +584,101 @@ function createSubcategoryElement(categoryId, subcategoryId, subcategoryName) {
 
 /* Inicio crear productos */
 
+// Llamada para obtener las medidas antes de crear el producto
+async function createProduct(subcategoryId) {
+    const medidas = await fetchMedidas(); // Obtener las medidas primero
+    await addProduct(subcategoryId, medidas); // Llamar a addProduct con las medidas
+}
+
+async function fetchMedidas() {
+    try {
+        const response = await fetch('http://cardelli-backend.vercel.app/api/cardelli/medidas');
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const data = await response.json();  // Convertimos la respuesta a JSON
+        return data || [];  // Asegúrate de devolver un array, incluso si no hay datos
+    } catch (error) {
+        console.error('Error fetching medidas:', error);
+        return [];  // En caso de error, devuelve un array vacío
+    }
+}
+
+
+
 async function addProduct(subcategoryId) {
+    const medidas = await fetchMedidas();
+
+    if (!Array.isArray(medidas) || medidas.length === 0) {
+        console.error('No se pudieron obtener las medidas.');
+        Swal.fire('Error', 'No se pudieron obtener las medidas para crear el producto.', 'error');
+        return;
+    }
+
     const { value: formValues } = await Swal.fire({
         title: 'Agregar Producto',
         html: `
             <input id="product-name" class="swal2-input" placeholder="Nombre del producto">
             <input id="product-price" type="number" class="swal2-input" placeholder="Precio del producto">
             <input id="product-description" class="swal2-input" placeholder="Descripción del producto">
-            <input id="product-image" type="file" class="swal2-file">
+            <input id="product-image" type="file" class="swal2-file" multiple>
+            <select id="product-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
+                ${medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
+            </select>
         `,
         focusConfirm: false,
         preConfirm: () => {
             const name = document.getElementById('product-name').value;
             const price = document.getElementById('product-price').value;
             const description = document.getElementById('product-description').value;
-            const image = document.getElementById('product-image').files[0];
-            if (!name || !price || !description || !image) {
+            const imageFiles = document.getElementById('product-image').files;
+            const selectedMeasures = Array.from(document.getElementById('product-measures').selectedOptions).map(option => Number(option.value));
+
+            if (!name || !price || !description || imageFiles.length === 0 || selectedMeasures.length === 0) {
                 Swal.showValidationMessage('Todos los campos son obligatorios');
                 return false;
             }
-            return { name, price, description, image };
+            return { name, price, description, imageFiles, selectedMeasures };
         }
     });
 
     if (formValues) {
-        const { name, price, description, image } = formValues;
+        const { name, price, description, imageFiles, selectedMeasures } = formValues;
+
+        // Obtener los nombres de las medidas seleccionadas para mostrarlas
+        const selectedMeasureNames = medidas
+            .filter(medida => selectedMeasures.includes(medida.id))
+            .map(medida => medida.nombre);
+
+        // Crear un nuevo div para mostrar el producto en el DOM
+        createProductElement(subcategoryId, name, price, description, imageFiles[0], selectedMeasureNames);
+
         const formData = new FormData();
-        formData.append('data', JSON.stringify({ nombre: name, precio: price, descripcion: description, idSubCategoria: subcategoryId }));
-        formData.append('file', image);
+        formData.append('data', JSON.stringify({ 
+            nombre: name, 
+            precio: price, 
+            descripcion: description, 
+            idSubCategoria: subcategoryId,
+            medidas: selectedMeasures 
+        }));
+
+        for (let i = 0; i < imageFiles.length; i++) {
+            formData.append('files', imageFiles[i]);
+        }
 
         try {
-            const { data, ok } = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/productos/upload`, {
+            const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/productos/upload`, {
                 method: 'POST',
                 body: formData
             });
+            
+            const { data, ok } = response;
 
             if (ok) {
-                createProductElement(subcategoryId, data.id, data.nombre, data.precio, data.descripcion, data.foto);
                 Swal.fire('Éxito', 'Producto agregado con éxito.', 'success');
             } else {
+                console.error('Error en la respuesta:', data);
                 Swal.fire('Error', data.error || 'Hubo un error al agregar el producto', 'error');
             }
         } catch (error) {
@@ -487,6 +687,68 @@ async function addProduct(subcategoryId) {
         }
     }
 }
+
+function createProductElement(subcategoryId, name, price, description, imageFile, measureNames) {
+    const subcategoryDiv = document.getElementById(`subcategoria-${subcategoryId}`);
+    if (subcategoryDiv) {
+        const productsRowDiv = subcategoryDiv.querySelector('.products-row');
+
+        // Crear el contenedor del producto
+        const productContainerDiv = document.createElement('div');
+        productContainerDiv.classList.add('product-container');
+
+        // Crear el div del producto
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product-index');
+
+        // Mostrar la imagen del producto
+        const productImg = document.createElement('img');
+        productImg.src = URL.createObjectURL(imageFile);
+        productImg.alt = name;
+
+        // Crear el div para la información del producto
+        const productInfoDiv = document.createElement('div');
+        productInfoDiv.classList.add('product-info');
+        productInfoDiv.innerHTML = `
+            <strong>${name}</strong> <br>
+            <p>${description}</p>
+            <div class="divPrecio"> $${price} </div>
+            <div class="medidasProducto"><strong>Medidas:</strong> ${measureNames.join(', ')}</div>
+        `;
+
+        productDiv.appendChild(productImg);
+        productDiv.appendChild(productInfoDiv);
+
+        // Crear el div de los botones
+        const productButtonsDiv = document.createElement('div');
+        productButtonsDiv.classList.add('product-buttons');
+        productButtonsDiv.innerHTML = `
+            <div class="cont-btnProd">
+                <button class="edit modProducto"><i class="bi bi-pencil-square"></i>Editar Producto</button>
+                <button class="delete delProducto"><i class="bi bi-trash"></i>Eliminar Producto</button>
+            </div>
+        `;
+
+        // Añadir el div del producto y los botones al contenedor
+        productContainerDiv.appendChild(productDiv);
+        productContainerDiv.appendChild(productButtonsDiv);
+
+        // Añadir el contenedor del producto a la fila de productos
+        productsRowDiv.appendChild(productContainerDiv);
+    } else {
+        console.error(`No se encontró el elemento con id subcategoria-${subcategoryId}`);
+    }
+}
+
+
+
+
+
+
+
+
+
+
 async function editProduct(productId, currentProductName, currentProductPrice, currentProductDescription, currentProductPhoto) {
     // Usar SweetAlert2 para pedir los nuevos datos del producto
     const { value: formValues } = await Swal.fire({
@@ -564,7 +826,7 @@ async function deleteProduct(productId) {
 
                 if (response.ok) {
                     Swal.fire('Éxito', 'Producto eliminado con éxito.', 'success');
-                    await fetchCarta(); // Actualizar la carta después de eliminar
+                    await fetchProductos(); // Actualizar la carta después de eliminar
                 } else {
                     const errorData = await response.json();
                     Swal.fire('Error', errorData.message || 'Hubo un error al eliminar el producto', 'error');
@@ -577,9 +839,112 @@ async function deleteProduct(productId) {
     });
 }
 
+/*
+function createProductElement(subcategoryId, productId, name, price, description, imageUrls, measures) {
+    const subcategoryDiv = document.getElementById(`subcategoria-${subcategoryId}`);
+    
+    if (subcategoryDiv) {
+        const productsRowDiv = subcategoryDiv.querySelector('.products-row');
+
+        // Crear el div contenedor del producto y los botones
+        const productContainerDiv = document.createElement('div');
+        productContainerDiv.classList.add('product-container');
+
+        // Crear el div del producto
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product-index');
+        productDiv.id = `product-${productId}`;
+
+        // Crear el contenedor del carrusel de imágenes
+        const carouselDiv = document.createElement('div');
+        carouselDiv.classList.add('carousel');
+
+        imageUrls.forEach((url, index) => {
+            const img = document.createElement('img');
+            img.src = url;
+            img.alt = `${name} - Imagen ${index + 1}`;
+            img.classList.add('carousel-image');
+            carouselDiv.appendChild(img);
+        });
+
+        // Agregar controles del carrusel (opcional)
+        carouselDiv.innerHTML += `
+            <button class="carousel-control prev" onclick="moveCarousel(-1)">&#10094;</button>
+            <button class="carousel-control next" onclick="moveCarousel(1)">&#10095;</button>
+        `;
+
+        // Crear el div con la información del producto
+        const productInfoDiv = document.createElement('div');
+        productInfoDiv.classList.add('product-info');
+        productInfoDiv.innerHTML = `
+            <strong>${name}</strong> <br> 
+            <p>${description}</p> 
+            <div class="divPrecio"> $${price} </div>
+            <select class="product-measures">
+                ${measures.map(measure => `<option value="${measure.id}">${measure.name}</option>`).join('')}
+            </select>
+        `;
+
+        productDiv.appendChild(carouselDiv);
+        productDiv.appendChild(productInfoDiv);
+
+        // Crear el div de los botones
+        const productButtonsDiv = document.createElement('div');
+        productButtonsDiv.classList.add('product-buttons');
+        productButtonsDiv.innerHTML = `
+            <div class="cont-btnProd">
+                <button class="edit modProducto" onclick="editProduct(${productId}, '${name}', ${price}, '${description}', '${imageUrls[0]}')"><i class="bi bi-pencil-square"></i>Editar Producto</button>
+                <button class="delete delProducto" onclick="deleteProduct(${productId})"><i class="bi bi-trash"></i>Eliminar Producto</button>
+            </div>
+        `;
+
+        // Añadir el producto y los botones al contenedor del producto
+        productContainerDiv.appendChild(productDiv);
+        productContainerDiv.appendChild(productButtonsDiv);
+
+        // Añadir el contenedor del producto a la fila de productos
+        productsRowDiv.appendChild(productContainerDiv);
+    } else {
+        console.error(`No se encontró el elemento con id subcategoria-${subcategoryId}`);
+    }
+}*/
 
 
+let currentSlide = 0;
 
+function moveCarousel(direction, carouselImagesDiv) {
+    // Obtener las imágenes del carrusel
+    const images = carouselImagesDiv.querySelectorAll('img');
+    const totalImages = images.length;
+    const currentIndex = Array.from(images).findIndex(img => img.style.display === 'block');
+    
+    if (currentIndex === -1) {
+        images[0].style.display = 'block'; // Mostrar la primera imagen si ninguna está visible
+    } else {
+        // Ocultar la imagen actual
+        images[currentIndex].style.display = 'none';
+
+        // Calcular el nuevo índice basado en la dirección
+        let newIndex = (currentIndex + direction + totalImages) % totalImages;
+        
+        // Mostrar la nueva imagen
+        images[newIndex].style.display = 'block';
+    }
+}
+
+// Asegúrate de que al cargar la página, solo la primera imagen sea visible
+document.querySelectorAll('.carousel-images').forEach(carouselImagesDiv => {
+    const images = carouselImagesDiv.querySelectorAll('img');
+    if (images.length > 0) {
+        images[0].style.display = 'block'; // Mostrar la primera imagen
+        for (let i = 1; i < images.length; i++) {
+            images[i].style.display = 'none'; // Ocultar las demás imágenes
+        }
+    }
+});
+
+
+/*
 function createProductElement(subcategoryId, productId, name, price, description, imageUrl) {
     const subcategoryDiv = document.getElementById(`subcategoria-${subcategoryId}`);
     if (subcategoryDiv) {
@@ -628,14 +993,14 @@ function createProductElement(subcategoryId, productId, name, price, description
     } else {
         console.error(`No se encontró el elemento con id subcategoria-${subcategoryId}`);
     }
-}
-
-
+}*/
 
 
 window.onload = () => {
     fetchProductos();
 };
+
+
 
 
 
