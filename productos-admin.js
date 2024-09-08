@@ -9,14 +9,14 @@ async function fetchProductos() {
             throw new Error('Network response was not ok ' + response.statusText);
         }
         const data = await response.json();  // Convertimos la respuesta a JSON
-        displayPromociones(data);
+        displayProductos(data);
     } catch (error) {
         console.error('Error fetching productos:', error);
     }
 }
 
 /*MOSTRAR LOS PRODUCTOS *//*
-function displayPromociones(data) {
+function displayProductos(data) {
     if (!Array.isArray(data)) {
         console.error('Los datos de los productos no son un array:', data);
         return;
@@ -126,7 +126,7 @@ function displayPromociones(data) {
     });
 }*/
 
-function displayPromociones(data) {
+function displayProductos(data) {
     if (!Array.isArray(data)) {
         console.error('Los datos de los productos no son un array:', data);
         return;

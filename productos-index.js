@@ -58,10 +58,33 @@ function displayProductos(data) {
                 productoDiv.classList.add('product-index');
                 productoDiv.id = `producto-${producto.id}`;
 
-                // Agregar la imagen del producto (si existe)
-                const productoImg = document.createElement('img');
-                productoImg.src = producto.fotos[0]?.url || '';  // Mostrar la primera foto si existe
-                productoImg.alt = producto.nombre;
+                // Crear el carrusel de imágenes
+                const carouselDiv = document.createElement('div');
+                carouselDiv.classList.add('carousel');
+
+                const carouselImagesDiv = document.createElement('div');
+                carouselImagesDiv.classList.add('carousel-images');
+                producto.fotos.forEach(foto => {
+                    const img = document.createElement('img');
+                    img.src = foto.url;
+                    img.alt = producto.nombre;
+                    img.classList.add('carousel-image');
+                    carouselImagesDiv.appendChild(img);
+                });
+
+                const prevButton = document.createElement('button');
+                prevButton.classList.add('carousel-control', 'prev');
+                prevButton.innerHTML = '&lt;';
+                prevButton.onclick = () => moveCarousel(-1, carouselImagesDiv);
+
+                const nextButton = document.createElement('button');
+                nextButton.classList.add('carousel-control', 'next');
+                nextButton.innerHTML = '&gt;';
+                nextButton.onclick = () => moveCarousel(1, carouselImagesDiv);
+
+                carouselDiv.appendChild(prevButton);
+                carouselDiv.appendChild(carouselImagesDiv);
+                carouselDiv.appendChild(nextButton);
 
                 // Información del producto
                 const productoInfoDiv = document.createElement('div');
@@ -72,22 +95,29 @@ function displayProductos(data) {
                     <div class="divPrecio">$${producto.precio}</div>
                 `;
 
-                // Medidas del producto
-                const medidasDiv = document.createElement('div');
-                medidasDiv.classList.add('medidas-info');
+                // Medidas del producto (lista desplegable)
+                const medidasSelect = document.createElement('select');
+                medidasSelect.classList.add('medidas-info');
+                // Hacer que el select sea visible y funcional
                 producto.medidas.forEach(medida => {
-                    const medidaSpan = document.createElement('span');
-                    medidaSpan.classList.add('medida-item');
-                    medidaSpan.textContent = medida.nombre;
-                    medidasDiv.appendChild(medidaSpan);
+                    const option = document.createElement('option');
+                    option.value = medida.id;
+                    option.textContent = medida.nombre;
+                    medidasSelect.appendChild(option);
                 });
 
+                // Botones de acciones del producto
+                const productoButtonsDiv = document.createElement('div');
+                productoButtonsDiv.classList.add('product-buttons');
+                productoButtonsDiv.innerHTML = `
 
+                `;
 
-                productoDiv.appendChild(productoImg);
+                productoDiv.appendChild(carouselDiv);
                 productoDiv.appendChild(productoInfoDiv);
-                productoDiv.appendChild(medidasDiv);
+                productoDiv.appendChild(medidasSelect);
                 productContainerDiv.appendChild(productoDiv);
+                productContainerDiv.appendChild(productoButtonsDiv);
                 productsRowDiv.appendChild(productContainerDiv);
             });
 
@@ -96,6 +126,14 @@ function displayProductos(data) {
         });
 
         productosDiv.appendChild(categoriaDiv);
+    });
+
+    // Agregar el evento de clic para desplegar la lista de medidas
+    document.querySelectorAll('.medidas-info').forEach(select => {
+        select.addEventListener('click', function () {
+            this.removeAttribute('disabled');
+            this.focus();
+        });
     });
 }
 
