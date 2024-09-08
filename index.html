@@ -12,17 +12,17 @@
     <header class="header">
         <div class="contenedor">
             <div class="barra">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="menu-toggle icon icon-tabler icon-tabler-menu-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M4 6l16 0" />
-                        <path d="M4 12l16 0" />
-                        <path d="M4 18l16 0" />
-                    </svg>
-                    
-                    <a href="index.html" class="logo">
-                        <img src="assets/statics/logo_transparente.png" alt="">
-                    </a> 
-
+                <svg xmlns="http://www.w3.org/2000/svg" class="menu-toggle icon icon-tabler icon-tabler-menu-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M4 6l16 0" />
+                    <path d="M4 12l16 0" />
+                    <path d="M4 18l16 0" />
+                </svg>
+    
+                <a href="index.html" class="logo">
+                    <img src="assets/statics/logo_transparente.png" alt="">
+                </a> 
+    
                 <div class="overlay"></div>
                 <nav class="navegacion">
                     <a href="index.html" class="logo noneFlex logo-menu">
@@ -45,12 +45,15 @@
                     </a>
                     <a href="./#" class="shop-cart-icono">
                         <i class="fa-solid fa-cart-shopping"></i>
+                        <div id="cart-container" style="display: none;">
+                            <span id="cart-count">0</span>
+                        </div>
                     </a>
                 </div>
-
             </div>
         </div>
     </header>
+    
 
     <div id="carouselExampleFade" class="carousel slide carousel-fade">
         <div class="carousel-inner" id="carousel-inner">
@@ -109,12 +112,14 @@
             </div>
         </div>
         <div id="ofertas">
-            
+            <a href="./ofertas-index.html"></a>
         </div>
         <div id="nuestros-neumaticos">
             <div id="title-nuestros-neumaticos">
                 <h2>NUESTROS NEUMÁTICOS</h2>
-                <div id="todos-neumaticos"></div>
+                <div id="todos-neumaticos">
+
+                </div>
             </div>
         </div>
 
