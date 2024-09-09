@@ -839,76 +839,6 @@ async function deleteProduct(productId) {
     });
 }
 
-/*
-function createProductElement(subcategoryId, productId, name, price, description, imageUrls, measures) {
-    const subcategoryDiv = document.getElementById(`subcategoria-${subcategoryId}`);
-    
-    if (subcategoryDiv) {
-        const productsRowDiv = subcategoryDiv.querySelector('.products-row');
-
-        // Crear el div contenedor del producto y los botones
-        const productContainerDiv = document.createElement('div');
-        productContainerDiv.classList.add('product-container');
-
-        // Crear el div del producto
-        const productDiv = document.createElement('div');
-        productDiv.classList.add('product-index');
-        productDiv.id = `product-${productId}`;
-
-        // Crear el contenedor del carrusel de imágenes
-        const carouselDiv = document.createElement('div');
-        carouselDiv.classList.add('carousel');
-
-        imageUrls.forEach((url, index) => {
-            const img = document.createElement('img');
-            img.src = url;
-            img.alt = `${name} - Imagen ${index + 1}`;
-            img.classList.add('carousel-image');
-            carouselDiv.appendChild(img);
-        });
-
-        // Agregar controles del carrusel (opcional)
-        carouselDiv.innerHTML += `
-            <button class="carousel-control prev" onclick="moveCarousel(-1)">&#10094;</button>
-            <button class="carousel-control next" onclick="moveCarousel(1)">&#10095;</button>
-        `;
-
-        // Crear el div con la información del producto
-        const productInfoDiv = document.createElement('div');
-        productInfoDiv.classList.add('product-info');
-        productInfoDiv.innerHTML = `
-            <strong>${name}</strong> <br> 
-            <p>${description}</p> 
-            <div class="divPrecio"> $${price} </div>
-            <select class="product-measures">
-                ${measures.map(measure => `<option value="${measure.id}">${measure.name}</option>`).join('')}
-            </select>
-        `;
-
-        productDiv.appendChild(carouselDiv);
-        productDiv.appendChild(productInfoDiv);
-
-        // Crear el div de los botones
-        const productButtonsDiv = document.createElement('div');
-        productButtonsDiv.classList.add('product-buttons');
-        productButtonsDiv.innerHTML = `
-            <div class="cont-btnProd">
-                <button class="edit modProducto" onclick="editProduct(${productId}, '${name}', ${price}, '${description}', '${imageUrls[0]}')"><i class="bi bi-pencil-square"></i>Editar Producto</button>
-                <button class="delete delProducto" onclick="deleteProduct(${productId})"><i class="bi bi-trash"></i>Eliminar Producto</button>
-            </div>
-        `;
-
-        // Añadir el producto y los botones al contenedor del producto
-        productContainerDiv.appendChild(productDiv);
-        productContainerDiv.appendChild(productButtonsDiv);
-
-        // Añadir el contenedor del producto a la fila de productos
-        productsRowDiv.appendChild(productContainerDiv);
-    } else {
-        console.error(`No se encontró el elemento con id subcategoria-${subcategoryId}`);
-    }
-}*/
-
 
 let currentSlide = 0;
 
@@ -944,56 +874,6 @@ document.querySelectorAll('.carousel-images').forEach(carouselImagesDiv => {
 });
 
 
-/*
-function createProductElement(subcategoryId, productId, name, price, description, imageUrl) {
-    const subcategoryDiv = document.getElementById(`subcategoria-${subcategoryId}`);
-    if (subcategoryDiv) {
-        const productsRowDiv = subcategoryDiv.querySelector('.products-row');
-
-        // Crear el div contenedor del producto y los botones
-        const productContainerDiv = document.createElement('div');
-        productContainerDiv.classList.add('product-container');
-
-        // Crear el div del producto
-        const productDiv = document.createElement('div');
-        productDiv.classList.add('product-index');
-        productDiv.id = `product-${productId}`;
-
-        const productImg = document.createElement('img');
-        productImg.src = imageUrl;
-        productImg.alt = name;
-
-        const productInfoDiv = document.createElement('div');
-        productInfoDiv.classList.add('product-info');
-        productInfoDiv.innerHTML = `
-            <strong>${name}</strong> <br> 
-            <p>${description}</p> 
-            <div class="divPrecio"> $${price} </div>
-        `;
-
-        productDiv.appendChild(productImg);
-        productDiv.appendChild(productInfoDiv);
-
-        // Crear el div de los botones
-        const productButtonsDiv = document.createElement('div');
-        productButtonsDiv.classList.add('product-buttons');
-        productButtonsDiv.innerHTML = `
-            <div class="cont-btnProd">
-                <button class="edit modProducto" onclick="editProduct(${productId}, '${name}', ${price}, '${description}', '${imageUrl}')"><i class="bi bi-pencil-square"></i>Editar Producto</button>
-                <button class="delete delProducto" onclick="deleteProduct(${productId})"><i class="bi bi-trash"></i>Eliminar Producto</button>
-            </div>
-        `;
-
-        // Añadir el producto y los botones al contenedor del producto
-        productContainerDiv.appendChild(productDiv);
-        productContainerDiv.appendChild(productButtonsDiv);
-
-        // Añadir el contenedor del producto a la fila de productos
-        productsRowDiv.appendChild(productContainerDiv);
-    } else {
-        console.error(`No se encontró el elemento con id subcategoria-${subcategoryId}`);
-    }
-}*/
 
 
 window.onload = () => {

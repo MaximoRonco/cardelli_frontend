@@ -1134,13 +1134,13 @@ footer p{
 
 /* Estilos de productos */
 
-.products-row {
+.products-row, .ofertas-row {
     display: flex;
     flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias filas */
     gap: 10px; /* Espacio entre los elementos, opcional */
 }
 
-.products-row > div {
+.products-row > div, .ofertas-row > div {
     flex: 1 1 calc(33.333% - 10px); /* Ajusta el tamaño de los divs */
     box-sizing: border-box; /* Incluye el padding y el border en el tamaño total del elemento */
 }
@@ -1161,7 +1161,7 @@ footer p{
     align-items: center;
 }
 
-.product-index {
+.product-index, .oferta-index {
     height: 500px;
     border: 1px solid #e0e0e0; /* Borde gris claro */
     border-radius: 8px; /* Bordes redondeados */
@@ -1174,22 +1174,22 @@ footer p{
     font-family: Arial, sans-serif; /* Fuente base */
 }
 
-.product-index img {
+.product-index img, .oferta-index img {
     max-width: 100%; /* La imagen se adapta al contenedor */
     border-radius: 4px; /* Bordes redondeados */
 }
 
-.product-info {
+.product-info, .oferta-info {
     margin-top: 12px; /* Espaciado entre imagen y descripción */
     text-align: left; /* Texto alineado a la izquierda */
 }
 
-.product-info strong {
+.product-info strong, .oferta-info strong {
     font-size: 16px; /* Tamaño de fuente para el título */
     color: #333; /* Color de texto */
 }
 
-.product-info p {
+.product-info p, .oferta-info p {
     font-size: 14px; /* Tamaño de fuente para la descripción */
     color: #666; /* Color de texto gris */
 }

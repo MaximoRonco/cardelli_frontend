@@ -76,26 +76,47 @@ function displayPromociones(data) {
                 ofertaDiv.classList.add('oferta-index');
                 ofertaDiv.id = `oferta-${oferta.id}`;
 
+                // Mostrar las fotos de la oferta
+                const fotosDiv = document.createElement('div');
+                fotosDiv.classList.add('oferta-fotos');
+                oferta.fotos.forEach(foto => {
+                    const img = document.createElement('img');
+                    img.src = foto.url;
+                    img.alt = `Foto de ${oferta.nombre}`;
+                    fotosDiv.appendChild(img);
+                });
+
                 // Información de la oferta
                 const ofertaInfoDiv = document.createElement('div');
                 ofertaInfoDiv.classList.add('oferta-info');
                 ofertaInfoDiv.innerHTML = `
                     <strong>${oferta.nombre}</strong> <br> 
                     <p>${oferta.descripcion}</p> 
-                    <div class="divPrecio">$${oferta.precio}</div>
+                    <div class="divPrecio">Precio normal: $${oferta.precioSinOferta}</div>
+                    <div class="divPrecio">Precio con oferta: $${oferta.precioConOferta}</div>
                 `;
+
+                // Mostrar las medidas de la oferta
+                const medidasDiv = document.createElement('div');
+                medidasDiv.classList.add('oferta-medidas');
+                const medidasTexto = oferta.medidas.map(medida => medida.nombre).join(', ');
+                medidasDiv.innerHTML = `<strong>Medidas:</strong> ${medidasTexto}`;
 
                 // Botones de acciones de la oferta
                 const ofertaButtonsDiv = document.createElement('div');
                 ofertaButtonsDiv.classList.add('oferta-buttons');
                 ofertaButtonsDiv.innerHTML = `
                     <div class="cont-btnOferta">
-                        <button class="edit modOferta" onclick="editOferta(${oferta.id}, '${oferta.nombre}', ${oferta.precio}, '${oferta.descripcion}')"><i class="bi bi-pencil-square"></i> Editar Oferta</button>
+                        <button class="edit modOferta" onclick="editOferta(${oferta.id}, '${oferta.nombre}', ${oferta.precioSinOferta}, '${oferta.descripcion}')"><i class="bi bi-pencil-square"></i> Editar Oferta</button>
                         <button class="delete delOferta" onclick="deleteOferta(${oferta.id})"><i class="bi bi-trash"></i> Eliminar Oferta</button>
                     </div>
                 `;
 
+                // Añadir las partes de la oferta al contenedor
+                ofertaDiv.appendChild(fotosDiv);
                 ofertaDiv.appendChild(ofertaInfoDiv);
+                ofertaDiv.appendChild(medidasDiv);
+
                 ofertaContainerDiv.appendChild(ofertaDiv);
                 ofertaContainerDiv.appendChild(ofertaButtonsDiv);
                 ofertasRowDiv.appendChild(ofertaContainerDiv);
@@ -108,7 +129,6 @@ function displayPromociones(data) {
         promocionesDiv.appendChild(categoriaDiv);
     });
 }
-
 /*AGREGAR CATEGORIA */
 async function addCategory() {
     const { value: categoryName } = await Swal.fire({
@@ -408,13 +428,13 @@ function createSubcategoryElement(categoryId, subcategoryId, subcategoryName) {
         <div class="contenedorBotonesSub">
             <button class="edit modSub subcategory-btn" onclick="editSubcategory(${categoryId}, ${subcategoryId}, '${subcategoryName}')"> <i class="bi bi-pencil-square"></i>Subcategoría</button>
             <button class="delete delSub subcategory-btn" onclick="deleteSubcategory(${categoryId}, ${subcategoryId})"><i class="bi bi-trash"></i>Subcategoría</button>
-            <button class="add addProduct subcategory-btn" onclick="addProduct(${subcategoryId})"><i class="bi bi-plus-circle"></i>Producto</button>
+            <button class="add addProduct subcategory-btn" onclick="addOferta(${subcategoryId})"><i class="bi bi-plus-circle"></i>Producto</button>
         </div>
     `;
 
-    const productsRowDiv = document.createElement('div');
-    productsRowDiv.className = 'products-row';
-    subcategoryDiv.appendChild(productsRowDiv);
+    const ofertaRowDiv = document.createElement('div');
+    ofertaRowDiv.className = 'ofertas-row';
+    subcategoryDiv.appendChild(ofertaRowDiv);
 
     categoryElement.appendChild(subcategoryDiv);
 
@@ -430,6 +450,171 @@ function createSubcategoryElement(categoryId, subcategoryId, subcategoryName) {
         barraBusquedaDiv.appendChild(subcategoriaLink);
     }
 }
+
+// Llamada para obtener las medidas antes de crear el producto
+async function createOferta(subcategoryId) {
+    const medidas = await fetchMedidas(); // Obtener las medidas primero
+    await addOferta(subcategoryId, medidas); // Llamar a addProduct con las medidas
+}
+
+async function fetchMedidas() {
+    try {
+        const response = await fetch('http://cardelli-backend.vercel.app/api/cardelli/medidas');
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const data = await response.json();  // Convertimos la respuesta a JSON
+        return data || [];  // Asegúrate de devolver un array, incluso si no hay datos
+    } catch (error) {
+        console.error('Error fetching medidas:', error);
+        return [];  // En caso de error, devuelve un array vacío
+    }
+}
+
+
+
+async function addOferta(subcategoryId) {
+    const medidas = await fetchMedidas();
+
+    if (!Array.isArray(medidas) || medidas.length === 0) {
+        console.error('No se pudieron obtener las medidas.');
+        Swal.fire('Error', 'No se pudieron obtener las medidas para crear el producto.', 'error');
+        return;
+    }
+
+    const { value: formValues } = await Swal.fire({
+        title: 'Agregar Oferta',
+        html: `
+            <input id="oferta-name" class="swal2-input" placeholder="Nombre de la oferta">
+            <input id="oferta-price" type="number" class="swal2-input" placeholder="Precio de la oferta">
+            <input id="oferta-price-oferta" type="number" class="swal2-input" placeholder="Precio de la oferta oferta">
+            <input id="oferta-description" class="swal2-input" placeholder="Descripción de la oferta">
+            <input id="oferta-image" type="file" class="swal2-file" multiple>
+            <select id="oferta-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
+                ${medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
+            </select>
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+            const name = document.getElementById('oferta-name').value;
+            const price = document.getElementById('oferta-price').value;
+            const price_oferta = document.getElementById('oferta-price-oferta').value;
+            const description = document.getElementById('oferta-description').value;
+            const imageFiles = document.getElementById('oferta-image').files;
+            const selectedMeasures = Array.from(document.getElementById('oferta-measures').selectedOptions).map(option => Number(option.value));
+
+            if (!name || !price || !price_oferta || !description || imageFiles.length === 0 || selectedMeasures.length === 0) {
+                Swal.showValidationMessage('Todos los campos son obligatorios');
+                return false;
+            }
+
+            return { name, price, price_oferta, description, imageFiles, selectedMeasures };
+        }
+    });
+
+    if (formValues) {
+        const { name, price, price_oferta, description, imageFiles, selectedMeasures } = formValues;
+
+        // Obtener los nombres de las medidas seleccionadas para mostrarlas
+        const selectedMeasureNames = medidas
+            .filter(medida => selectedMeasures.includes(medida.id))
+            .map(medida => medida.nombre);
+
+        // Crear el formulario con datos e imágenes
+        const formData = new FormData();
+        formData.append('data', JSON.stringify({
+            nombre: name,
+            precioConOferta: price,
+            precioSinOferta: price_oferta,
+            descripcion: description,
+            idSubCategoria: subcategoryId,
+            medidas: selectedMeasures
+        }));
+
+        for (let i = 0; i < imageFiles.length; i++) {
+            formData.append('files', imageFiles[i]);
+        }
+
+        try {
+            const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/ofertas/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const { data, ok } = response;
+            console.log('Response from API:', response); // Imprime la respuesta completa
+            
+            if (ok) {
+                console.log('Oferta guardada con éxito en el servidor:', data);
+                Swal.fire('Éxito', 'Oferta agregada con éxito.', 'success');
+                createOfertaElement(subcategoryId, data.id, name, price, price_oferta, description, imageFiles[0], selectedMeasureNames);
+            } else {
+                console.error('Error en la respuesta:', data);
+                Swal.fire('Error', data.error || 'Hubo un error al agregar la oferta', 'error');
+            }
+        } catch (error) {
+            console.error('Error al agregar la oferta:', error);
+            Swal.fire('Error', 'Hubo un error al agregar la oferta', 'error');
+        }
+    }
+}
+
+
+function createOfertaElement(subcategoryId, ofertaId, name, price, price_oferta, description, imageFile, measureNames) {
+    const subcategoryDiv = document.getElementById(`subcategoria-${subcategoryId}`);
+    if (subcategoryDiv) {
+        const ofertaRowDiv = subcategoryDiv.querySelector('.ofertas-row');
+
+        // Crear el contenedor del producto
+        const ofertaContainerDiv = document.createElement('div');
+        ofertaContainerDiv.classList.add('oferta-container');
+
+        // Crear el div del producto
+        const ofertaDiv = document.createElement('div');
+        ofertaDiv.classList.add('oferta-index');
+        ofertaDiv.id = `oferta-${ofertaId}`;
+
+        // Mostrar la imagen del producto
+        const ofertaImg = document.createElement('img');
+        ofertaImg.src = URL.createObjectURL(imageFile);
+        ofertaImg.alt = name;
+
+        // Crear el div para la información del producto
+        const ofertaInfoDiv = document.createElement('div');
+        ofertaInfoDiv.classList.add('oferta-info');
+        ofertaInfoDiv.innerHTML = `
+            <strong>${name}</strong> <br>
+            <p>${description}</p>
+            <div class="divPrecio"> $${price} </div>
+            <div class="divPrecio"> $${price_oferta} </div>
+            <div class="medidasProducto"><strong>Medidas:</strong> ${measureNames.join(', ')}</div>
+        `;
+
+        ofertaDiv.appendChild(ofertaImg);
+        ofertaDiv.appendChild(ofertaInfoDiv);
+
+        // Crear el div de los botones
+        const ofertaButtonsDiv = document.createElement('div');
+        ofertaButtonsDiv.classList.add('oferta-buttons');
+        ofertaButtonsDiv.innerHTML = `
+    <div class="cont-btnOferta">
+        <button class="edit modOferta" onclick="editOferta(${ofertaId}, '${name}', ${price}, '${description}')"><i class="bi bi-pencil-square"></i> Editar Oferta</button>
+        <button class="delete delOferta" onclick="deleteOferta(${ofertaId})"><i class="bi bi-trash"></i> Eliminar Oferta</button>
+    </div>
+        `;
+
+        // Añadir el div del producto y los botones al contenedor
+        ofertaContainerDiv.appendChild(ofertaDiv);
+        ofertaContainerDiv.appendChild(ofertaButtonsDiv);
+
+        // Añadir el contenedor del producto a la fila de productos
+        ofertaRowDiv.appendChild(ofertaContainerDiv);
+    } else {
+        console.error(`No se encontró el elemento con id subcategoria-${subcategoryId}`);
+    }
+}
+
 
 
 
