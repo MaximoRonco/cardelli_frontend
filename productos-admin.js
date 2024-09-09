@@ -108,7 +108,7 @@ function displayProductos(data) {
                 productoInfoDiv.classList.add('product-info');
                 productoInfoDiv.innerHTML = `
                     <strong>${producto.nombre}</strong> <br> 
-                    <p>${producto.descripcion}</p> 
+                    <p class="producto_descripcion">${producto.descripcion}</p> 
                     <div class="divPrecio">$${producto.precio}</div>
                 `;
 

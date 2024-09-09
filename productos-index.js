@@ -30,7 +30,6 @@ function displayProductos(data) {
     // Vaciar el contenedor
     productosDiv.innerHTML = '';
 
-    // Recorrer las categorías y agregarlas al DOM
     data.forEach(categoria => {
         const categoriaDiv = document.createElement('div');
         categoriaDiv.className = 'category';
@@ -91,31 +90,26 @@ function displayProductos(data) {
                 productoInfoDiv.classList.add('product-info');
                 productoInfoDiv.innerHTML = `
                     <strong>${producto.nombre}</strong> <br> 
-                    <p>${producto.descripcion}</p> 
                     <div class="divPrecio">$${producto.precio}</div>
                 `;
 
-                // Medidas del producto (lista desplegable)
-                const medidasSelect = document.createElement('select');
-                medidasSelect.classList.add('medidas-info');
-                // Hacer que el select sea visible y funcional
-                producto.medidas.forEach(medida => {
-                    const option = document.createElement('option');
-                    option.value = medida.id;
-                    option.textContent = medida.nombre;
-                    medidasSelect.appendChild(option);
-                });
+                // Botón "Ver más" para abrir el modal
+                const verMasBtn = document.createElement('button');
+                verMasBtn.classList.add('ver-mas-btn');
+                verMasBtn.innerHTML = 'Ver más';
+                verMasBtn.onclick = function() {
+                    openModal(producto);
+                };
 
                 // Botones de acciones del producto
                 const productoButtonsDiv = document.createElement('div');
                 productoButtonsDiv.classList.add('product-buttons');
                 productoButtonsDiv.innerHTML = `
-
                 `;
 
                 productoDiv.appendChild(carouselDiv);
                 productoDiv.appendChild(productoInfoDiv);
-                productoDiv.appendChild(medidasSelect);
+                productoDiv.appendChild(verMasBtn);  // Añadir el botón "Ver más"
                 productContainerDiv.appendChild(productoDiv);
                 productContainerDiv.appendChild(productoButtonsDiv);
                 productsRowDiv.appendChild(productContainerDiv);
@@ -127,14 +121,38 @@ function displayProductos(data) {
 
         productosDiv.appendChild(categoriaDiv);
     });
+}
 
-    // Agregar el evento de clic para desplegar la lista de medidas
-    document.querySelectorAll('.medidas-info').forEach(select => {
-        select.addEventListener('click', function () {
-            this.removeAttribute('disabled');
-            this.focus();
-        });
-    });
+// Función para abrir el modal con la información del producto
+function openModal(producto) {
+    const modal = document.getElementById('productModal');
+    const modalContent = document.getElementById('modal-product-info');
+
+    // Llenar el modal con la información del producto
+    modalContent.innerHTML = `
+        <div>
+            <h2>${producto.nombre}</h2>            
+            <div class="carousel-images">
+                    ${producto.fotos.map(foto => `<img src="${foto.url}" alt="${producto.nombre}" class="modal-image" />`).join('')}
+            </div>
+        </div>
+        <div>
+            <p class="divPrecio "><strong></strong> $${producto.precio}</p>
+            <select id="medidasSelectModal">
+                ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
+            </select>
+            <p><strong></strong> ${producto.descripcion}</p>
+        </div>
+    `;
+
+    // Mostrar el modal
+    modal.style.display = 'flex';
+}
+
+// Función para cerrar el modal
+function closeModal() {
+    const modal = document.getElementById('productModal');
+    modal.style.display = 'none';
 }
 
 function moveCarousel(direction, carouselImagesDiv) {

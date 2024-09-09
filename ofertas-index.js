@@ -60,14 +60,31 @@ function displayPromociones(data) {
                 ofertaDiv.classList.add('oferta-index');
                 ofertaDiv.id = `oferta-${oferta.id}`;
 
+                // Mostrar las fotos de la oferta
+                const fotosDiv = document.createElement('div');
+                fotosDiv.classList.add('oferta-fotos');
+                oferta.fotos.forEach(foto => {
+                    const img = document.createElement('img');
+                    img.src = foto.url;
+                    img.alt = `Foto de ${oferta.nombre}`;
+                    fotosDiv.appendChild(img);
+                });
+
                 // Información de la oferta
                 const ofertaInfoDiv = document.createElement('div');
                 ofertaInfoDiv.classList.add('oferta-info');
                 ofertaInfoDiv.innerHTML = `
                     <strong>${oferta.nombre}</strong> <br> 
                     <p>${oferta.descripcion}</p> 
-                    <div class="divPrecio">$${oferta.precio}</div>
+                    <div class="divPrecio">Precio normal: $${oferta.precioSinOferta}</div>
+                    <div class="divPrecio">Precio con oferta: $${oferta.precioConOferta}</div>
                 `;
+
+                // Mostrar las medidas de la oferta
+                const medidasDiv = document.createElement('div');
+                medidasDiv.classList.add('oferta-medidas');
+                const medidasTexto = oferta.medidas.map(medida => medida.nombre).join(', ');
+                medidasDiv.innerHTML = `<strong>Medidas:</strong> ${medidasTexto}`;
 
                 // Botones de acciones de la oferta
                 const ofertaButtonsDiv = document.createElement('div');
@@ -75,7 +92,11 @@ function displayPromociones(data) {
                 ofertaButtonsDiv.innerHTML = `
                 `;
 
+                // Añadir las partes de la oferta al contenedor
+                ofertaDiv.appendChild(fotosDiv);
                 ofertaDiv.appendChild(ofertaInfoDiv);
+                ofertaDiv.appendChild(medidasDiv);
+
                 ofertaContainerDiv.appendChild(ofertaDiv);
                 ofertaContainerDiv.appendChild(ofertaButtonsDiv);
                 ofertasRowDiv.appendChild(ofertaContainerDiv);
