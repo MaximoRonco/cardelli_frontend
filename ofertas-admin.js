@@ -428,7 +428,7 @@ function createSubcategoryElement(categoryId, subcategoryId, subcategoryName) {
         <div class="contenedorBotonesSub">
             <button class="edit modSub subcategory-btn" onclick="editSubcategory(${categoryId}, ${subcategoryId}, '${subcategoryName}')"> <i class="bi bi-pencil-square"></i>Subcategoría</button>
             <button class="delete delSub subcategory-btn" onclick="deleteSubcategory(${categoryId}, ${subcategoryId})"><i class="bi bi-trash"></i>Subcategoría</button>
-            <button class="add addProduct subcategory-btn" onclick="addOferta(${subcategoryId})"><i class="bi bi-plus-circle"></i>Producto</button>
+            <button class="add addProduct subcategory-btn" onclick="addOferta(${subcategoryId})"><i class="bi bi-plus-circle"></i>Oferta</button>
         </div>
     `;
 
@@ -616,7 +616,142 @@ function createOfertaElement(subcategoryId, ofertaId, name, price, price_oferta,
 }
 
 
+async function deleteOferta(productId) {
+    // Mostrar el diálogo de confirmación con SweetAlert
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/ofertas/${productId}`, {
+                    method: 'DELETE'
+                });
 
+                if (response.ok) {
+                    Swal.fire('Éxito', 'Oferta eliminado con éxito.', 'success');
+                    await fetchPromociones(); // Actualizar la carta después de eliminar
+                } else {
+                    const errorData = await response.json();
+                    Swal.fire('Error', errorData.message || 'Hubo un error al eliminar la oferta', 'error');
+                }
+            } catch (error) {
+                console.error('Error al eliminar la oferta:', error);
+                Swal.fire('Error', 'Hubo un error al eliminar la oferta', 'error');
+            }
+        }
+    });
+}
+
+async function editOferta(ofertaId, currentName, currentPrice, currentDescription, currentPriceOferta, currentMeasures = []) {
+    const medidas = await fetchMedidas();
+
+    if (!Array.isArray(medidas) || medidas.length === 0) {
+        console.error('No se pudieron obtener las medidas.');
+        Swal.fire('Error', 'No se pudieron obtener las medidas para editar el producto.', 'error');
+        return;
+    }
+
+    const { value: formValues } = await Swal.fire({
+        title: 'Editar Oferta',
+        html: `
+            <input id="edit-oferta-name" class="swal2-input" placeholder="Nombre de la oferta" value="${currentName}">
+            <input id="edit-oferta-price" type="number" class="swal2-input" placeholder="Precio de la oferta" value="${currentPrice}">
+            <input id="edit-oferta-price-oferta" type="number" class="swal2-input" placeholder="Precio de la oferta oferta" value="${currentPriceOferta}">
+            <input id="edit-oferta-description" class="swal2-input" placeholder="Descripción de la oferta" value="${currentDescription}">
+            <input id="edit-oferta-image" type="file" class="swal2-file" multiple>
+            <select id="edit-oferta-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
+                ${medidas.map(medida => `<option value="${medida.id}" ${currentMeasures.includes(medida.id) ? 'selected' : ''}>${medida.nombre}</option>`).join('')}
+            </select>
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+            const name = document.getElementById('edit-oferta-name').value;
+            const price = document.getElementById('edit-oferta-price').value;
+            const price_oferta = document.getElementById('edit-oferta-price-oferta').value;
+            const description = document.getElementById('edit-oferta-description').value;
+            const imageFiles = document.getElementById('edit-oferta-image').files;
+            const selectedMeasures = Array.from(document.getElementById('edit-oferta-measures').selectedOptions).map(option => Number(option.value));
+
+            if (!name || !price || !price_oferta || !description || selectedMeasures.length === 0) {
+                Swal.showValidationMessage('Todos los campos son obligatorios');
+                return false;
+            }
+
+            return { name, price, price_oferta, description, imageFiles, selectedMeasures };
+        }
+    });
+
+    if (formValues) {
+        const { name, price, price_oferta, description, imageFiles, selectedMeasures } = formValues;
+
+        // Crear el formulario con datos e imágenes
+        const formData = new FormData();
+        formData.append('data', JSON.stringify({
+            nombre: name,
+            precioConOferta: price,
+            precioSinOferta: price_oferta,
+            descripcion: description,
+            nuevasMedidas: selectedMeasures
+        }));
+
+        for (let i = 0; i < imageFiles.length; i++) {
+            formData.append('files', imageFiles[i]);
+        }
+
+        try {
+            const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/ofertas/${ofertaId}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            const { data, ok } = response;
+            console.log('Response from API:', response); // Imprime la respuesta completa
+            
+            if (ok) {
+                console.log('Oferta actualizada con éxito en el servidor:', data);
+                Swal.fire('Éxito', 'Oferta editada con éxito.', 'success');
+                // Actualiza la UI según los cambios realizados
+                updateOfertaElement(ofertaId, name, price, price_oferta, description, selectedMeasures, imageFiles[0]);
+            } else {
+                console.error('Error en la respuesta:', data);
+                Swal.fire('Error', data.error || 'Hubo un error al editar la oferta', 'error');
+            }
+        } catch (error) {
+            console.error('Error al editar la oferta:', error);
+            Swal.fire('Error', 'Hubo un error al editar la oferta', 'error');
+        }
+    }
+}
+
+function updateOfertaElement(ofertaId, name, price, price_oferta, description, measureNames, imageFile) {
+    const ofertaDiv = document.getElementById(`oferta-${ofertaId}`);
+    if (ofertaDiv) {
+        const ofertaImg = ofertaDiv.querySelector('img');
+        const ofertaInfoDiv = ofertaDiv.querySelector('.oferta-info');
+
+        // Actualizar la imagen si hay una nueva
+        if (imageFile) {
+            ofertaImg.src = URL.createObjectURL(imageFile);
+        }
+
+        // Actualizar los datos de la oferta
+        ofertaInfoDiv.innerHTML = `
+            <strong>${name}</strong> <br>
+            <p>${description}</p>
+            <div class="divPrecio"> $${price} </div>
+            <div class="divPrecio"> $${price_oferta} </div>
+            <div class="medidasProducto"><strong>Medidas:</strong> ${measureNames.join(', ')}</div>
+        `;
+    } else {
+        console.error(`No se encontró el elemento con id oferta-${ofertaId}`);
+    }
+}
 
 
 window.onload = () => {

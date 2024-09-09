@@ -15,117 +15,6 @@ async function fetchProductos() {
     }
 }
 
-/*MOSTRAR LOS PRODUCTOS *//*
-function displayProductos(data) {
-    if (!Array.isArray(data)) {
-        console.error('Los datos de los productos no son un array:', data);
-        return;
-    }
-
-    const productosDiv = document.getElementById('productos');
-
-    if (!productosDiv) {
-        console.error('No se encontró el elemento #productos en el DOM');
-        return;
-    }
-
-    // Vaciar el contenedor
-    productosDiv.innerHTML = '';
-
-    // Recorrer las categorías y agregarlas al DOM
-    data.forEach(categoria => {
-        const categoriaDiv = document.createElement('div');
-        categoriaDiv.className = 'category';
-        categoriaDiv.id = `category-${categoria.id}`;
-        categoriaDiv.innerHTML = `
-            <h2>${categoria.nombre}</h2>
-            <div class="contenedorBotonesCat">
-                <button class="edit" onclick="editCategory(${categoria.id}, '${categoria.nombre}')"><i class="bi bi-pencil-square"></i> Categoria</button>
-                <button class="delete" onclick="deleteCategory(${categoria.id})"><i class="bi bi-trash"></i> Categoria</button>
-                <button class="add" onclick="addSubcategory(${categoria.id})"><i class="bi bi-plus-circle"></i> Subcategoría</button>
-            </div>
-        `;
-
-        categoria.subcategorias.forEach(subcategoria => {
-            const subcategoriaDiv = document.createElement('div');
-            subcategoriaDiv.className = 'subcategory';
-            subcategoriaDiv.id = `subcategoria-${subcategoria.id}`;
-            subcategoriaDiv.innerHTML = `
-                <h3>${subcategoria.nombre}</h3>
-                <div class="contenedorBotonesSub">
-                    <button class="edit modSub subcategory-btn" onclick="editSubcategory(${categoria.id}, ${subcategoria.id}, '${subcategoria.nombre}')">
-                        <i class="bi bi-pencil-square"></i> Subcategoría
-                    </button>
-                    <button class="delete delSub subcategory-btn" onclick="deleteSubcategory(${categoria.id}, ${subcategoria.id})">
-                        <i class="bi bi-trash"></i> Subcategoría
-                    </button>
-                    <button class="add addProduct subcategory-btn" onclick="addProduct(${subcategoria.id})">
-                        <i class="bi bi-plus-circle"></i> Producto
-                    </button>
-                </div>
-            `;
-
-            const productsRowDiv = document.createElement('div');
-            productsRowDiv.className = 'products-row';
-
-            subcategoria.productos.forEach(producto => {
-                const productContainerDiv = document.createElement('div');
-                productContainerDiv.classList.add('product-container');
-
-                const productoDiv = document.createElement('div');
-                productoDiv.classList.add('product-index');
-                productoDiv.id = `producto-${producto.id}`;
-
-                // Agregar la imagen del producto (si existe)
-                const productoImg = document.createElement('img');
-                productoImg.src = producto.fotos[0]?.url || '';  // Mostrar la primera foto si existe
-                productoImg.alt = producto.nombre;
-
-                // Información del producto
-                const productoInfoDiv = document.createElement('div');
-                productoInfoDiv.classList.add('product-info');
-                productoInfoDiv.innerHTML = `
-                    <strong>${producto.nombre}</strong> <br> 
-                    <p>${producto.descripcion}</p> 
-                    <div class="divPrecio">$${producto.precio}</div>
-                `;
-
-                // Medidas del producto
-                const medidasDiv = document.createElement('div');
-                medidasDiv.classList.add('medidas-info');
-                producto.medidas.forEach(medida => {
-                    const medidaSpan = document.createElement('span');
-                    medidaSpan.classList.add('medida-item');
-                    medidaSpan.textContent = medida.nombre;
-                    medidasDiv.appendChild(medidaSpan);
-                });
-
-                // Botones de acciones del producto
-                const productoButtonsDiv = document.createElement('div');
-                productoButtonsDiv.classList.add('product-buttons');
-                productoButtonsDiv.innerHTML = `
-                    <div class="cont-btnProd">
-                        <button class="edit modProducto" onclick="editProduct(${producto.id}, '${producto.nombre}', ${producto.precio}, '${producto.descripcion}', '${producto.fotos[0]?.url || ''}')"><i class="bi bi-pencil-square"></i> Editar Producto</button>
-                        <button class="delete delProducto" onclick="deleteProduct(${producto.id})"><i class="bi bi-trash"></i> Eliminar Producto</button>
-                    </div>
-                `;
-
-                productoDiv.appendChild(productoImg);
-                productoDiv.appendChild(productoInfoDiv);
-                productoDiv.appendChild(medidasDiv);
-                productContainerDiv.appendChild(productoDiv);
-                productContainerDiv.appendChild(productoButtonsDiv);
-                productsRowDiv.appendChild(productContainerDiv);
-            });
-
-            subcategoriaDiv.appendChild(productsRowDiv);
-            categoriaDiv.appendChild(subcategoriaDiv);
-        });
-
-        productosDiv.appendChild(categoriaDiv);
-    });
-}*/
-
 function displayProductos(data) {
     if (!Array.isArray(data)) {
         console.error('Los datos de los productos no son un array:', data);
@@ -749,61 +638,103 @@ function createProductElement(subcategoryId, name, price, description, imageFile
 
 
 
-async function editProduct(productId, currentProductName, currentProductPrice, currentProductDescription, currentProductPhoto) {
-    // Usar SweetAlert2 para pedir los nuevos datos del producto
+async function editProduct(productId, currentName, currentPrice, currentDescription, currentMeasures = []) {
+    const medidas = await fetchMedidas();
+
+    if (!Array.isArray(medidas) || medidas.length === 0) {
+        console.error('No se pudieron obtener las medidas.');
+        Swal.fire('Error', 'No se pudieron obtener las medidas para editar el producto.', 'error');
+        return;
+    }
+
     const { value: formValues } = await Swal.fire({
         title: 'Editar Producto',
         html: `
-            <input id="swal-input1" class="swal2-input" placeholder="Nombre" value="${currentProductName || ''}">
-            <input id="swal-input2" class="swal2-input" type="number" placeholder="Precio" value="${currentProductPrice || ''}">
-            <input id="swal-input3" class="swal2-input" placeholder="Descripción" value="${currentProductDescription || ''}">
-            <input id="swal-input4" class="swal2-file" type="file" accept="image/*">
+            <input id="edit-product-name" class="swal2-input" placeholder="Nombre del producto" value="${currentName}">
+            <input id="edit-product-price" type="number" class="swal2-input" placeholder="Precio del producto" value="${currentPrice}">
+            <input id="edit-product-description" class="swal2-input" placeholder="Descripción del producto" value="${currentDescription}">
+            <input id="edit-product-image" type="file" class="swal2-file" multiple>
+            <select id="edit-product-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
+                ${medidas.map(medida => `<option value="${medida.id}" ${currentMeasures.includes(medida.id) ? 'selected' : ''}>${medida.nombre}</option>`).join('')}
+            </select>
         `,
         focusConfirm: false,
         preConfirm: () => {
-            return {
-                nombre: document.getElementById('swal-input1').value,
-                precio: document.getElementById('swal-input2').value,
-                descripcion: document.getElementById('swal-input3').value,
-                foto: document.getElementById('swal-input4').files[0]
-            };
-        },
-        showCancelButton: true
+            const name = document.getElementById('edit-product-name').value;
+            const price = document.getElementById('edit-product-price').value;
+            const description = document.getElementById('edit-product-description').value;
+            const imageFiles = document.getElementById('edit-product-image').files;
+            const selectedMeasures = Array.from(document.getElementById('edit-product-measures').selectedOptions).map(option => Number(option.value));
+
+            if (!name || !price || !description || selectedMeasures.length === 0) {
+                Swal.showValidationMessage('Todos los campos son obligatorios');
+                return false;
+            }
+
+            return { name, price, description, imageFiles, selectedMeasures };
+        }
     });
 
     if (formValues) {
-        try {
-            const formData = new FormData();
-            formData.append('data', JSON.stringify({
-                nombre: formValues.nombre,
-                precio: formValues.precio,
-                descripcion: formValues.descripcion
-            }));
-            if (formValues.foto) {
-                formData.append('file', formValues.foto);
-            }
+        const { name, price, description, imageFiles, selectedMeasures } = formValues;
 
+        // Crear un formulario para enviar los datos
+        const formData = new FormData();
+        formData.append('data', JSON.stringify({
+            nombre: name,
+            precio: price,
+            descripcion: description,
+            nuevasMedidas: selectedMeasures
+        }));
+
+        // Añadir imágenes si se subieron nuevas
+        for (let i = 0; i < imageFiles.length; i++) {
+            formData.append('files', imageFiles[i]);
+        }
+
+        try {
             const response = await fetchWithAuth(`https://cardelli-backend.vercel.app/api/cardelli/productos/${productId}`, {
                 method: 'PUT',
                 body: formData
             });
 
-            if (response.ok) {
+            const { data, ok } = response;
+            console.log('Response from API:', response); // Imprime la respuesta completa
+
+            if (ok) {
+                console.log('Producto actualizado con éxito en el servidor:', data);
                 Swal.fire('Éxito', 'Producto editado con éxito.', 'success');
-                const cartaData = await fetchCarta();
-                if (Array.isArray(cartaData)) {
-                    displayCarta(cartaData);
-                } else {
-                    console.error('Los datos de la carta no son un array:', cartaData);
-                }
+                // Actualiza el elemento del producto en la UI
+                updateProductElement(productId, name, price, description, selectedMeasures, imageFiles[0]);
             } else {
-                const errorData = await response.json();
-                Swal.fire('Error', errorData.error || 'Hubo un error al editar el producto.', 'error');
+                console.error('Error en la respuesta:', data);
+                Swal.fire('Error', data.error || 'Hubo un error al editar el producto', 'error');
             }
         } catch (error) {
             console.error('Error al editar el producto:', error);
-            Swal.fire('Error', 'Hubo un error al editar el producto.', 'error');
+            Swal.fire('Error', 'Hubo un error al editar el producto', 'error');
         }
+    }
+}
+
+function updateProductElement(productId, name, price, description, measureNames, imageFile) {
+    const productDiv = document.getElementById(`producto-${productId}`);
+
+    if (productDiv) {
+        const productImg = productDiv.querySelector('img');
+        if (imageFile) {
+            productImg.src = URL.createObjectURL(imageFile);
+        }
+
+        const productInfoDiv = productDiv.querySelector('.product-info');
+        productInfoDiv.innerHTML = `
+            <strong>${name}</strong> <br>
+            <p>${description}</p>
+            <div class="divPrecio"> $${price} </div>
+            <div class="medidasProducto"><strong>Medidas:</strong> ${measureNames.join(', ')}</div>
+        `;
+    } else {
+        console.error(`No se encontró el elemento con id product-${productId}`);
     }
 }
 
