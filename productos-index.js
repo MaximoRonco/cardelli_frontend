@@ -57,33 +57,11 @@ function displayProductos(data) {
                 productoDiv.classList.add('product-index');
                 productoDiv.id = `producto-${producto.id}`;
 
-                // Crear el carrusel de imágenes
-                const carouselDiv = document.createElement('div');
-                carouselDiv.classList.add('carousel');
-
-                const carouselImagesDiv = document.createElement('div');
-                carouselImagesDiv.classList.add('carousel-images');
-                producto.fotos.forEach(foto => {
-                    const img = document.createElement('img');
-                    img.src = foto.url;
-                    img.alt = producto.nombre;
-                    img.classList.add('carousel-image');
-                    carouselImagesDiv.appendChild(img);
-                });
-
-                const prevButton = document.createElement('button');
-                prevButton.classList.add('carousel-control', 'prev');
-                prevButton.innerHTML = '&lt;';
-                prevButton.onclick = () => moveCarousel(-1, carouselImagesDiv);
-
-                const nextButton = document.createElement('button');
-                nextButton.classList.add('carousel-control', 'next');
-                nextButton.innerHTML = '&gt;';
-                nextButton.onclick = () => moveCarousel(1, carouselImagesDiv);
-
-                carouselDiv.appendChild(prevButton);
-                carouselDiv.appendChild(carouselImagesDiv);
-                carouselDiv.appendChild(nextButton);
+                // Mostrar solo la primera imagen del producto
+                const img = document.createElement('img');
+                img.src = producto.fotos[0]?.url || 'ruta-de-imagen-por-defecto.jpg'; // Si no hay imagen, muestra una por defecto
+                img.alt = producto.nombre;
+                img.classList.add('product-image');
 
                 // Información del producto
                 const productoInfoDiv = document.createElement('div');
@@ -101,13 +79,11 @@ function displayProductos(data) {
                     openModal(producto);
                 };
 
-                // Botones de acciones del producto
+                // Botones de acciones del producto (se puede dejar vacío por ahora)
                 const productoButtonsDiv = document.createElement('div');
                 productoButtonsDiv.classList.add('product-buttons');
-                productoButtonsDiv.innerHTML = `
-                `;
 
-                productoDiv.appendChild(carouselDiv);
+                productoDiv.appendChild(img); // Añadir la imagen
                 productoDiv.appendChild(productoInfoDiv);
                 productoDiv.appendChild(verMasBtn);  // Añadir el botón "Ver más"
                 productContainerDiv.appendChild(productoDiv);
@@ -123,21 +99,31 @@ function displayProductos(data) {
     });
 }
 
+
 // Función para abrir el modal con la información del producto
 function openModal(producto) {
     const modal = document.getElementById('productModal');
     const modalContent = document.getElementById('modal-product-info');
 
+    // Inicializar la primera imagen como la imagen principal
+    let mainImageUrl = producto.fotos[0]?.url || 'ruta-de-imagen-por-defecto.jpg';
+
     // Llenar el modal con la información del producto
     modalContent.innerHTML = `
-        <div>
-            <h2>${producto.nombre}</h2>            
-            <div class="carousel-images">
-                    ${producto.fotos.map(foto => `<img src="${foto.url}" alt="${producto.nombre}" class="modal-image" />`).join('')}
+        <div class="imagenes_neumaticos">
+            
+            <div class="main-image-container">
+                <img src="${mainImageUrl}" alt="${producto.nombre}" id="mainModalImage" class="modal-main-image" />
+            </div>
+            <div class="thumbnail-images-container">
+                ${producto.fotos.map((foto, index) => `
+                    <img src="${foto.url}" alt="${producto.nombre}" class="modal-thumbnail-image" onclick="changeMainImage('${foto.url}')" />
+                `).join('')}
             </div>
         </div>
-        <div>
-            <p class="divPrecio "><strong></strong> $${producto.precio}</p>
+        <div class="descripcion_neumaticos">
+            <h2>${producto.nombre}</h2>
+            <p class="divPrecioGrande"><strong></strong> $${producto.precio}</p>
             <select id="medidasSelectModal">
                 ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
             </select>
@@ -147,6 +133,12 @@ function openModal(producto) {
 
     // Mostrar el modal
     modal.style.display = 'flex';
+}
+
+// Función para cambiar la imagen principal en el modal
+function changeMainImage(newImageUrl) {
+    const mainImage = document.getElementById('mainModalImage');
+    mainImage.src = newImageUrl;
 }
 
 // Función para cerrar el modal

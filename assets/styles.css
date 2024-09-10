@@ -795,7 +795,7 @@ footer p{
     gap: 20px;
 }
 
-#iniciar-Sesion button{
+#iniciar-Sesion button, .ver-mas-btn{
     height: 3rem;
     font-size: 15px;
     font-weight:bold;
@@ -813,7 +813,7 @@ footer p{
     font-size: 20px;
 }
 
-#iniciar-Sesion button:hover{
+#iniciar-Sesion button:hover, .ver-mas-btn:hover{
     transform: scale(1.02);
     transition: all 200ms;
     background-color: #474747;
@@ -1204,6 +1204,16 @@ footer p{
     margin-top: 8px; /* Espaciado superior */
 }
 
+.divPrecioGrande {
+    font-size: 50px; /* Tamaño de fuente del precio */
+    font-weight: bold; /* Precio en negrita */
+    color: var(--primario); /* Color rojo del precio */
+    margin-top: 8px; /* Espaciado superior */
+    text-align: center;
+
+}
+
+
 .add-to-cart-btn:hover {
     background-color: #d32f2f; /* Color más oscuro en hover */
 }
@@ -1252,7 +1262,7 @@ footer p{
     right: 0;
 }
 
-.medidas-info {
+.medidas-info, #medidasSelectModal {
     width: 100%;
     padding: 5px;
     border: 1px solid #ccc;
@@ -1381,4 +1391,46 @@ footer p{
     font-weight: 700;
     margin-bottom: 4rem;
     margin-top: 4rem;
+}
+
+.main-image-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-main-image {
+    width: 300px;
+    height: auto;
+}
+
+.thumbnail-images-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.modal-thumbnail-image {
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.modal-thumbnail-image:hover {
+    opacity: 1;
+}
+
+
+
+@media (min-width: 768px) {
+   #modal-product-info{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+}
+
+.imagenes_neumaticos{
+    margin-bottom: 5rem;
+    margin: auto 0;
 }
