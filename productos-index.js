@@ -128,6 +128,7 @@ function openModal(producto) {
                 ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
             </select>
             <p><strong></strong> ${producto.descripcion}</p>
+            <button class="add-to-cart-btn" onclick="addToCart(${producto.id})">Agregar al carrito</button>
         </div>
     `;
 

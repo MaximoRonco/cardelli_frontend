@@ -228,6 +228,12 @@ header .navegacion-enlace:hover{
     color: white;
 }
 
+.shop-cart-icono i{
+    color: white;
+    font-size: 18px;
+    margin-top: 12px;
+}
+
 .iconos-header i{
     margin-left: 35px;
 }
@@ -1434,3 +1440,125 @@ footer p{
     margin-bottom: 5rem;
     margin: auto 0;
 }
+
+
+/* Carrito */
+
+#pantallaCarrito{
+    background-color: white;
+    width: 40%;
+    height: 98vh;
+    position: fixed;
+    right: 0%;
+    bottom: 0%;
+    top: 102px;
+    overflow: scroll;
+    color: black;
+    z-index: 5000;
+}
+
+.display-none{
+    display: none !important;
+}
+
+
+#pantallaCarrito img{
+    width: 100px;
+    height: 100px;
+}
+
+#pantallaCarrito ul{
+    list-style: none;
+}
+
+#pantallaCarrito ul li{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    border-top: 1px solid var(--color-secundario);
+    padding-top: 20px;
+}
+
+#pantallaCarrito ul li h1{
+    font-size: 25px !important;
+    padding-right: 10px;
+    color: black;
+}
+
+
+#pantallaCarrito ul li button{
+    background-color: var(--rojo);
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    font-size: 15px;
+    margin-left: 130px;
+    margin-right: 15px;
+}
+
+#pantallaCarrito ul li img{
+    min-width: 100px;
+    margin-right: 15px;
+}
+
+#pantallaCarrito button{
+    background-color: var(--rojo);
+    border: none;
+    margin: 20px;
+}
+
+#pantallaCarrito h3{
+    color: black;
+}
+
+#pantallaCarrito h1{
+    display: block;
+}
+
+#pantallaFondoCarr{
+    background-color: #3333338a;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+#divTotal{
+    display: flex;
+    justify-self: flex-end;
+    justify-content:space-around;
+    font-size: 25px;
+}
+
+#divTotal p{
+    margin-left: 15px;
+    max-height: 30px;
+}
+
+#pantallaCarrito div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.producto-carrito{
+    display: flex;
+    flex-direction: column;
+}
+
+#compraFinal{
+    width: 100px;
+    height: 40px;
+    font-size: 15px;
+}
+
+#totalCarrito{
+    font-size: 30px;
+    max-height: none !important;
+    margin-bottom: 4px !important;
+}
+

@@ -43,12 +43,12 @@
                     <a href="sesion.html" class="iniciar-sesion-icono">
                         <i class="fas fa-user"></i>
                     </a>
-                    <a href="./#" class="shop-cart-icono">
+                    <div class="shop-cart-icono">
                         <i class="fa-solid fa-cart-shopping"></i>
                         <div id="cart-container" style="display: none;">
                             <span id="cart-count">0</span>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,7 +122,25 @@
                 </div>
             </div>
         </div>
+        <!-- Carrito de Compras -->
+        <div id="pantallaFondoCarr" class="display-none">
+            
+        </div>
+        <div class="screen display-none" id="pantallaCarrito">
+            <button id="salirCarrito" class="btn btn-primary ">X</button>
+            <h1 id="noProductos">NO TIENES PRODUCTOS AGREGADOS</h1>
+            <ul id="listadoCarrito">
 
+            </ul>
+            <hr>
+            <div id="divTotal">
+                <h3>Total: </h3>
+                <p id="totalCarrito"></p>
+            </div>
+            <div>
+                <button id="compraFinal" class="btn btn-danger ">COMPRAR</button>
+            </div>
+        </div>    
             <!--SERVICIOS -->
         <div id="contenedor-servicios">
             <div id="title-servicios">

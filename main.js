@@ -307,11 +307,18 @@ function addToCart(productId) {
 /* INICIO CARRITO */
 
 let cartCount = 0;
+let total = 0;
+let totalCarrito= document.getElementById("totalCarrito")
+let noProductos = document.getElementById("noProductos")
+let listadoCarrito = document.getElementById("listadoCarrito")
 
-function addToCart() {
+function addToCart(producto) {
     cartCount++;
     const cartCountElement = document.getElementById('cart-count');
+    let noProductos = document.getElementById("noProductos")
     const cartContainer = document.getElementById('cart-container');
+
+    cartContainer.classList.remove("display-none")
 
     cartCountElement.textContent = cartCount;
 
@@ -321,6 +328,72 @@ function addToCart() {
     } else {
         cartContainer.style.display = 'none'; // Oculta el contenedor
     }
+    console.log(producto);
+    fetch(`http://cardelli-backend.vercel.app/api/cardelli/productos/${producto}`)
+    .then((response) => response.json())
+    .then((producto) =>{
+        noProductos.classList.add("display-none");
+        console.log(producto);
+        console.log(producto.nombre);
+        console.log(producto.precio);
+        console.log(producto.Medidas);
+        console.log(producto.Fotos_Productos[0]);
+        let imagen = producto.Fotos_Productos[0].url;
+        noProductos.classList.add("display-none")
+        let modelo = `
+                    <li>
+                        <img src="${imagen}"/>
+                        <div class="producto-carrito">
+                            <h1>${producto.nombre}</h1>
+                            <p>${producto.Medidas[0].nombre}</p>
+                        </div>
+                        <p>$${producto.precio}</p>
+                        <button class="eliminar btn btn-danger" onclick="eliminarP(${producto.precio})">X</button>
+                    </li>
+        `
+
+        listadoCarrito.innerHTML += modelo;
+        // Funcion para calcular el total
+
+        const calcTotal = (precio) =>{
+            total += parseInt(precio);
+            let redTotal = parseFloat(total.toFixed(2))
+            console.log("el total es: ", total)
+            totalCarrito.innerHTML = `$${redTotal}`
+        }
+        calcTotal(producto.precio);
+
+        // FUNCION PARA BORRAR ELEMENTOS DE UN CARRITO
+
+        let eliminarCarrito = document.querySelectorAll(".eliminar")
+        eliminarCarrito.forEach((boton) => {
+        boton.addEventListener("click", () =>{
+            cartCount--;
+            cartCountElement.innerHTML = cartCount;
+            const lista = boton.parentNode.parentNode
+            //console.log("este lista: ",lista)
+            const elemento = boton.parentNode
+            //console.log("Este elemento: ",elemento)
+            lista.removeChild(elemento)
+            if (cartCount == 0) {
+                noProductos.classList.remove("display-none")
+                cartContainer.classList.add("display-none")
+            }
+        })
+    })
+
+    }).catch((error) =>{
+        console.error("Error al obtener el producto: ", error)
+    })
+}
+
+// FUNCION PARA RESTAR EL PRECIO AL TOTAL
+const eliminarP = (precio) => {
+    total -= parseInt(precio);
+    let redTotal = parseFloat(total.toFixed(2));
+    totalCarrito.innerHTML = `$${redTotal}`; 
+    console.log("El total ahora es de: " + total);
+    
 }
 
 // Agregar un evento a los botones "Añadir al carrito"
@@ -328,7 +401,31 @@ document.querySelectorAll('.add-to-cart-btn').forEach(button => {
     button.addEventListener('click', addToCart);
 });
 
+// Funcion para salir del carrito
+let salirCarrito = document.getElementById("salirCarrito")
+salirCarrito.addEventListener("click", () =>{
+    pantallaCarrito.classList.add("display-none")
+    pantallaFondoCarr.classList.add("display-none")
+})
 
+let pantallaFondoCarr = document.getElementById("pantallaFondoCarr")
+
+pantallaFondoCarr.addEventListener("click",()=>{
+    pantallaCarrito.classList.add("display-none")
+    pantallaFondoCarr.classList.add("display-none")
+})
+
+
+// Funcion para abrir el carrito
+let carrito = document.querySelector('.shop-cart-icono');
+console.log(carrito);
+
+
+
+carrito.addEventListener("click",()=>{
+    pantallaCarrito.classList.remove("display-none")
+    pantallaFondoCarr.classList.remove("display-none")
+})
 
 window.onload = () => {
     fetchCarrusel();
