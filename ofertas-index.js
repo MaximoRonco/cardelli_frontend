@@ -60,48 +60,51 @@ function displayPromociones(data) {
                 ofertaDiv.classList.add('oferta-index');
                 ofertaDiv.id = `oferta-${oferta.id}`;
 
-                // Mostrar las fotos de la oferta
-                const fotosDiv = document.createElement('div');
-                fotosDiv.classList.add('oferta-fotos');
-                oferta.fotos.forEach(foto => {
-                    const img = document.createElement('img');
-                    img.src = foto.url;
-                    img.alt = `Foto de ${oferta.nombre}`;
-                    fotosDiv.appendChild(img);
-                });
+                // Mostrar solo la primera imagen del producto
+                const img = document.createElement('img');
+                img.src = oferta.fotos[0]?.url || 'ruta-de-imagen-por-defecto.jpg'; // Si no hay imagen, muestra una por defecto
+                img.alt = oferta.nombre;
+                img.classList.add('oferta-image');
 
                 // Información de la oferta
                 const ofertaInfoDiv = document.createElement('div');
                 ofertaInfoDiv.classList.add('oferta-info');
                 ofertaInfoDiv.innerHTML = `
                     <strong>${oferta.nombre}</strong> <br> 
-                    <p>${oferta.descripcion}</p> 
-                    <div class="divPrecio">Precio normal: $${oferta.precioSinOferta}</div>
-                    <div class="divPrecio">Precio con oferta: $${oferta.precioConOferta}</div>
-                `;
+                    <div class="divPrecio">$${oferta.precioSinOferta}</div>
+                    <div class="divPrecio">$${oferta.precioConOferta}</div>
 
-                // Mostrar las medidas de la oferta
-                const medidasDiv = document.createElement('div');
-                medidasDiv.classList.add('oferta-medidas');
-                const medidasTexto = oferta.medidas.map(medida => medida.nombre).join(', ');
-                medidasDiv.innerHTML = `<strong>Medidas:</strong> ${medidasTexto}`;
+                `;
+                // Botón para agregar al carrito
+                const addToCartButton = document.createElement('button');
+                addToCartButton.textContent = 'Agregar al carrito';
+                addToCartButton.classList.add('add-to-cart-btn');
+                addToCartButton.onclick = () => addToCart(oferta.id);
+
+                // Botón "Ver más" para abrir el modal
+                const verMasBtn = document.createElement('button');
+                verMasBtn.classList.add('ver-mas-btn');
+                verMasBtn.innerHTML = 'Ver más';
+                verMasBtn.onclick = function() {
+                    openModal(oferta);
+                }
+
 
                 // Botones de acciones de la oferta
                 const ofertaButtonsDiv = document.createElement('div');
                 ofertaButtonsDiv.classList.add('oferta-buttons');
-                ofertaButtonsDiv.innerHTML = `
-                `;
 
                 // Añadir las partes de la oferta al contenedor
-                ofertaDiv.appendChild(fotosDiv);
+                ofertaDiv.appendChild(img);
                 ofertaDiv.appendChild(ofertaInfoDiv);
-                ofertaDiv.appendChild(medidasDiv);
+                ofertaDiv.appendChild(verMasBtn);
+                ofertaDiv.appendChild(addToCartButton);
 
                 ofertaContainerDiv.appendChild(ofertaDiv);
                 ofertaContainerDiv.appendChild(ofertaButtonsDiv);
                 ofertasRowDiv.appendChild(ofertaContainerDiv);
             });
-
+        
             subcategoriaDiv.appendChild(ofertasRowDiv);
             categoriaDiv.appendChild(subcategoriaDiv);
         });
@@ -109,6 +112,76 @@ function displayPromociones(data) {
         promocionesDiv.appendChild(categoriaDiv);
     });
 }
+
+function openModal(oferta) {
+    
+    const modal = document.getElementById('ofertaModal');
+    const modalContent = document.getElementById('modal-oferta-info');
+    
+
+    // Inicializar la primera imagen como la imagen principal
+    let mainImageUrl = oferta.fotos[0]?.url || 'ruta-de-imagen-por-defecto.jpg';
+
+    // Llenar el modal con la información del oferta
+    modalContent.innerHTML = `
+        <div class="imagenes_neumaticos">
+            
+            <div class="main-image-container">
+                <img src="${mainImageUrl}" alt="${oferta.nombre}" id="mainModalImage" class="modal-main-image" />
+            </div>
+            <div class="thumbnail-images-container">
+                ${oferta.fotos.map((foto, index) => `
+                    <img src="${foto.url}" alt="${oferta.nombre}" class="modal-thumbnail-image" onclick="changeMainImage('${foto.url}')" />
+                `).join('')}
+            </div>
+        </div>
+        <div class="descripcion_neumaticos">
+            <h2>${oferta.nombre}</h2>
+            <p class="divPrecioGrande"><strong></strong> $${oferta.precioSinOferta}</p>
+            <p class="divPrecioGrande"><strong></strong> $${oferta.precioConOferta}</p>
+            <select id="medidasSelectModal">
+                ${oferta.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
+            </select>
+            <p><strong></strong> ${oferta.descripcion}</p>
+        </div>
+    `;
+
+    // Mostrar el modal
+    modal.style.display = 'flex';
+}
+
+// Función para cambiar la imagen principal en el modal
+function changeMainImage(newImageUrl) {
+    const mainImage = document.getElementById('mainModalImage');
+    mainImage.src = newImageUrl;
+}
+
+// Función para cerrar el modal
+function closeModal() {
+    const modal = document.getElementById('ofertaModal');
+    modal.style.display = 'none';
+}
+
+function moveCarousel(direction, carouselImagesDiv) {
+    // Obtener las imágenes del carrusel
+    const images = carouselImagesDiv.querySelectorAll('img');
+    const totalImages = images.length;
+    const currentIndex = Array.from(images).findIndex(img => img.style.display === 'block');
+    
+    if (currentIndex === -1) {
+        images[0].style.display = 'block'; // Mostrar la primera imagen si ninguna está visible
+    } else {
+        // Ocultar la imagen actual
+        images[currentIndex].style.display = 'none';
+
+        // Calcular el nuevo índice basado en la dirección
+        let newIndex = (currentIndex + direction + totalImages) % totalImages;
+        
+        // Mostrar la nueva imagen
+        images[newIndex].style.display = 'block';
+    }
+}
+
 
 window.onload = () => {
     fetchPromociones();

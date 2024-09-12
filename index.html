@@ -117,9 +117,16 @@
         <div id="nuestros-neumaticos">
             <div id="title-nuestros-neumaticos">
                 <h2>NUESTROS NEUMÁTICOS</h2>
-                <div id="todos-neumaticos">
-
+                <div id="productos">
+                    <!-- El contenido se generará dinámicamente aquí -->
                 </div>
+                <div id="productModal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeModal()">&times;</span>
+                        <div id="modal-product-info">
+                            <!-- Aquí se llenará la información del producto -->
+                        </div>
+                    </div>
             </div>
         </div>
         <!-- Carrito de Compras -->
@@ -238,6 +245,8 @@
 
     <script src="main.js"></script>
     <script src="footer.js"></script>
+    <script src="carrito.js"></script>
+    <script src="productos-index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

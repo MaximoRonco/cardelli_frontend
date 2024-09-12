@@ -12,17 +12,17 @@
     <header class="header">
         <div class="contenedor">
             <div class="barra">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="menu-toggle icon icon-tabler icon-tabler-menu-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M4 6l16 0" />
-                        <path d="M4 12l16 0" />
-                        <path d="M4 18l16 0" />
-                    </svg>
-                    
-                    <a href="index.html" class="logo">
-                        <img src="assets/statics/logo_transparente.png" alt="">
-                    </a> 
-
+                <svg xmlns="http://www.w3.org/2000/svg" class="menu-toggle icon icon-tabler icon-tabler-menu-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M4 6l16 0" />
+                    <path d="M4 12l16 0" />
+                    <path d="M4 18l16 0" />
+                </svg>
+    
+                <a href="index.html" class="logo">
+                    <img src="assets/statics/logo_transparente.png" alt="">
+                </a> 
+    
                 <div class="overlay"></div>
                 <nav class="navegacion">
                     <a href="index.html" class="logo noneFlex logo-menu">
@@ -43,18 +43,47 @@
                     <a href="sesion.html" class="iniciar-sesion-icono">
                         <i class="fas fa-user"></i>
                     </a>
-                    <a href="./#" class="shop-cart-icono">
+                    <div class="shop-cart-icono">
                         <i class="fa-solid fa-cart-shopping"></i>
-                    </a>
+                        <div id="cart-container" style="display: none;">
+                            <span id="cart-count">0</span>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </header>
 
+            <!-- Carrito de Compras -->
+            <div id="pantallaFondoCarr" class="display-none">
+            
+            </div>
+            <div class="screen display-none" id="pantallaCarrito">
+                <button id="salirCarrito" class="btn btn-primary ">X</button>
+                <h1 id="noProductos">NO TIENES PRODUCTOS AGREGADOS</h1>
+                <ul id="listadoCarrito">
+    
+                </ul>
+                <hr>
+                <div id="divTotal">
+                    <h3>Total: </h3>
+                    <p id="totalCarrito"></p>
+                </div>
+                <div>
+                    <button id="compraFinal" class="btn btn-danger ">COMPRAR</button>
+                </div>
+            </div>    
 
     <div id="promociones">
         <!-- El contenido se generará dinámicamente aquí -->
+    </div>
+    <div id="ofertaModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modal-oferta-info">
+                <!-- Aquí se llenará la información del producto -->
+            </div>
+        </div>
     </div>
     <footer class="footer">
         <div class="contenedor-footer">
@@ -100,6 +129,7 @@
     <script src="main.js"></script>
     <script src="footer.js"></script>
     <script src="ofertas-index.js"></script>
+    <script src="carrito.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -70,6 +70,11 @@ function displayProductos(data) {
                     <strong>${producto.nombre}</strong> <br> 
                     <div class="divPrecio">$${producto.precio}</div>
                 `;
+                // Botón para agregar al carrito
+                const addToCartButton = document.createElement('button');
+                addToCartButton.textContent = 'Agregar al carrito';
+                addToCartButton.classList.add('add-to-cart-btn');
+                addToCartButton.onclick = () => addToCart(producto.id);
 
                 // Botón "Ver más" para abrir el modal
                 const verMasBtn = document.createElement('button');
@@ -77,6 +82,7 @@ function displayProductos(data) {
                 verMasBtn.innerHTML = 'Ver más';
                 verMasBtn.onclick = function() {
                     openModal(producto);
+
                 };
 
                 // Botones de acciones del producto (se puede dejar vacío por ahora)
@@ -86,6 +92,7 @@ function displayProductos(data) {
                 productoDiv.appendChild(img); // Añadir la imagen
                 productoDiv.appendChild(productoInfoDiv);
                 productoDiv.appendChild(verMasBtn);  // Añadir el botón "Ver más"
+                productoDiv.appendChild(addToCartButton);  // Añadir el botón "Ver más"
                 productContainerDiv.appendChild(productoDiv);
                 productContainerDiv.appendChild(productoButtonsDiv);
                 productsRowDiv.appendChild(productContainerDiv);
@@ -102,8 +109,10 @@ function displayProductos(data) {
 
 // Función para abrir el modal con la información del producto
 function openModal(producto) {
+    
     const modal = document.getElementById('productModal');
     const modalContent = document.getElementById('modal-product-info');
+    
 
     // Inicializar la primera imagen como la imagen principal
     let mainImageUrl = producto.fotos[0]?.url || 'ruta-de-imagen-por-defecto.jpg';
@@ -128,7 +137,6 @@ function openModal(producto) {
                 ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
             </select>
             <p><strong></strong> ${producto.descripcion}</p>
-            <button class="add-to-cart-btn" onclick="addToCart(${producto.id})">Agregar al carrito</button>
         </div>
     `;
 

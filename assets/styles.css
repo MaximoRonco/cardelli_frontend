@@ -801,7 +801,7 @@ footer p{
     gap: 20px;
 }
 
-#iniciar-Sesion button, .ver-mas-btn{
+#iniciar-Sesion button{
     height: 3rem;
     font-size: 15px;
     font-weight:bold;
@@ -819,7 +819,7 @@ footer p{
     font-size: 20px;
 }
 
-#iniciar-Sesion button:hover, .ver-mas-btn:hover{
+#iniciar-Sesion button:hover{
     transform: scale(1.02);
     transition: all 200ms;
     background-color: #474747;
@@ -1086,7 +1086,7 @@ footer p{
 
 /* Admin productos */
 
-#productos, #btnAddCategory{
+#productos, #btnAddCategory, #promociones{
     width: 100%;
     display: flex;
     justify-content: center;
@@ -1098,7 +1098,7 @@ footer p{
     margin: 20px;
 }
 
-#productos button{
+#productos button, #promociones button{
     margin: 20px;
 }
 
@@ -1323,7 +1323,7 @@ footer p{
     margin-top: 40px;
 }
 
-#todos-neumaticos .product-index button{
+#todos-neumaticos .product-index button, .add-to-cart-btn, .ver-mas-btn{
     border: none;
     width: 200px;
     border-radius: 5px;
@@ -1332,7 +1332,7 @@ footer p{
     font-weight: 600;
 }
 
-#todos-neumaticos .product-index button:hover{
+#todos-neumaticos .product-index button:hover, .add-to-cart-btn:hover, .ver-mas-btn:hover{
     background-color: #1e1e68;
     transform: scale(1.02);
     transition: all 100ms;
@@ -1446,8 +1446,6 @@ footer p{
 
 #pantallaCarrito{
     background-color: white;
-    width: 40%;
-    height: 98vh;
     position: fixed;
     right: 0%;
     bottom: 0%;
@@ -1561,4 +1559,5 @@ footer p{
     max-height: none !important;
     margin-bottom: 4px !important;
 }
+
 
