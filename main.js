@@ -205,9 +205,8 @@ function displayCarrusel(data) {
 /* Fin Carrusel */
 
 
-
+window.addEventListener('load', fetchCarruselAdmin);
 
 window.onload = () => {
-    fetchCarrusel();
     fetchProductos();
 };
