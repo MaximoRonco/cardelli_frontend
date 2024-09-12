@@ -2,7 +2,7 @@
 /*Llamada a neumaticos */
 async function fetchProductos() {
     try {
-        const response = await fetch('http://cardelli-backend.vercel.app/api/cardelli/productos/');
+        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/productos/');
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }

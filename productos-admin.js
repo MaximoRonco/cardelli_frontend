@@ -4,7 +4,7 @@
 /*GET DE PRODUCTOS*/
 async function fetchProductos() {
     try {
-        const response = await fetch('http://cardelli-backend.vercel.app/api/cardelli/productos/');
+        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/productos/');
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
@@ -481,7 +481,7 @@ async function createProduct(subcategoryId) {
 
 async function fetchMedidas() {
     try {
-        const response = await fetch('http://cardelli-backend.vercel.app/api/cardelli/medidas');
+        const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/medidas');
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }

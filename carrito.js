@@ -39,7 +39,7 @@ function addToCart(productoId) {
         cartContainer.style.display = 'none'; // Oculta el contenedor
     }
 
-    fetch(`http://cardelli-backend.vercel.app/api/cardelli/productos/${productoId}`)
+    fetch(`https://cardelli-backend.vercel.app/api/cardelli/productos/${productoId}`)
         .then((response) => response.json())
         .then((producto) => {
             const newProduct = {
