@@ -164,3 +164,31 @@ carrito.addEventListener("click", () => {
     pantallaCarrito.classList.remove("display-none");
     pantallaFondoCarr.classList.remove("display-none");
 });
+
+// Función para manejar la compra y enviar mensaje a WhatsApp
+function comprar() {
+    if (cartItems.length === 0) {
+        alert("Tu carrito está vacío");
+        return;
+    }
+
+    let mensaje = "NUEVO PEDIDO:\n";
+    let total = 0;
+
+    cartItems.forEach(item => {
+        mensaje += `Producto: ${item.nombre}\nMedida: ${item.medida}\nPrecio: $${item.precio}\n\n`;
+        total += parseFloat(item.precio);
+    });
+
+    mensaje += `Total: $${total.toFixed(2)}`; // Añadir el total al mensaje
+
+    const numeroTelefono = "3572538967"; // Número de WhatsApp al que enviar el mensaje
+    const mensajeEncoded = encodeURIComponent(mensaje);
+    const urlWhatsApp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${mensajeEncoded}`;
+
+    // Abrir WhatsApp con el mensaje
+    window.open(urlWhatsApp, "_blank");
+}
+
+// Agregar el evento al botón "Comprar"
+document.getElementById("compraFinal").addEventListener("click", comprar);
