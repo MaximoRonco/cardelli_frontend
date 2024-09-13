@@ -24,14 +24,14 @@ let cartItems = loadCartFromLocalStorage();
 cartCount = cartItems.length;
 document.getElementById('cart-count').textContent = cartCount;
 
-function addToCartFromModal(productoId, precioUnitario) {
+function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
     const cantidad = parseInt(document.getElementById('quantity-modal').value);
 
     // Obtener la medida seleccionada en el modal
     const medidaSelect = document.getElementById('medidasSelectModal');
     const medidaSeleccionada = medidaSelect.options[medidaSelect.selectedIndex].text;
 
-    console.log("Medida seleccionada:", medidaSeleccionada); // Para verificar la medida
+    console.log("Medida seleccionada:", medidaSeleccionada);
 
     cartCount += cantidad;
     const cartCountElement = document.getElementById('cart-count');
@@ -46,19 +46,29 @@ function addToCartFromModal(productoId, precioUnitario) {
         cartContainer.style.display = 'none';
     }
 
-    fetch(`https://cardelli-backend.vercel.app/api/cardelli/productos/${productoId}`)
+    // Usar la URL correspondiente dependiendo si es un producto o una oferta
+    const apiUrl = esOferta
+        ? `https://cardelli-backend.vercel.app/api/cardelli/ofertas/${productoId}`
+        : `https://cardelli-backend.vercel.app/api/cardelli/productos/${productoId}`;
+
+    fetch(apiUrl)
         .then((response) => response.json())
         .then((producto) => {
+            // Acceder a las imágenes de forma dinámica dependiendo si es producto u oferta
+            const imagenUrl = esOferta 
+                ? (producto.fotos?.[0]?.url || 'ruta-de-imagen-por-defecto.jpg') // Para ofertas
+                : (producto.Fotos_Productos?.[0]?.url || 'ruta-de-imagen-por-defecto.jpg'); // Para productos
+
             const newProduct = {
                 id: producto.id,
                 nombre: producto.nombre,
                 precio: precioUnitario * cantidad,
                 medida: medidaSeleccionada,
-                imagen: producto.Fotos_Productos[0].url,
+                imagen: imagenUrl,
                 cantidad: cantidad
             };
 
-            console.log("Producto agregado al carrito:", newProduct);
+            console.log("Producto/agregado al carrito:", newProduct);
 
             cartItems.push(newProduct);
             saveCartToLocalStorage(cartItems);
@@ -67,14 +77,14 @@ function addToCartFromModal(productoId, precioUnitario) {
 
             const modelo = `
                 <li>
-                    <img src="${newProduct.imagen}"/>
+                    <img src="${newProduct.imagen}" alt="${newProduct.nombre}"/>
                     <div class="producto-carrito">
                         <h1>${newProduct.nombre}</h1>
                         <p class="centrar">${newProduct.medida}</p>
                     </div>
                     <div>
                         <p class="cantidad">Cantidad: ${newProduct.cantidad}</p>
-                        <p class="precioCarrito">$${newProduct.precio}</p>
+                        <p class="precioCarrito">$${newProduct.precio.toFixed(2)}</p>
                     </div> 
                     <button class="eliminar btn btn-danger" onclick="eliminarP(${newProduct.precio}, '${newProduct.id}', '${newProduct.medida}')">X</button>
                 </li>
@@ -84,7 +94,7 @@ function addToCartFromModal(productoId, precioUnitario) {
             calcTotal(newProduct.precio);
         })
         .catch((error) => {
-            console.error("Error al obtener el producto: ", error);
+            console.error("Error al obtener el producto/oferta: ", error);
         });
 
     closeModal();

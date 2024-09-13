@@ -92,7 +92,7 @@ function displayPromociones(data) {
                 ofertaInfoDiv.innerHTML = `
                     <strong>${oferta.nombre}</strong> <br> 
                     <p>${oferta.descripcion}</p> 
-                    <div class="divPrecio">Precio normal: $${oferta.precioSinOferta}</div>
+                    <div class="divPrecio precioAnterior">Precio normal: $${oferta.precioSinOferta}</div>
                     <div class="divPrecio">Precio con oferta: $${oferta.precioConOferta}</div>
                 `;
 
@@ -486,9 +486,9 @@ async function addOferta(subcategoryId) {
     const { value: formValues } = await Swal.fire({
         title: 'Agregar Oferta',
         html: `
-            <input id="oferta-name" class="swal2-input" placeholder="Nombre de la oferta">
+            <input id="oferta-name" class="swal2-input" placeholder="Nombre de la oferta">            
+            <input id="oferta-price-oferta" type="number" class="swal2-input" placeholder="Precio anterior">
             <input id="oferta-price" type="number" class="swal2-input" placeholder="Precio de la oferta">
-            <input id="oferta-price-oferta" type="number" class="swal2-input" placeholder="Precio de la oferta oferta">
             <input id="oferta-description" class="swal2-input" placeholder="Descripción de la oferta">
             <input id="oferta-image" type="file" class="swal2-file" multiple>
             <select id="oferta-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
@@ -586,8 +586,8 @@ function createOfertaElement(subcategoryId, ofertaId, name, price, price_oferta,
         ofertaInfoDiv.innerHTML = `
             <strong>${name}</strong> <br>
             <p>${description}</p>
+            <div class="divPrecio precioAnterior"> $${price_oferta} </div>
             <div class="divPrecio"> $${price} </div>
-            <div class="divPrecio"> $${price_oferta} </div>
             <div class="medidasProducto"><strong>Medidas:</strong> ${measureNames.join(', ')}</div>
         `;
 
@@ -599,7 +599,7 @@ function createOfertaElement(subcategoryId, ofertaId, name, price, price_oferta,
         ofertaButtonsDiv.classList.add('oferta-buttons');
         ofertaButtonsDiv.innerHTML = `
     <div class="cont-btnOferta">
-        <button class="edit modOferta" onclick="editOferta(${ofertaId}, '${name}', ${price}, '${description}')"><i class="bi bi-pencil-square"></i> Editar Oferta</button>
+        <button class="edit modOferta" onclick="editOferta(${ofertaId}, '${name}', ${price_oferta},'${description}')"><i class="bi bi-pencil-square"></i> Editar Oferta</button>
         <button class="delete delOferta" onclick="deleteOferta(${ofertaId})"><i class="bi bi-trash"></i> Eliminar Oferta</button>
     </div>
         `;
@@ -660,9 +660,10 @@ async function editOferta(ofertaId, currentName, currentPrice, currentDescriptio
     const { value: formValues } = await Swal.fire({
         title: 'Editar Oferta',
         html: `
-            <input id="edit-oferta-name" class="swal2-input" placeholder="Nombre de la oferta" value="${currentName}">
-            <input id="edit-oferta-price" type="number" class="swal2-input" placeholder="Precio de la oferta" value="${currentPrice}">
-            <input id="edit-oferta-price-oferta" type="number" class="swal2-input" placeholder="Precio de la oferta oferta" value="${currentPriceOferta}">
+            <input id="edit-oferta-name" class="swal2-input" placeholder="Nombre de la oferta" value="${currentName}">            
+            <input id="edit-oferta-price-oferta" type="number" class="swal2-input" placeholder="Precio anterior" value="${currentPrice}">
+            <input id="edit-oferta-price" type="number" class="swal2-input" placeholder="Precio de oferta" value="${currentPriceOferta}">
+
             <input id="edit-oferta-description" class="swal2-input" placeholder="Descripción de la oferta" value="${currentDescription}">
             <input id="edit-oferta-image" type="file" class="swal2-file" multiple>
             <select id="edit-oferta-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
@@ -744,8 +745,9 @@ function updateOfertaElement(ofertaId, name, price, price_oferta, description, m
         ofertaInfoDiv.innerHTML = `
             <strong>${name}</strong> <br>
             <p>${description}</p>
+            <div class="divPrecio precioAnterior"> $${price_oferta} </div>
             <div class="divPrecio"> $${price} </div>
-            <div class="divPrecio"> $${price_oferta} </div>
+            
             <div class="medidasProducto"><strong>Medidas:</strong> ${measureNames.join(', ')}</div>
         `;
     } else {

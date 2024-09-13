@@ -71,15 +71,10 @@ function displayPromociones(data) {
                 ofertaInfoDiv.classList.add('oferta-info');
                 ofertaInfoDiv.innerHTML = `
                     <strong>${oferta.nombre}</strong> <br> 
-                    <div class="divPrecio">$${oferta.precioSinOferta}</div>
+                    <div class="divPrecio precioAnterior">$${oferta.precioSinOferta}</div>
                     <div class="divPrecio">$${oferta.precioConOferta}</div>
 
                 `;
-                // Botón para agregar al carrito
-                const addToCartButton = document.createElement('button');
-                addToCartButton.textContent = 'Agregar al carrito';
-                addToCartButton.classList.add('add-to-cart-btn');
-                addToCartButton.onclick = () => addToCart(oferta.id);
 
                 // Botón "Ver más" para abrir el modal
                 const verMasBtn = document.createElement('button');
@@ -98,7 +93,6 @@ function displayPromociones(data) {
                 ofertaDiv.appendChild(img);
                 ofertaDiv.appendChild(ofertaInfoDiv);
                 ofertaDiv.appendChild(verMasBtn);
-                ofertaDiv.appendChild(addToCartButton);
 
                 ofertaContainerDiv.appendChild(ofertaDiv);
                 ofertaContainerDiv.appendChild(ofertaButtonsDiv);
@@ -137,7 +131,7 @@ function openModal(oferta) {
         </div>
         <div class="descripcion_neumaticos">
             <h2>${oferta.nombre}</h2>
-            <p class="divPrecioGrande"><strong></strong> $${oferta.precioSinOferta}</p>
+            <p class="divPrecioGrande precioAnterior"><strong></strong> $${oferta.precioSinOferta}</p>
             <p class="divPrecioGrande"><strong></strong> $${oferta.precioConOferta}</p>
             <select id="medidasSelectModal">
                 ${oferta.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
@@ -152,7 +146,8 @@ function openModal(oferta) {
             </div>
 
             <!-- Botón para agregar al carrito con la cantidad seleccionada -->
-            <button class="add-to-cart-btn" onclick="addToCartFromModal(${oferta.id}, ${oferta.precio})">Agregar al carrito</button>
+            <button class="add-to-cart-btn" onclick="addToCartFromModal(${oferta.id}, ${oferta.precioConOferta}, true)">Agregar al carrito</button>
+
         </div>
     `;
 

@@ -1621,3 +1621,7 @@ footer p{
 }
 
 
+.precioAnterior{
+    color: black;
+    text-decoration: line-through;
+}
