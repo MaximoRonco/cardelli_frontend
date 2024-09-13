@@ -61,9 +61,9 @@ function addToCart(productoId) {
                     <img src="${newProduct.imagen}"/>
                     <div class="producto-carrito">
                         <h1>${newProduct.nombre}</h1>
-                        <p>${newProduct.medida}</p>
+                        <p class="centrar">${newProduct.medida}</p>
                     </div>
-                    <p>$${newProduct.precio}</p>
+                    <p class="precioCarrito">$${newProduct.precio}</p>
                     <button class="eliminar btn btn-danger" onclick="eliminarP(${newProduct.precio}, '${newProduct.id}')">X</button>
                 </li>
             `;
@@ -125,12 +125,13 @@ window.addEventListener('load', () => {
     cartItems.forEach(item => {
         const modelo = `
             <li>
+                
                 <img src="${item.imagen}"/>
                 <div class="producto-carrito">
                     <h1>${item.nombre}</h1>
-                    <p>${item.medida}</p>
+                    <p class="centrar">${item.medida}</p>
                 </div>
-                <p>$${item.precio}</p>
+                <p class="precioCarrito">$${item.precio}</p>
                 <button class="eliminar btn btn-danger" onclick="eliminarP(${item.precio}, '${item.id}')">X</button>
             </li>
         `;
@@ -164,6 +165,33 @@ carrito.addEventListener("click", () => {
     pantallaCarrito.classList.remove("display-none");
     pantallaFondoCarr.classList.remove("display-none");
 });
+
+
+// Función para vaciar el carrito
+function vaciarCarrito() {
+    // Vaciar el array de productos
+    cartItems = [];
+    // Actualizar el localStorage
+    saveCartToLocalStorage(cartItems);
+    // Vaciar el contenido del listado en la interfaz
+    listadoCarrito.innerHTML = '';
+    // Resetear el total
+    total = 0;
+    totalCarrito.innerHTML = `$${total.toFixed(2)}`;
+    // Reiniciar el contador del carrito
+    cartCount = 0;
+    document.getElementById('cart-count').textContent = cartCount;
+    // Mostrar el mensaje de "NO TIENES PRODUCTOS AGREGADOS"
+    noProductos.classList.remove("display-none");
+    // Ocultar el contenedor del carrito
+    const cartContainer = document.getElementById('cart-container');
+    cartContainer.style.display = 'none'; 
+}
+
+// Evento para vaciar el carrito
+document.getElementById('vaciarCarrito').addEventListener('click', vaciarCarrito);
+
+
 
 // Función para manejar la compra y enviar mensaje a WhatsApp
 function comprar() {
