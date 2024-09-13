@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/styles.css">
+    <title>Cardelli Neumaticos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/styles.css">
     <script src="https://kit.fontawesome.com/80682cd68b.js" crossorigin="anonymous"></script>
-    <title>Contacto</title>
 </head>
 <body>
     <header class="header">
         <div class="contenedor">
             <div class="barra">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="menu-toggle icon icon-tabler icon-tabler-menu-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M4 6l16 0" />
-                        <path d="M4 12l16 0" />
-                        <path d="M4 18l16 0" />
-                    </svg>
-                    
-                    <a href="index.html" class="logo">
-                        <img src="assets/statics/logo_transparente.png" alt="">
-                    </a> 
-
+                <svg xmlns="http://www.w3.org/2000/svg" class="menu-toggle icon icon-tabler icon-tabler-menu-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M4 6l16 0" />
+                    <path d="M4 12l16 0" />
+                    <path d="M4 18l16 0" />
+                </svg>
+    
+                <a href="index.html" class="logo">
+                    <img src="assets/statics/logo_transparente.png" alt="">
+                </a> 
+    
                 <div class="overlay"></div>
                 <nav class="navegacion">
                     <a href="index.html" class="logo noneFlex logo-menu">
@@ -42,14 +43,39 @@
                     <a href="sesion.html" class="iniciar-sesion-icono">
                         <i class="fas fa-user"></i>
                     </a>
-                    <a href="./#" class="shop-cart-icono">
+                    <div class="shop-cart-icono">
                         <i class="fa-solid fa-cart-shopping"></i>
-                    </a>
+                        <div id="cart-container" style="display: none;">
+                            <span id="cart-count">0</span>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </header>
+
+    <!-- Carrito de Compras -->
+    <div id="pantallaFondoCarr" class="display-none">
+            
+    </div>
+    <div class="screen display-none" id="pantallaCarrito">
+        <button id="salirCarrito" class="btn btn-primary ">X</button>
+        <div>
+            <button id="vaciarCarrito" class="btn btn-warning">VACIAR CARRITO</button>
+        </div>
+        <h1 id="noProductos">NO TIENES PRODUCTOS AGREGADOS</h1>
+        <ul id="listadoCarrito">
+
+        </ul>
+        <hr>
+        <div id="divTotal">
+            <h3>Total: </h3>
+            <p id="totalCarrito"></p>
+        </div>
+        <div>
+            <button id="compraFinal" class="btn btn-danger ">COMPRAR</button>
+        </div>
+    </div>
 
 
      <!--CONTACTO-->
@@ -139,5 +165,6 @@
 
     <script src="main.js"></script>
     <script src="footer.js"></script>
+    <script src="carrito.js"></script>
 </body>
 </html>

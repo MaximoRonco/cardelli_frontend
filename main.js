@@ -207,6 +207,3 @@ function displayCarrusel(data) {
 
 window.addEventListener('load', fetchCarrusel);
 
-window.onload = () => {
-    fetchProductos();
-};
