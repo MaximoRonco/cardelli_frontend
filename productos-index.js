@@ -70,12 +70,6 @@ function displayProductos(data) {
                     <strong>${producto.nombre}</strong> <br> 
                     <div class="divPrecio">$${producto.precio}</div>
                 `;
-                // Botón para agregar al carrito
-                const addToCartButton = document.createElement('button');
-                addToCartButton.textContent = 'Agregar al carrito';
-                addToCartButton.classList.add('add-to-cart-btn');
-                addToCartButton.onclick = () => addToCart(producto.id);
-
                 // Botón "Ver más" para abrir el modal
                 const verMasBtn = document.createElement('button');
                 verMasBtn.classList.add('ver-mas-btn');
@@ -92,7 +86,6 @@ function displayProductos(data) {
                 productoDiv.appendChild(img); // Añadir la imagen
                 productoDiv.appendChild(productoInfoDiv);
                 productoDiv.appendChild(verMasBtn);  // Añadir el botón "Ver más"
-                productoDiv.appendChild(addToCartButton);  // Añadir el botón "Ver más"
                 productContainerDiv.appendChild(productoDiv);
                 productContainerDiv.appendChild(productoButtonsDiv);
                 productsRowDiv.appendChild(productContainerDiv);
@@ -106,13 +99,10 @@ function displayProductos(data) {
     });
 }
 
-
 // Función para abrir el modal con la información del producto
 function openModal(producto) {
-    
     const modal = document.getElementById('productModal');
     const modalContent = document.getElementById('modal-product-info');
-    
 
     // Inicializar la primera imagen como la imagen principal
     let mainImageUrl = producto.fotos[0]?.url || 'ruta-de-imagen-por-defecto.jpg';
@@ -120,7 +110,6 @@ function openModal(producto) {
     // Llenar el modal con la información del producto
     modalContent.innerHTML = `
         <div class="imagenes_neumaticos">
-            
             <div class="main-image-container">
                 <img src="${mainImageUrl}" alt="${producto.nombre}" id="mainModalImage" class="modal-main-image" />
             </div>
@@ -137,12 +126,36 @@ function openModal(producto) {
                 ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
             </select>
             <p><strong></strong> ${producto.descripcion}</p>
-            <button class="add-to-cart-btn" onclick="(function() { addToCart(${producto.id}); })()">Agregar al carrito</button>
+
+            <!-- Aquí añadimos el contador de cantidad -->
+            <div class="quantity-container">
+                <button class="quantity-btn" onclick="decreaseQuantityModal()">-</button>
+                <input type="number" value="1" min="1" id="quantity-modal" class="quantity-input" readonly>
+                <button class="quantity-btn" onclick="increaseQuantityModal()">+</button>
+            </div>
+
+            <!-- Botón para agregar al carrito con la cantidad seleccionada -->
+            <button class="add-to-cart-btn" onclick="addToCartFromModal(${producto.id}, ${producto.precio})">Agregar al carrito</button>
         </div>
     `;
 
     // Mostrar el modal
     modal.style.display = 'flex';
+}
+
+// Funciones para incrementar y decrementar la cantidad en el modal
+function increaseQuantityModal() {
+    const input = document.getElementById('quantity-modal');
+    let currentValue = parseInt(input.value);
+    input.value = currentValue + 1;
+}
+
+function decreaseQuantityModal() {
+    const input = document.getElementById('quantity-modal');
+    let currentValue = parseInt(input.value);
+    if (currentValue > 1) {
+        input.value = currentValue - 1;
+    }
 }
 
 // Función para cambiar la imagen principal en el modal

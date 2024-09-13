@@ -1597,3 +1597,27 @@ footer p{
     font-weight: bold;
     font-size: 25px;
 }
+
+.quantity-container{
+    margin-bottom: 20px;
+}
+
+
+.quantity-container button{
+    border: none;
+    width: 30px;
+    border-radius: 5px;
+    background-color: var(--primario);
+    color: white;
+    font-weight: 600;
+}
+
+.descripcion_neumaticos{
+    text-align: center;
+}
+
+#quantity-modal{
+    width: 30px;
+}
+
+

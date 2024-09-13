@@ -23,20 +23,26 @@ let cartItems = loadCartFromLocalStorage();
 cartCount = cartItems.length;
 document.getElementById('cart-count').textContent = cartCount;
 
-// Función para agregar productos al carrito
-function addToCart(productoId) {
-    cartCount++;
+// Función para agregar al carrito desde el modal
+function addToCartFromModal(productoId, precioUnitario) {
+    const cantidad = parseInt(document.getElementById('quantity-modal').value);
+
+    // Obtener la medida seleccionada en el modal
+    const medidaSelect = document.getElementById('medidasSelectModal');
+    const medidaSeleccionada = medidaSelect.options[medidaSelect.selectedIndex].text;  // El nombre de la medida seleccionada
+
+    // Restante código similar al addToCart, pero considerando la cantidad y multiplicando el precio
+    cartCount += cantidad;
     const cartCountElement = document.getElementById('cart-count');
     const cartContainer = document.getElementById('cart-container');
 
     cartContainer.classList.remove("display-none");
     cartCountElement.textContent = cartCount;
 
-    // Mostrar u ocultar el contenedor basado en el contador
     if (cartCount > 0) {
-        cartContainer.style.display = 'flex'; // Muestra el contenedor
+        cartContainer.style.display = 'flex';
     } else {
-        cartContainer.style.display = 'none'; // Oculta el contenedor
+        cartContainer.style.display = 'none';
     }
 
     fetch(`https://cardelli-backend.vercel.app/api/cardelli/productos/${productoId}`)
@@ -45,14 +51,14 @@ function addToCart(productoId) {
             const newProduct = {
                 id: producto.id,
                 nombre: producto.nombre,
-                precio: producto.precio,
-                medida: producto.Medidas[0].nombre,
+                precio: precioUnitario * cantidad,  // Multiplicar por la cantidad
+                medida: medidaSeleccionada,  // Guardar la medida seleccionada
                 imagen: producto.Fotos_Productos[0].url,
+                cantidad: cantidad  // Guardar la cantidad
             };
 
-            // Agregar el producto al array de cartItems
             cartItems.push(newProduct);
-            saveCartToLocalStorage(cartItems); // Guardar el carrito actualizado en localStorage
+            saveCartToLocalStorage(cartItems);
 
             noProductos.classList.add("display-none");
 
@@ -61,25 +67,29 @@ function addToCart(productoId) {
                     <img src="${newProduct.imagen}"/>
                     <div class="producto-carrito">
                         <h1>${newProduct.nombre}</h1>
-                        <p class="centrar">${newProduct.medida}</p>
+                        <p class="centrar">${newProduct.medida}</p> <!-- Mostrar la medida seleccionada -->
+                        <p class="cantidad">Cantidad: ${newProduct.cantidad}</p> <!-- Mostrar la cantidad -->
                     </div>
-                    <p class="precioCarrito">$${newProduct.precio}</p>
+                    <div>
+                        <p class="cantidad">Cantidad: ${newProduct.cantidad}</p> <!-- Mostrar la cantidad -->
+                        <p class="precioCarrito">$${newProduct.precio}</p> <!-- Mostrar el precio multiplicado -->
+                    </div> 
                     <button class="eliminar btn btn-danger" onclick="eliminarP(${newProduct.precio}, '${newProduct.id}')">X</button>
                 </li>
             `;
 
             listadoCarrito.innerHTML += modelo;
-
-            // Calcular el total
             calcTotal(newProduct.precio);
-
-            // Añadir la funcionalidad de eliminación de productos
-            attachRemoveEvent();
         })
         .catch((error) => {
             console.error("Error al obtener el producto: ", error);
         });
+
+    // Cerrar el modal
+    closeModal();
 }
+
+
 
 // Función para calcular el total del carrito
 const calcTotal = (precio) => {
@@ -122,6 +132,7 @@ function attachRemoveEvent() {
 // Cargar los productos del carrito al cargar la página
 window.addEventListener('load', () => {
     const cartItems = loadCartFromLocalStorage();
+    
     cartItems.forEach(item => {
         const modelo = `
             <li>
@@ -131,7 +142,10 @@ window.addEventListener('load', () => {
                     <h1>${item.nombre}</h1>
                     <p class="centrar">${item.medida}</p>
                 </div>
-                <p class="precioCarrito">$${item.precio}</p>
+                <div>
+                    <p class="cantidad">Cantidad: ${item.cantidad}</p> <!-- Mostrar la cantidad -->
+                    <p class="precioCarrito">$${item.precio}</p>
+                </div>
                 <button class="eliminar btn btn-danger" onclick="eliminarP(${item.precio}, '${item.id}')">X</button>
             </li>
         `;
@@ -139,6 +153,17 @@ window.addEventListener('load', () => {
         calcTotal(item.precio);
     });
     attachRemoveEvent(); // Volver a añadir los eventos de eliminación
+        // Si hay productos en el carrito, ocultar el mensaje de "No tienes productos agregados"
+        if (cartItems.length > 0) {
+            noProductos.classList.add("display-none");  // Ocultar el mensaje de "No tienes productos agregados"
+            cartContainer.classList.remove("display-none");  // Mostrar el contenedor del carrito
+            divTotal.style.display = 'block';  // Mostrar el total
+        } else {
+            noProductos.classList.remove("display-none");  // Mostrar el mensaje de "No tienes productos agregados"
+            cartContainer.classList.add("display-none");   // Ocultar el contenedor del carrito
+            divTotal.style.display = 'none';  // Ocultar el total
+        }
+    
 });
 
 // Agregar un evento a los botones "Añadir al carrito"
