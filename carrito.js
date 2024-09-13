@@ -68,7 +68,6 @@ function addToCartFromModal(productoId, precioUnitario) {
                     <div class="producto-carrito">
                         <h1>${newProduct.nombre}</h1>
                         <p class="centrar">${newProduct.medida}</p> <!-- Mostrar la medida seleccionada -->
-                        <p class="cantidad">Cantidad: ${newProduct.cantidad}</p> <!-- Mostrar la cantidad -->
                     </div>
                     <div>
                         <p class="cantidad">Cantidad: ${newProduct.cantidad}</p> <!-- Mostrar la cantidad -->

@@ -143,12 +143,38 @@ function openModal(oferta) {
                 ${oferta.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
             </select>
             <p><strong></strong> ${oferta.descripcion}</p>
+
+                        <!-- Aquí añadimos el contador de cantidad -->
+            <div class="quantity-container">
+                <button class="quantity-btn" onclick="decreaseQuantityModal()">-</button>
+                <input type="number" value="1" min="1" id="quantity-modal" class="quantity-input" readonly>
+                <button class="quantity-btn" onclick="increaseQuantityModal()">+</button>
+            </div>
+
+            <!-- Botón para agregar al carrito con la cantidad seleccionada -->
+            <button class="add-to-cart-btn" onclick="addToCartFromModal(${oferta.id}, ${oferta.precio})">Agregar al carrito</button>
         </div>
     `;
 
     // Mostrar el modal
     modal.style.display = 'flex';
 }
+
+// Funciones para incrementar y decrementar la cantidad en el modal
+function increaseQuantityModal() {
+    const input = document.getElementById('quantity-modal');
+    let currentValue = parseInt(input.value);
+    input.value = currentValue + 1;
+}
+
+function decreaseQuantityModal() {
+    const input = document.getElementById('quantity-modal');
+    let currentValue = parseInt(input.value);
+    if (currentValue > 1) {
+        input.value = currentValue - 1;
+    }
+}
+
 
 // Función para cambiar la imagen principal en el modal
 function changeMainImage(newImageUrl) {

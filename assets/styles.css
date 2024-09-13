@@ -1447,7 +1447,7 @@ footer p{
 
 
 @media (min-width: 768px) {
-   #modal-product-info{
+   #modal-product-info, #modal-oferta-info{
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
