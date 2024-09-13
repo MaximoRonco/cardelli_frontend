@@ -287,7 +287,7 @@ function comprar() {
     let total = 0;
 
     cartItems.forEach(item => {
-        mensaje += `Producto: ${item.nombre}\nMedida: ${item.medida}\nPrecio: $${item.precio}\n\n`;
+        mensaje += `Producto: ${item.nombre}\nMedida: ${item.medida}\nCantidad: ${item.cantidad} \nPrecio: $${item.precio}\n\n`;
         total += parseFloat(item.precio);
     });
 
