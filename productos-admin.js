@@ -652,7 +652,7 @@ async function editProduct(productId, currentName, currentPrice, currentDescript
         html: `
             <input id="edit-product-name" class="swal2-input" placeholder="Nombre del producto" value="${currentName}">
             <input id="edit-product-price" type="number" class="swal2-input" placeholder="Precio del producto" value="${currentPrice}">
-            <input id="edit-product-description" class="swal2-input" placeholder="Descripción del producto" value="${currentDescription}">
+            <textarea id="edit-product-description" class="swal2-input" placeholder="Descripción del producto" value="${currentDescription}"></textarea>
             <input id="edit-product-image" type="file" class="swal2-file" multiple>
             <select id="edit-product-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
                 ${medidas.map(medida => `<option value="${medida.id}" ${currentMeasures.includes(medida.id) ? 'selected' : ''}>${medida.nombre}</option>`).join('')}

@@ -1656,7 +1656,7 @@ footer p{
     height: 50px;
     font-size: 20px;
     width: 90%;
-    margin: 0 auto;
+    margin: 10px auto;
 }
 
 .swal2-input-label{
@@ -1665,16 +1665,17 @@ footer p{
 
 
 
-#product-name, #product-price, #product-description, #product-image, #product-measures, #oferta-name, #oferta-price, #oferta-price-oferta, #oferta-description, #oferta-image, #oferta-measures{
+#product-name, #product-price, #product-description, #product-image, #product-measures, #oferta-name, #oferta-price, #oferta-price-oferta, #oferta-description, #oferta-image, #oferta-measures,#edit-oferta-measures, #edit-product-measures {
     margin: 10px auto;
 }
 
-#product-description{
+#product-description, #oferta-description, #edit-oferta-description, #edit-product-description{
     height: 200px;
 }
 
-#product-measures, #oferta-measures{
+#product-measures, #oferta-measures, #edit-oferta-measures, #edit-product-measures{
     height: 200px;
     font-size: 20px;
 }
+
 

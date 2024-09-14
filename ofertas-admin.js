@@ -489,7 +489,7 @@ async function addOferta(subcategoryId) {
             <input id="oferta-name" class="swal2-input" placeholder="Nombre">            
             <input id="oferta-price-oferta" type="number" class="swal2-input" placeholder="Precio anterior">
             <input id="oferta-price" type="number" class="swal2-input" placeholder="Precio de oferta">
-            <input id="oferta-description" class="swal2-input" placeholder="Descripción">
+            <textarea id="oferta-description" class="swal2-input" placeholder="Descripción"></textarea>
             <input id="oferta-image" type="file" class="swal2-file" multiple>
             <select id="oferta-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
                 ${medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
@@ -660,11 +660,11 @@ async function editOferta(ofertaId, currentName, currentPrice, currentDescriptio
     const { value: formValues } = await Swal.fire({
         title: 'Editar Oferta',
         html: `
-            <input id="edit-oferta-name" class="swal2-input" placeholder="Nombre de la oferta" value="${currentName}">            
+            <input id="edit-oferta-name" class="swal2-input" placeholder="Nombre" value="${currentName}">            
             <input id="edit-oferta-price-oferta" type="number" class="swal2-input" placeholder="Precio anterior" value="${currentPrice}">
             <input id="edit-oferta-price" type="number" class="swal2-input" placeholder="Precio de oferta" value="${currentPriceOferta}">
 
-            <input id="edit-oferta-description" class="swal2-input" placeholder="Descripción de la oferta" value="${currentDescription}">
+            <textarea id="edit-oferta-description" class="swal2-input" placeholder="Descripción" value="${currentDescription}"></textarea>
             <input id="edit-oferta-image" type="file" class="swal2-file" multiple>
             <select id="edit-oferta-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
                 ${medidas.map(medida => `<option value="${medida.id}" ${currentMeasures.includes(medida.id) ? 'selected' : ''}>${medida.nombre}</option>`).join('')}
