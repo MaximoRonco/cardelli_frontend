@@ -1659,7 +1659,7 @@ footer p{
 }
 
 
-#product-name, #product-price, #product-description, #product-image, #product-measures{
+#product-name, #product-price, #product-description, #product-image, #product-measures, #oferta-name, #oferta-price, #oferta-price-oferta, #oferta-description, #oferta-image, #oferta-measures{
     margin: 10px auto;
 }
 

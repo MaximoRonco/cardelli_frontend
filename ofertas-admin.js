@@ -486,10 +486,10 @@ async function addOferta(subcategoryId) {
     const { value: formValues } = await Swal.fire({
         title: 'Agregar Oferta',
         html: `
-            <input id="oferta-name" class="swal2-input" placeholder="Nombre de la oferta">            
+            <input id="oferta-name" class="swal2-input" placeholder="Nombre">            
             <input id="oferta-price-oferta" type="number" class="swal2-input" placeholder="Precio anterior">
-            <input id="oferta-price" type="number" class="swal2-input" placeholder="Precio de la oferta">
-            <input id="oferta-description" class="swal2-input" placeholder="Descripción de la oferta">
+            <input id="oferta-price" type="number" class="swal2-input" placeholder="Precio de oferta">
+            <input id="oferta-description" class="swal2-input" placeholder="Descripción">
             <input id="oferta-image" type="file" class="swal2-file" multiple>
             <select id="oferta-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
                 ${medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
