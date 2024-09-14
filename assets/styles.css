@@ -495,7 +495,7 @@ header .navegacion-enlace:hover{
 
 
 .contacto img {
-    max-width: 90%;
+    
     height: auto;
     display: block; /* Opcional: elimina el espacio debajo de la imagen */
     object-fit: cover; /* Ajusta la imagen para cubrir el contenedor sin deformarse */
@@ -943,6 +943,10 @@ footer p{
 
 /* servicios */
 
+.contenedor-servicios{
+    background-color: var(--gris);
+}
+
 #title-servicios{
     margin-left: 20px;
     margin-right: 20px;
@@ -956,16 +960,17 @@ footer p{
     border-radius: .5rem;
     margin-bottom: 3rem;
     padding: 1rem;
+    background-color: var(--gris);
     /*-webkit-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
     -moz-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
     box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);*/
 }
 
 .item {
-    padding-top: 40px !important;
+    /*padding-top: 40px !important;
     padding-bottom: 40px !important;
     padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-right: 20px !important; */
     margin: 10px;
     margin-top: 2rem;
     padding-top: 2rem;
@@ -974,6 +979,7 @@ footer p{
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
+    line-height: 20px;
 }
 
 .item:hover {
@@ -990,7 +996,7 @@ footer p{
     margin-bottom: 2rem;
 }
 
-@media (min-width: 918px) {
+@media (min-width: 768px) {
     .servicios {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
