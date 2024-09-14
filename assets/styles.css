@@ -1551,10 +1551,11 @@ footer p{
     position: fixed;
     top: 0px;
     left: 0px;
+    z-index: 999;
 }
 
 #divTotal{
-    display: flex !important;
+    display: flex ;
     justify-self: flex-end;
     justify-content:center;
     font-size: 25px;

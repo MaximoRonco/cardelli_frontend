@@ -33,7 +33,7 @@ function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
 
     console.log("Medida seleccionada:", medidaSeleccionada);
 
-    cartCount += cantidad;
+    cartCount++;
     const cartCountElement = document.getElementById('cart-count');
     const cartContainer = document.getElementById('cart-container');
 
@@ -41,9 +41,9 @@ function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
     cartCountElement.textContent = cartCount;
 
     if (cartCount > 0) {
-        cartContainer.style.display = 'flex';
+        document.getElementById('cart-container').classList.remove('display-none');
     } else {
-        cartContainer.style.display = 'none';
+        document.getElementById('cart-container').classList.add('display-none');
     }
 
     // Usar la URL correspondiente dependiendo si es un producto o una oferta
@@ -92,6 +92,7 @@ function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
 
             listadoCarrito.innerHTML += modelo;
             calcTotal(newProduct.precio);
+            mostrarBotonesYTotalCarrito()
         })
         .catch((error) => {
             console.error("Error al obtener el producto/oferta: ", error);
@@ -127,7 +128,7 @@ const eliminarP = (precio, productId, medida) => {
         console.log("Producto encontrado en el array del carrito:", cartItems[indexToRemove]);
 
         // Restar la cantidad del producto eliminado del contador de carrito
-        cartCount -= cartItems[indexToRemove].cantidad;
+        cartCount --;
         document.getElementById('cart-count').innerHTML = cartCount;
 
         // Eliminar el producto del array `cartItems`
@@ -149,6 +150,7 @@ const eliminarP = (precio, productId, medida) => {
 
         // Verificar si el carrito está vacío para mostrar u ocultar elementos
         if (cartCount === 0) {
+            ocultarBotonesYTotalCarrito()
             noProductos.classList.remove("display-none");
             cartContainer.classList.add("display-none");
         }
@@ -197,6 +199,7 @@ function attachRemoveEvent() {
             if (cartCount == 0) {
                 noProductos.classList.remove("display-none");
                 cartContainer.classList.add("display-none");
+                ocultarBotonesYTotalCarrito();
             }
 
             console.log("Producto eliminado del carrito y localStorage actualizado.");
@@ -209,7 +212,7 @@ function attachRemoveEvent() {
 window.addEventListener('load', () => {
     const cartItems = loadCartFromLocalStorage();
     console.log("Cargando productos del carrito desde localStorage:", cartItems);
-
+    
     cartItems.forEach(item => {
         const modelo = `
             <li>
@@ -230,6 +233,13 @@ window.addEventListener('load', () => {
     });
 
     console.log("Productos cargados en el DOM. Total actual:", total);
+    let carritoLs = JSON.parse(localStorage.getItem("cart")) || [];
+    
+    if (carritoLs.length === 0) {
+        ocultarBotonesYTotalCarrito();
+    } else {
+        mostrarBotonesYTotalCarrito();
+    }
 
     attachRemoveEvent(); // Volver a añadir los eventos de eliminación
 });
@@ -277,8 +287,8 @@ function vaciarCarrito() {
     // Mostrar el mensaje de "NO TIENES PRODUCTOS AGREGADOS"
     noProductos.classList.remove("display-none");
     // Ocultar el contenedor del carrito
-    const cartContainer = document.getElementById('cart-container');
-    cartContainer.style.display = 'none'; 
+    document.getElementById('cart-container').classList.add('display-none');
+    ocultarBotonesYTotalCarrito();
 }
 
 // Evento para vaciar el carrito
@@ -313,3 +323,19 @@ function comprar() {
 
 // Agregar el evento al botón "Comprar"
 document.getElementById("compraFinal").addEventListener("click", comprar);
+
+// Función para mostrar u ocultar los botones "Comprar", "Vaciar carrito" y el total
+function mostrarBotonesYTotalCarrito() {
+    document.getElementById("noProductos").classList.add('display-none');
+    document.getElementById('compraFinal').classList.remove('display-none');
+    document.getElementById('cart-container').classList.remove('display-none');
+    document.getElementById('vaciarCarrito').classList.remove('display-none');
+    document.getElementById('divTotal').classList.remove('display-none');  // Mostrar total
+}
+
+function ocultarBotonesYTotalCarrito() {
+    document.getElementById("noProductos").classList.remove('display-none');
+    document.getElementById('compraFinal').classList.add('display-none');
+    document.getElementById('vaciarCarrito').classList.add('display-none');
+    document.getElementById('divTotal').classList.add('display-none');  // Ocultar total
+}
