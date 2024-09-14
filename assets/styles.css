@@ -1656,7 +1656,13 @@ footer p{
     height: 50px;
     font-size: 20px;
     width: 90%;
+    margin: 0 auto;
 }
+
+.swal2-input-label{
+    text-align: center;
+}
+
 
 
 #product-name, #product-price, #product-description, #product-image, #product-measures, #oferta-name, #oferta-price, #oferta-price-oferta, #oferta-description, #oferta-image, #oferta-measures{
