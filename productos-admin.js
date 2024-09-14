@@ -508,9 +508,9 @@ async function addProduct(subcategoryId) {
     const { value: formValues } = await Swal.fire({
         title: 'Agregar Producto',
         html: `
-            <input id="product-name" class="swal2-input" placeholder="Nombre del producto">
-            <input id="product-price" type="number" class="swal2-input" placeholder="Precio del producto">
-            <input id="product-description" class="swal2-input" placeholder="Descripción del producto">
+            <input id="product-name" class="swal2-input" placeholder="Nombre">
+            <input id="product-price" type="number" class="swal2-input" placeholder="Precio">
+            <textarea id="product-description" class="swal2-input" placeholder="Descripción"></textarea>
             <input id="product-image" type="file" class="swal2-file" multiple>
             <select id="product-measures" class="swal2-select" multiple style="width: 100%; padding: 5px;">
                 ${medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}

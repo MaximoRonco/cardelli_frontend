@@ -756,6 +756,40 @@ function updateOfertaElement(ofertaId, name, price, price_oferta, description, m
 }
 
 
+let currentSlide = 0;
+
+function moveCarousel(direction, carouselImagesDiv) {
+    // Obtener las imágenes del carrusel
+    const images = carouselImagesDiv.querySelectorAll('img');
+    const totalImages = images.length;
+    const currentIndex = Array.from(images).findIndex(img => img.style.display === 'block');
+    
+    if (currentIndex === -1) {
+        images[0].style.display = 'block'; // Mostrar la primera imagen si ninguna está visible
+    } else {
+        // Ocultar la imagen actual
+        images[currentIndex].style.display = 'none';
+
+        // Calcular el nuevo índice basado en la dirección
+        let newIndex = (currentIndex + direction + totalImages) % totalImages;
+        
+        // Mostrar la nueva imagen
+        images[newIndex].style.display = 'block';
+    }
+}
+
+// Asegúrate de que al cargar la página, solo la primera imagen sea visible
+document.querySelectorAll('.carousel-images').forEach(carouselImagesDiv => {
+    const images = carouselImagesDiv.querySelectorAll('img');
+    if (images.length > 0) {
+        images[0].style.display = 'block'; // Mostrar la primera imagen
+        for (let i = 1; i < images.length; i++) {
+            images[i].style.display = 'none'; // Ocultar las demás imágenes
+        }
+    }
+});
+
+
 window.onload = () => {
     fetchPromociones();
 };

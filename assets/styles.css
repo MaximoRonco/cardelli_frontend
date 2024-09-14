@@ -1025,6 +1025,7 @@ footer p{
     margin: 0 auto;
 }
 
+
 @media (min-width: 768px) {
    .marcas{
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -1034,6 +1035,7 @@ footer p{
 }
 
 .nuestras_marcas{
+    margin-top: 100px;
     background-color: var(--gris);
     margin-bottom: 10rem;
     padding-top: 30px;
@@ -1626,3 +1628,47 @@ footer p{
     color: black;
     text-decoration: line-through;
 }
+
+/*Pantalla para los CRUD */
+
+.swal2-popup{
+    width: 90%;
+}
+
+.swal2-input-label{
+    font-size: 20px;
+}
+
+.swal2-confirm{
+    width: 100px;
+    font-size: 15px;
+    background-color: #1b9235;
+}
+
+.swal2-cancel{
+    width: 100px;
+    font-size: 15px;
+    background-color: red;
+    text-transform: uppercase;
+}
+
+.swal2-input{
+    height: 50px;
+    font-size: 20px;
+    width: 90%;
+}
+
+
+#product-name, #product-price, #product-description, #product-image, #product-measures{
+    margin: 10px auto;
+}
+
+#product-description{
+    height: 200px;
+}
+
+#product-measures, #oferta-measures{
+    height: 200px;
+    font-size: 20px;
+}
+
