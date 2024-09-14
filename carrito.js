@@ -55,9 +55,10 @@ function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
         .then((response) => response.json())
         .then((producto) => {
             // Acceder a las imágenes de forma dinámica dependiendo si es producto u oferta
+            console.log("Producto/Oferta recibido:", producto); // Inspeccionar la respuesta
             const imagenUrl = esOferta 
-                ? (producto.fotos?.[0]?.url || 'ruta-de-imagen-por-defecto.jpg') // Para ofertas
-                : (producto.Fotos_Productos?.[0]?.url || 'ruta-de-imagen-por-defecto.jpg'); // Para productos
+            ? (producto.Fotos_Ofertas?.[0]?.url || 'ruta-de-imagen-por-defecto.jpg') // Para ofertas
+            : (producto.Fotos_Productos?.[0]?.url || 'ruta-de-imagen-por-defecto.jpg'); // Para productos
 
             const newProduct = {
                 id: producto.id,
