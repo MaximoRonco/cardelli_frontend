@@ -951,7 +951,7 @@ footer p{
 .servicios {
     text-align: center;
     /*background-color: var(--gris);*/
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     border-radius: .5rem;
     margin-bottom: 3rem;
