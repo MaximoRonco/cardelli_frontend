@@ -498,7 +498,7 @@ header .navegacion-enlace:hover{
     
     height: auto;
     display: block; /* Opcional: elimina el espacio debajo de la imagen */
-    object-fit: cover; /* Ajusta la imagen para cubrir el contenedor sin deformarse */
+    
     margin: 0 auto;
 }
 
