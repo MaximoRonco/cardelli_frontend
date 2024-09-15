@@ -57,7 +57,7 @@ h1, h2, h3 {
 
 /* Estilos base para los títulos en desktop */
 h1 {
-    font-size: 4.8rem !important;
+    font-size: 4.8rem ;
 }
 
 h2 {
@@ -1351,6 +1351,15 @@ footer p{
 }
 
 /* Carrito */
+
+#noProductos{
+    font-size: 18px !important;
+}
+
+#salirCarrito{
+    width: 25px;
+}
+
 .iconos-header {
     position: relative; /* Hacer que el contenedor del icono sea el contenedor relativo */
 }
@@ -1398,14 +1407,21 @@ footer p{
     padding: 20px;
     border-radius: 10px;
     width: 90%;
-
     position: relative;
+}
+
+.modal-content h2{
+    font-size: 30px !important;
+}
+
+.divPrecioGrande{
+    font-size: 20px;
 }
 
 @media (max-width: 769px) {
     .modal-content{
-     margin-top: 50px;
-     margin-bottom: 50px;
+     margin-top: 20px;
+     margin-bottom: 20px;
     }
  }
 
@@ -1478,8 +1494,16 @@ footer p{
     overflow: scroll;
     color: black;
     z-index: 5000;
-    width: 75%;
+    width: 60%;
 }
+
+#pantallaCarrito ul li h1{
+    font-size: 20px ;
+    padding-right: 10px;
+    color: black;
+    font-weight: 600;
+}
+
 
 .display-none{
     display: none !important;
@@ -1507,18 +1531,127 @@ footer p{
     margin: 0 auto;
 }
 
-@media (max-width: 769px) {
-    #pantallaCarrito ul li{
-        display: flex;
-        flex-direction: column;
+.cantidad{
+    margin-top: 5px;
+}
+
+#vaciarCarrito{
+    color: white;
+}
+
+@media (max-width: 890px) {
+    #pantallaCarrito ul li h1{
+        font-size: 18px !important;
+    }
+    .precioCarrito, .cantidad{
+        font-size: 18px !important;
     }
 }
 
-#pantallaCarrito ul li h1{
-    font-size: 25px !important;
-    padding-right: 10px;
-    color: black;
+
+
+
+@media (max-width: 815px) {
+    #pantallaCarrito ul li{
+        display: flex;
+    }
+
+    .producto-carrito h1{
+        font-size: 15px !important;
+        font-weight: 600;
+    }
+    #pantallaCarrito img{
+        width: 80px;
+        height: 80px;
+    }
+
+    .precioCarrito, .cantidad{
+        font-size: 15px !important;
+    }
+    #pantallaCarrito .eliminar{
+        width: 20px;
+        height: 20px;
+        font-size: 9px;
+    }
+    #compraFinal{
+        font-size: 15px;
+    }
+    #divTotal p, #divTotal h3{
+        font-size: 15px !important;
+        color: var(--primario);
+        font-weight: bold;
+    }
 }
+
+@media (max-width: 540px) {
+    #pantallaCarrito ul li h1{
+        font-size: 12px !important;
+    }
+    #pantallaCarrito ul li{
+        display: flex;
+    }
+
+    .producto-carrito h1{
+        font-size: 12px !important;
+        font-weight: 600;
+    }
+    #pantallaCarrito img{
+        width: 50px;
+        height: 50px;
+    }
+
+    .precioCarrito, .cantidad, .centrar{
+        font-size: 12px !important;
+    }
+    #pantallaCarrito .eliminar{
+        width: 20px;
+        height: 20px;
+        font-size: 9px !important;
+    }
+}
+
+@media (max-width: 515px) {
+    #pantallaCarrito ul li{
+        display: flex;
+    }
+
+    .producto-carrito h1{
+        font-size: 10px !important;
+        font-weight: 600;
+    }
+    #pantallaCarrito img{
+        width: 50px;
+        height: 50px;
+    }
+
+    .precioCarrito, .cantidad, .centrar{
+        font-size: 10px !important;
+    }
+    #pantallaCarrito .eliminar{
+        width: 20px;
+        height: 18px;
+        font-size: 9px !important;
+    }
+    .modal-content h2{
+        margin-top: 20px;
+    }
+
+    .modal-content p{
+        text-align: left;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    .modal-main-image {
+        width: 180px;
+        height: auto;
+    }
+    .divPrecioGrande{
+        text-align: center !important;
+        font-size: 20px !important;
+    }
+
+}
+
 
 
 
@@ -1575,6 +1708,16 @@ footer p{
     max-height: 30px;
 }
 
+#divTotal p, #divTotal h3{
+    font-size: 30px ;
+    color: var(--primario);
+    font-weight: bold;
+}
+
+#divTotal h3{
+    color: black;
+    
+}
 
 @media (max-width: 769px) {
     #pantallaCarrito{
@@ -1590,9 +1733,12 @@ footer p{
 }
 
 #compraFinal{
-    width: 100px;
+    width: 100%;
     height: 40px;
     font-size: 15px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    border-radius: none !important;
 }
 
 #totalCarrito{
@@ -1611,6 +1757,23 @@ footer p{
     margin-bottom: 20px;
 }
 
+.quantity-container input{
+    text-align: center !important;
+}
+
+.modal-content{
+    text-align: center;
+}
+
+.modal-content .close-btn{
+    background-color: var(--rojo);
+    height: 30px;
+    width: 30px;
+    font-size: 25px;
+    line-height: 30px;
+    border-radius: 5px;
+    color: white;
+}
 
 .quantity-container button{
     border: none;
