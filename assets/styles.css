@@ -947,7 +947,6 @@ footer p{
     background-color: var(--gris);
 }
 
-
 #title-servicios{
     margin-left: 20px;
     margin-right: 20px;
@@ -965,17 +964,6 @@ footer p{
     /*-webkit-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
     -moz-box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
     box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);*/
-    display: none;
-}
-
-@media (min-width: 768px) {
-   .servicios{
-    display: block;
-   }
-
-   .carrusel_servicios{
-    display: none;
-   }
 }
 
 .item {
@@ -986,18 +974,18 @@ footer p{
     margin: 10px;
     margin-top: 2rem;
     padding-top: 2rem;
-    /*border-radius: .5rem;
-    border: 2px solid var(--primario);*/
+    border-radius: .5rem;
+    border: 2px solid var(--primario);
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
     line-height: 20px;
 }
-/*
+
 .item:hover {
     transition: 500ms all;
     border: 2px solid black;
-} */
+}
 
 .item h3{
     margin-top: 10px;
@@ -1027,7 +1015,10 @@ footer p{
     justify-content: center;
 }
 
-
+.item_icono svg{
+    width: 50%;
+    margin-bottom: 30px;
+}
 
 
 /*marcas*/
@@ -1855,4 +1846,5 @@ footer p{
     height: 200px;
     font-size: 20px;
 }
+
 
