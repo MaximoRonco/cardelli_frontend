@@ -954,13 +954,19 @@ footer p{
 .servicios {
     display: flex;
     align-items: center;
-    justify-content: center;
+    
     width: 100%;
     padding: 20px 0;
     margin: 0 auto;
     background-color: #333;
     margin-bottom: 25px;
     overflow: hidden; /* Ocultar contenido desbordado */
+}
+
+@media (min-width: 768px) {
+   .servicios{
+    justify-content: center;
+}
 }
 
 /* Elementos de los servicios */
@@ -973,6 +979,12 @@ footer p{
     text-align: center;
     min-width: 300px; /* Añadir un tamaño mínimo para hacer el carrusel */
     flex-shrink: 0; /* Evitar que los elementos se encojan */
+}
+
+@media (max-width: 769px) {
+   .item{
+    width: 100%;
+   }
 }
 
 .item_icono {
@@ -1011,19 +1023,20 @@ footer p{
 }
 
 /* Media query para dispositivos móviles */
-@media (max-width: 768px) {
+@media (max-width: 769px) {
     .servicios {
         flex-wrap: nowrap; /* Asegurarse de que no se envuelvan los elementos */
         overflow-x: auto; /* Hacer el contenedor desplazable en horizontal */
         scroll-snap-type: x mandatory; /* Carrusel con desplazamiento suave */
         gap: 20px; /* Espacio entre los elementos */
+        scroll-behavior: smooth; /* Agregar transición suave en el desplazamiento */
     }
 
     .item {
         margin-left: 0;
         scroll-snap-align: center; /* Alinear el elemento en el centro al hacer scroll */
         min-width: 80%; /* Ajustar el ancho de los elementos en móviles */
-        flex-direction: column; /* Alinear íconos y textos en columna */
+        gap: 20px;
     }
 
     .item_icono svg {
@@ -1035,7 +1048,6 @@ footer p{
         overflow: hidden;
     }
 }
-
 
 
 
