@@ -1011,6 +1011,8 @@ footer p{
     /*font-size: 14px;*/
     color: #fff;
     margin: 0;
+    margin-top: 10px;
+    line-height: 15px;
 }
 
 .detalle-servicio strong p {

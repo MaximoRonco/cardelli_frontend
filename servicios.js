@@ -1,25 +1,32 @@
 document.addEventListener("DOMContentLoaded", function () {
     const contenedorServicios = document.querySelector(".servicios");
-    let scrollAmount = 0;
-    const scrollStep = 300; // Ajusta esto según el ancho de tus elementos
+    const items = document.querySelectorAll(".item");
     const scrollInterval = 2000; // Tiempo en milisegundos entre desplazamientos
 
+    let currentIndex = 0;
+
     function autoScroll() {
-        scrollAmount += scrollStep;
+        // Calcular el ancho total de cada elemento (uno de los ítems)
+        const itemWidth = items[0].clientWidth + parseInt(getComputedStyle(items[0]).marginRight);
 
-        // Si llegamos al final, volvemos al principio
-        if (scrollAmount >= contenedorServicios.scrollWidth - contenedorServicios.clientWidth) {
-            scrollAmount = 0;
-        }
+        // Calcular la posición de desplazamiento basada en el índice actual
+        const scrollPosition = currentIndex * itemWidth;
 
+        // Desplazar el contenedor al siguiente elemento
         contenedorServicios.scrollTo({
-            left: scrollAmount,
+            left: scrollPosition,
             behavior: "smooth"
         });
+
+        // Incrementar el índice para pasar al siguiente elemento
+        currentIndex++;
+
+        // Si llegamos al final, volvemos al principio
+        if (currentIndex >= items.length) {
+            currentIndex = 0;
+        }
     }
 
     // Iniciar el desplazamiento automático
     setInterval(autoScroll, scrollInterval);
 });
-
-
