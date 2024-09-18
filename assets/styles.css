@@ -1008,7 +1008,7 @@ footer p{
 }
 
 .detalle-servicio p {
-    font-size: 14px;
+    /*font-size: 14px;*/
     color: #fff;
     margin: 0;
 }
@@ -1079,6 +1079,9 @@ footer p{
     padding-bottom: 30px;
     
 }
+
+
+
 
 /* Admin medidas */
 
