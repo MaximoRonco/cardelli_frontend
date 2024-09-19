@@ -149,9 +149,18 @@
         <div id="ofertas">
             <a href="./ofertas-index.html"></a>
         </div>-->
-        <div id="nuestros-neumaticos">
+        <div id="nuestros-neumaticos">            
             <div id="title-nuestros-neumaticos">
                 <h1>NUESTROS NEUMÁTICOS</h1>
+                <div id="barra-busqueda">
+                    <div id="input-busqueda">
+                        <input type="text" id="buscar-input" placeholder="Buscar" onkeyup="filtrarPorBusqueda()">
+                        <button id="buscar-btn">
+                            <i class="fa-solid fa-magnifying-glass" style="color: #2f2f8f;"></i>
+                        </button>
+                    </div>
+                    <div id="categorias-contenedor" class="categorias-contenedor"></div> <!-- Contenedor para las categorías -->
+                </div>
                 <div id="productos">
                     <!-- El contenido se generará dinámicamente aquí -->
                 </div>

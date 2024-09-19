@@ -1,19 +1,41 @@
 //En esta seccion llamo a los neumaticos para que los vea el cliente, sin la opcion de hacer modificaciones
 /*Llamada a neumaticos */
+// Llamada a neumáticos (productos) al cargar la página
 async function fetchProductos() {
     try {
         const response = await fetch('https://cardelli-backend.vercel.app/api/cardelli/productos/');
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
-        const data = await response.json();  // Convertimos la respuesta a JSON
-        displayProductos(data);
+        const data = await response.json();
+        displayCategorias(data); // Mostrar las categorías en la barra
+        displayProductos(data);  // Mostrar todos los productos por defecto
     } catch (error) {
         console.error('Error fetching productos:', error);
     }
 }
 
-/*MOSTRAR LOS PRODUCTOS */
+// Mostrar categorías en la barra
+function displayCategorias(data) {
+    const categoriasContenedor = document.getElementById('categorias-contenedor');
+    categoriasContenedor.innerHTML = ''; // Limpiar cualquier contenido previo
+
+    data.forEach(categoria => {
+        const categoriaBtn = document.createElement('button');
+        categoriaBtn.className = 'categoria-btn';
+        categoriaBtn.textContent = categoria.nombre;
+        categoriaBtn.onclick = () => filtrarPorCategoria(categoria.id, data);
+        categoriasContenedor.appendChild(categoriaBtn);
+    });
+}
+
+// Filtrar productos por categoría
+function filtrarPorCategoria(categoriaId, data) {
+    const productosFiltrados = data.filter(categoria => categoria.id === categoriaId);
+    displayProductos(productosFiltrados);
+}
+
+// Mostrar productos filtrados o sin filtrar
 function displayProductos(data) {
     if (!Array.isArray(data)) {
         console.error('Los datos de los productos no son un array:', data);
@@ -34,17 +56,13 @@ function displayProductos(data) {
         const categoriaDiv = document.createElement('div');
         categoriaDiv.className = 'category';
         categoriaDiv.id = `category-${categoria.id}`;
-        categoriaDiv.innerHTML = `
-            <h2>${categoria.nombre}</h2>
-        `;
+        categoriaDiv.innerHTML = `<h2>${categoria.nombre}</h2>`;
 
         categoria.subcategorias.forEach(subcategoria => {
             const subcategoriaDiv = document.createElement('div');
             subcategoriaDiv.className = 'subcategory';
             subcategoriaDiv.id = `subcategoria-${subcategoria.id}`;
-            subcategoriaDiv.innerHTML = `
-                <h3>${subcategoria.nombre}</h3>
-            `;
+            subcategoriaDiv.innerHTML = `<h3>${subcategoria.nombre}</h3>`;
 
             const productsRowDiv = document.createElement('div');
             productsRowDiv.className = 'products-row';
@@ -57,37 +75,29 @@ function displayProductos(data) {
                 productoDiv.classList.add('product-index');
                 productoDiv.id = `producto-${producto.id}`;
 
-                // Mostrar solo la primera imagen del producto
                 const img = document.createElement('img');
-                img.src = producto.fotos[0]?.url || 'ruta-de-imagen-por-defecto.jpg'; // Si no hay imagen, muestra una por defecto
+                img.src = producto.fotos[0]?.url || 'ruta-de-imagen-por-defecto.jpg';
                 img.alt = producto.nombre;
                 img.classList.add('product-image');
 
-                // Información del producto
                 const productoInfoDiv = document.createElement('div');
                 productoInfoDiv.classList.add('product-info');
                 productoInfoDiv.innerHTML = `
                     <strong>${producto.nombre}</strong> <br> 
                     <div class="divPrecio">$${producto.precio}</div>
                 `;
-                // Botón "Ver más" para abrir el modal
+
                 const verMasBtn = document.createElement('button');
                 verMasBtn.classList.add('ver-mas-btn');
                 verMasBtn.innerHTML = 'Ver más';
-                verMasBtn.onclick = function() {
+                verMasBtn.onclick = function () {
                     openModal(producto);
-
                 };
 
-                // Botones de acciones del producto (se puede dejar vacío por ahora)
-                const productoButtonsDiv = document.createElement('div');
-                productoButtonsDiv.classList.add('product-buttons');
-
-                productoDiv.appendChild(img); // Añadir la imagen
+                productoDiv.appendChild(img);
                 productoDiv.appendChild(productoInfoDiv);
-                productoDiv.appendChild(verMasBtn);  // Añadir el botón "Ver más"
+                productoDiv.appendChild(verMasBtn);
                 productContainerDiv.appendChild(productoDiv);
-                productContainerDiv.appendChild(productoButtonsDiv);
                 productsRowDiv.appendChild(productContainerDiv);
             });
 
@@ -98,6 +108,53 @@ function displayProductos(data) {
         productosDiv.appendChild(categoriaDiv);
     });
 }
+
+// Filtrar productos por búsqueda
+function filtrarPorBusqueda() {
+    const inputBusqueda = document.getElementById('buscar-input').value.toLowerCase();
+
+    fetch('https://cardelli-backend.vercel.app/api/cardelli/productos/')
+        .then(response => response.json())
+        .then(data => {
+            const categoriasFiltradas = data.filter(categoria => {
+                const categoriaMatch = categoria.nombre.toLowerCase().includes(inputBusqueda);
+
+                const subcategoriasFiltradas = categoria.subcategorias.filter(subcategoria => {
+                    const subcategoriaMatch = subcategoria.nombre.toLowerCase().includes(inputBusqueda);
+                    
+                    const productosFiltrados = subcategoria.productos.filter(producto => {
+                        const productoMatch = producto.nombre.toLowerCase().includes(inputBusqueda);
+                        return productoMatch;
+                    });
+
+                    return subcategoriaMatch || productosFiltrados.length > 0;
+                });
+
+                return categoriaMatch || subcategoriasFiltradas.length > 0;
+            });
+
+            displayProductos(categoriasFiltradas);
+        })
+        .catch(error => {
+            console.error('Error al filtrar productos:', error);
+        });
+}
+
+// Al cargar el DOM, configuramos eventos para la búsqueda
+document.addEventListener('DOMContentLoaded', function() {
+    const buscarBtn = document.getElementById('buscar-btn');
+    
+    buscarBtn.addEventListener('click', function() {
+        filtrarPorBusqueda();
+    });
+    
+    const inputBusqueda = document.getElementById('buscar-input');
+    inputBusqueda.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            filtrarPorBusqueda();
+        }
+    });
+});
 
 // Función para abrir el modal con la información del producto
 function openModal(producto) {
