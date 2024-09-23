@@ -1191,7 +1191,26 @@ footer p{
 .products-row, .ofertas-row {
     display: flex;
     flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias filas */
-    gap: 10px; /* Espacio entre los elementos, opcional */
+    gap: 30px; /* Espacio entre los elementos, opcional */
+}
+
+.subcategory{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.subcategory h3{
+    margin-bottom: 20px;
+}
+
+.products-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .products-row > div, .ofertas-row > div {
@@ -1215,12 +1234,19 @@ footer p{
     align-items: center;
 }
 
+.product-container{
+    width: 300px !important;
+}
+
 .product-index, .oferta-index {
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     border: 1px solid #e0e0e0; /* Borde gris claro */
     border-radius: 8px; /* Bordes redondeados */
     padding: 16px; /* Espaciado interno */
-    max-width: 300px; /* Ancho máximo de la tarjeta */
+    max-width: 500px; /* Ancho máximo de la tarjeta */
     background-color: #fff; /* Fondo blanco */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
     text-align: center; /* Centrar contenido */
@@ -1231,10 +1257,39 @@ footer p{
 .product-index img, .oferta-index img {
     max-width: 100%; /* La imagen se adapta al contenedor */
     border-radius: 4px; /* Bordes redondeados */
-    height: 400px;
-    width: 400px;
+    height: 250px;
+    width: 250px;
     object-fit: cover;
 }
+
+
+@media (max-width: 600px) {
+    .products-row {
+        gap: 0;
+    }
+    .product-index {
+        width: 95%;
+    }
+}
+
+
+@media (max-width: 570px) {
+    .products-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .product-index {
+        width: 95%;
+    }
+}
+
+
+@media (max-width: 430px) {
+    .products-row {
+        flex-direction: column;
+    }
+}
+
 
 .product-info, .oferta-info {
     margin-top: 12px; /* Espaciado entre imagen y descripción */
@@ -1886,22 +1941,16 @@ footer p{
 
 /* Barra de Busqueda */
 
-#barra-busqueda{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
 .categorias-contenedor {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Alinea los botones al inicio */
     padding: 10px;
     background-color: var(--primario); /* Color de fondo */
     margin-bottom: 20px;
     margin-top: 20px;
     width: 100%;
+    overflow-x: auto; /* Habilita el scroll horizontal */
+    white-space: nowrap; /* Evita que los botones salten a otra línea */
 }
 
 .categoria-btn {
@@ -1914,6 +1963,7 @@ footer p{
     font-weight: bold;
     border: none;
     transition: background-color 0.3s ease;
+    flex-shrink: 0; /* Evita que los botones se reduzcan de tamaño */
 }
 
 .categoria-btn:hover {
@@ -1921,18 +1971,60 @@ footer p{
     transform: scale(1.02);
 }
 
+
 #input-busqueda input{
     border-top: none;
     border-left: none;
     border-right: none;
-    border-bottom: 1px solid #666;
+    border-bottom: 2px solid #666;
 }
 
 #input-busqueda button{
     border: none;
+    background-color: none;
     width: 30px;
 }
 
 #input-busqueda button i{
     font-size: 20px;
+}
+
+#barra-busqueda{
+    margin-top: 40px;
+}
+
+#barra-busqueda #input-busqueda{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#barra-busqueda #input-busqueda input{
+    width: 20%;
+    font-weight: 550;
+    font-size: 20px;
+}
+
+#barra-busqueda #input-busqueda input:focus{
+    border: 2px solid var(--primario);
+    border-radius: 5px;
+    outline: none;
+}
+
+@media (max-width: 430px) {
+    .categorias-contenedor {
+        display: flex;
+        justify-content: flex-start; /* Alinea los botones al inicio */
+        overflow-x: auto; /* Habilita el scroll horizontal */
+        white-space: nowrap; /* Evita que los botones salten a otra línea */
+    }
+    #barra-busqueda #input-busqueda{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    #barra-busqueda #input-busqueda input{
+        width: 70%;
+        font-weight: 550;
+    }
 }
