@@ -2040,3 +2040,40 @@ footer p{
         font-weight: 550;
     }
 }
+
+
+/* Carousel marcas */
+
+#carousel-marcas {
+    margin-top: 40px;
+    text-align: center;
+    width: 100%;
+    overflow-x: auto;  /* Permite el scroll horizontal */
+    white-space: nowrap; /* Impide que los elementos se rompan a la siguiente línea */
+    padding: 10px;
+    background-color: #f3f3f3;
+}
+
+#carousel-marcas .carousel-m {
+    display: inline-flex;  /* Alinea las imágenes horizontalmente */
+}
+
+#carousel-marcas .carousel-m img {
+    width: 160px; /* Ajusta el ancho de las imágenes */
+    height: 80px;
+    margin: 0 30px;  /* Espaciado entre imágenes */
+    flex-shrink: 0;  /* Evita que las imágenes se encojan */
+    transition: transform 0.3s ease;  /* Efecto de transformación en hover */
+    cursor: pointer;
+}
+
+#carousel-marcas .carousel-m img:hover {
+    transform: scale(1.1);  /* Escala la imagen ligeramente al pasar el mouse */
+}
+
+@media (max-width: 670px) {
+    #carousel-marcas .carousel-m img {
+        margin: 0 15px;  /* Espaciado entre imágenes */
+        height: 50px;
+    }
+}

@@ -169,3 +169,28 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeCarousel();
 });
 */
+
+
+/* Carousel Marcas */
+// Desplazamiento automático hacia la derecha cada 3 segundos
+let carousel = document.querySelector('#carousel-marcas .carousel-m');
+let isScrolling = false;
+
+setInterval(() => {
+    if (!isScrolling) {
+        carousel.scrollBy({
+            top: 0,
+            left: 150,  // Desplazar 150px a la derecha cada vez
+            behavior: 'smooth'
+        });
+    }
+}, 3000);
+
+// Detiene el desplazamiento automático cuando el usuario hace scroll manualmente
+carousel.addEventListener('scroll', () => {
+    isScrolling = true;
+    clearTimeout(isScrolling);
+    isScrolling = setTimeout(() => {
+        isScrolling = false;
+    }, 1000);
+});
