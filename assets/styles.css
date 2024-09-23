@@ -1441,6 +1441,16 @@ footer p{
     transition: all 100ms;
 }
 
+.ver-mas-btn{
+    background-color: transparent;
+    border: 1px solid var(--primario);
+    color: var(--primario);
+}
+
+.ver-mas-btn:hover{
+    color: var(--blanco);
+}
+
 /* Carrito */
 
 #noProductos{
