@@ -1214,7 +1214,6 @@ footer p{
 }
 
 .products-row > div, .ofertas-row > div {
-    flex: 1 1 calc(33.333% - 10px); /* Ajusta el tamaño de los divs */
     box-sizing: border-box; /* Incluye el padding y el border en el tamaño total del elemento */
 }
 
