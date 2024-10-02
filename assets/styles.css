@@ -163,6 +163,7 @@ img {
 }
 
 
+
 /*header*/
 .header{
     background-color: var(--primario);
@@ -1188,6 +1189,13 @@ footer p{
 
 /* Estilos de productos */
 
+.medidas{
+    gap: 1rem;
+    align-items: baseline;
+    justify-content: center;
+    margin-top: 10px;
+}
+
 .products-row, .ofertas-row {
     display: flex;
     flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias filas */
@@ -1292,7 +1300,7 @@ footer p{
 
 .product-info, .oferta-info {
     margin-top: 12px; /* Espaciado entre imagen y descripción */
-    text-align: left; /* Texto alineado a la izquierda */
+    text-align: center; /* Texto alineado a la izquierda */
 }
 
 .product-info strong, .oferta-info strong {
@@ -1379,6 +1387,7 @@ footer p{
     /* Asegúrate de que no haya estilos que oculten el desplegable */
     appearance: auto; /* O asegúrate de que no esté usando 'none' */
     background-color: #fff;
+    text-align: center;
 }
 
 /* Productos destacados */
@@ -1886,6 +1895,7 @@ footer p{
 
 .descripcion_neumaticos{
     text-align: center;
+    margin: auto 0;
 }
 
 #quantity-modal{

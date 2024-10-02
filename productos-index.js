@@ -84,6 +84,12 @@ function displayProductos(data) {
                 productoInfoDiv.classList.add('product-info');
                 productoInfoDiv.innerHTML = `
                     <strong>${producto.nombre}</strong> <br> 
+                    <div class="flex medidas">
+                        <p>Medidas:</p>
+                        <select id="medidasSelectModal">
+                            ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
+                        </select>
+                    </div>
                     <div class="divPrecio">$${producto.precio}</div>
                 `;
 
