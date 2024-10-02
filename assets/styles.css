@@ -959,12 +959,13 @@ footer p{
     width: 100%;
     padding: 20px 0;
     margin: 0 auto;
-    background-color: #333;
+    background-color: var(--gris);
     margin-bottom: 25px;
     overflow: hidden; /* Ocultar contenido desbordado */
+    gap: 2rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 972px) {
    .servicios{
     justify-content: center;
 }
@@ -976,13 +977,13 @@ footer p{
     align-items: center;
     justify-content: center;
     color: #fff;
-    padding: 10px;
+    /*padding: 10px;*/
     text-align: center;
     min-width: 300px; /* Añadir un tamaño mínimo para hacer el carrusel */
     flex-shrink: 0; /* Evitar que los elementos se encojan */
 }
 
-@media (max-width: 769px) {
+@media (max-width: 972px) {
    .item{
     width: 100%;
    }
@@ -992,25 +993,33 @@ footer p{
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
 }
 
 .item_icono svg {
     width: 80px;
     height: 80px;
     margin-right: 20px;
-    fill: #fff;
+    /*fill: #fff;*/
+    fill: var(--primario);
+}
+@media (max-width: 972px) {
+    .item_icono svg{
+        width: 40px;
+        height: 40px;
+    }
 }
 
 .detalle-servicio h3 {
     font-size: 16px;
-    color: #fff;
+    /*color: #fff;*/
+    color: black;
     margin-bottom: -10px;
 }
 
 .detalle-servicio p {
     /*font-size: 14px;*/
-    color: #fff;
+    /*color: #fff;*/
+    color: black;
     margin: 0;
     margin-top: 10px;
     line-height: 15px;
@@ -1026,7 +1035,7 @@ footer p{
 }
 
 /* Media query para dispositivos móviles */
-@media (max-width: 769px) {
+@media (max-width: 972px) {
     .servicios {
         flex-wrap: nowrap; /* Asegurarse de que no se envuelvan los elementos */
         overflow-x: auto; /* Hacer el contenedor desplazable en horizontal */
