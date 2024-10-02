@@ -27,9 +27,16 @@ document.getElementById('cart-count').textContent = cartCount;
 function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
     const cantidad = parseInt(document.getElementById('quantity-modal').value);
 
-    // Obtener la medida seleccionada en el modal
-    const medidaSelect = document.getElementById('medidasSelectModal');
-    const medidaSeleccionada = medidaSelect.options[medidaSelect.selectedIndex].text;
+    // Obtener la medida seleccionada a través del botón con la clase 'selected'
+    const medidaSeleccionadaBtn = document.querySelector('.medida-btn.selected');
+    
+    // Verifica si hay una medida seleccionada
+    if (!medidaSeleccionadaBtn) {
+        alert("Por favor, selecciona una medida.");
+        return; // Si no hay medida seleccionada, detener la ejecución
+    }
+
+    const medidaSeleccionada = medidaSeleccionadaBtn.textContent;
 
     console.log("Medida seleccionada:", medidaSeleccionada);
 
@@ -69,7 +76,7 @@ function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
                 cantidad: cantidad
             };
 
-            console.log("Producto/agregado al carrito:", newProduct);
+            console.log("Producto agregado al carrito:", newProduct);
 
             cartItems.push(newProduct);
             saveCartToLocalStorage(cartItems);
@@ -93,7 +100,7 @@ function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
 
             listadoCarrito.innerHTML += modelo;
             calcTotal(newProduct.precio);
-            mostrarBotonesYTotalCarrito()
+            mostrarBotonesYTotalCarrito();
         })
         .catch((error) => {
             console.error("Error al obtener el producto/oferta: ", error);
