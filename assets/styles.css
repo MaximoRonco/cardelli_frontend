@@ -2042,41 +2042,42 @@ footer p{
 
 
 /* Carousel marcas */
-
 #carousel-marcas {
     margin-top: 40px;
     text-align: center;
     width: 100%;
-    overflow-x: auto;  /* Permite el scroll horizontal */
-    white-space: nowrap; /* Impide que los elementos se rompan a la siguiente línea */
-    padding: 10px;
-    background-color: #f3f3f3;
-    width: 100%;
-    overflow: hidden; /* Ocultar las imágenes fuera del contenedor */
+    overflow: hidden; /* Oculta las imágenes fuera del contenedor */
     position: relative;
+    background-color: #f3f3f3;
 }
 
-/* Media query para pantallas menores a 768px */
-
 .carousel-m {
-        animation: slide 5s linear infinite; /* Animación más rápida para pantallas pequeñas */
-    }
+    display: flex;
+    white-space: nowrap; /* Mantiene las imágenes en una sola línea */
+    animation: slide 30s linear infinite; /* Animación para pantallas grandes */
+}
 
-#carousel-marcas .carousel-m img{
-    width: 150px;    
-    margin: 0 10px;
+#carousel-marcas .carousel-m img {
+    width: 150px;
     margin: 0 30px;  /* Espaciado entre imágenes */
     flex-shrink: 0;  /* Evita que las imágenes se encojan */
     transition: transform 0.3s ease;  /* Efecto de transformación en hover */
     cursor: pointer;
 }
 
-
-@media (min-width: 768px) {
-   #carousel-marcas .carousel-m {
-    display: flex;
-    animation: slide 30s linear infinite; /* Animación normal para pantallas grandes */
+/* Media query para pantallas menores a 768px */
+@media (max-width: 768px) {
+    .carousel-m {
+        animation: slide 15s linear infinite; /* Animación más rápida para pantallas pequeñas */
     }
+}
+
+/* Ajustes para pantallas mayores a 768px */
+@media (min-width: 768px) {
+    .carousel-m {
+        animation: slide 30s linear infinite; /* Animación más lenta para pantallas grandes */
+    }
+
     #carousel-marcas .carousel-m img {
         width: 300px; /* Ajusta el tamaño de las imágenes */
     }
@@ -2086,14 +2087,12 @@ footer p{
     transform: scale(1.1);  /* Escala la imagen ligeramente al pasar el mouse */
 }
 
-
-
 @keyframes slide {
     0% {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-100%);
+        transform: translateX(-500%); /* Mueve solo hasta la mitad (50%) para mostrar todas las imágenes */
     }
 }
 
