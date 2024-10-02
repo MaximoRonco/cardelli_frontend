@@ -2059,7 +2059,7 @@ footer p{
 
 #carousel-marcas .carousel-m img {
     width: 150px;
-    margin: 0 30px;  /* Espaciado entre imágenes */
+    margin: 20px 30px;  /* Espaciado entre imágenes */
     flex-shrink: 0;  /* Evita que las imágenes se encojan */
     transition: transform 0.3s ease;  /* Efecto de transformación en hover */
     cursor: pointer;
