@@ -9,6 +9,7 @@ async function fetchProductos() {
         }
         const data = await response.json();
         displayCategorias(data); // Mostrar las categorías en la barra
+        displayMarcas(data);     // Mostrar las marcas (subcategorías) en la barra
         displayProductos(data);  // Mostrar todos los productos por defecto
     } catch (error) {
         console.error('Error fetching productos:', error);
@@ -29,10 +30,42 @@ function displayCategorias(data) {
     });
 }
 
+// Mostrar marcas (subcategorías) en la barra
+function displayMarcas(data) {
+    const marcasContenedor = document.getElementById('marcas-contenedor');
+    marcasContenedor.innerHTML = ''; // Limpiar cualquier contenido previo
+
+    data.forEach(categoria => {
+        categoria.subcategorias.forEach(subcategoria => {
+            const marcaBtn = document.createElement('button');
+            marcaBtn.className = 'marca-btn';
+            marcaBtn.textContent = subcategoria.nombre;
+            marcaBtn.onclick = () => filtrarPorMarca(subcategoria.id, data);
+            marcasContenedor.appendChild(marcaBtn);
+        });
+    });
+}
+
 // Filtrar productos por categoría
 function filtrarPorCategoria(categoriaId, data) {
-    const productosFiltrados = data.filter(categoria => categoria.id === categoriaId);
-    displayProductos(productosFiltrados);
+    const categoriaFiltrada = data.find(categoria => categoria.id === categoriaId);
+    if (categoriaFiltrada) {
+        displayProductos([categoriaFiltrada]);
+    }
+}
+
+// Filtrar productos por marca (subcategoría)
+function filtrarPorMarca(subcategoriaId, data) {
+    const categoriasFiltradas = data.map(categoria => {
+        const subcategoriasFiltradas = categoria.subcategorias.filter(subcategoria => subcategoria.id === subcategoriaId);
+        if (subcategoriasFiltradas.length > 0) {
+            return { ...categoria, subcategorias: subcategoriasFiltradas };
+        } else {
+            return null;
+        }
+    }).filter(categoria => categoria !== null);
+
+    displayProductos(categoriasFiltradas);
 }
 
 // Mostrar productos filtrados o sin filtrar
@@ -90,7 +123,7 @@ function displayProductos(data) {
                             ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
                         </select>
                     </div>
-                    <div class="divPrecio">$${Math.floor(producto.precio).toLocaleString('es-ES')}</div> <!-- Cambié aquí -->
+                    <div class="divPrecio">$${Math.floor(producto.precio).toLocaleString('es-ES')}</div>
                 `;
 
                 const verMasBtn = document.createElement('button');
@@ -115,52 +148,68 @@ function displayProductos(data) {
     });
 }
 
-// Filtrar productos por búsqueda
-function filtrarPorBusqueda() {
-    const inputBusqueda = document.getElementById('buscar-input').value.toLowerCase();
+let productosData = [];
 
+// Obtener los datos iniciales al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
     fetch('https://cardelli-backend.vercel.app/api/cardelli/productos/')
         .then(response => response.json())
         .then(data => {
-            const categoriasFiltradas = data.filter(categoria => {
-                const categoriaMatch = categoria.nombre.toLowerCase().includes(inputBusqueda);
-
-                const subcategoriasFiltradas = categoria.subcategorias.filter(subcategoria => {
-                    const subcategoriaMatch = subcategoria.nombre.toLowerCase().includes(inputBusqueda);
-                    
-                    const productosFiltrados = subcategoria.productos.filter(producto => {
-                        const productoMatch = producto.nombre.toLowerCase().includes(inputBusqueda);
-                        return productoMatch;
-                    });
-
-                    return subcategoriaMatch || productosFiltrados.length > 0;
-                });
-
-                return categoriaMatch || subcategoriasFiltradas.length > 0;
-            });
-
-            displayProductos(categoriasFiltradas);
+            productosData = data; // Almacenar los datos obtenidos
+            displayProductos(productosData); // Mostrar todos los productos inicialmente
         })
         .catch(error => {
-            console.error('Error al filtrar productos:', error);
+            console.error('Error al obtener productos:', error);
         });
-}
 
-// Al cargar el DOM, configuramos eventos para la búsqueda
-document.addEventListener('DOMContentLoaded', function() {
-    const buscarBtn = document.getElementById('buscar-btn');
-    
-    buscarBtn.addEventListener('click', function() {
-        filtrarPorBusqueda();
-    });
-    
-    const inputBusqueda = document.getElementById('buscar-input');
-    inputBusqueda.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            filtrarPorBusqueda();
-        }
-    });
+    const buscarInput = document.getElementById('buscar-input');
+    buscarInput.addEventListener('input', filtrarPorBusqueda);
 });
+
+// Filtrar productos por búsqueda en tiempo real
+function filtrarPorBusqueda() {
+    const inputBusqueda = document.getElementById('buscar-input').value.toLowerCase();
+
+    // Filtrar categorías, subcategorías y productos según la búsqueda
+    const categoriasFiltradas = productosData.map(categoria => {
+        // Coincidencia en el nombre de la categoría
+        const categoriaMatch = categoria.nombre.toLowerCase().includes(inputBusqueda);
+
+        // Si la categoría coincide, devolvemos toda la categoría sin modificar
+        if (categoriaMatch) {
+            return categoria;
+        }
+
+        // Filtrar subcategorías según la búsqueda
+        const subcategoriasFiltradas = categoria.subcategorias.map(subcategoria => {
+            // Coincidencia en el nombre de la subcategoría
+            const subcategoriaMatch = subcategoria.nombre.toLowerCase().includes(inputBusqueda);
+
+            // Filtrar productos según la búsqueda
+            const productosFiltrados = subcategoria.productos.filter(producto =>
+                producto.nombre.toLowerCase().includes(inputBusqueda)
+            );
+
+            // Si la subcategoría coincide, devolvemos todos sus productos; si no, solo los productos coincidentes
+            if (subcategoriaMatch) {
+                return { ...subcategoria };
+            } else if (productosFiltrados.length > 0) {
+                return { ...subcategoria, productos: productosFiltrados };
+            } else {
+                return null; // Si no coincide, devolver null para descartarla
+            }
+        }).filter(subcategoria => subcategoria !== null);
+
+        // Devolver categoría solo si tiene subcategorías coincidentes
+        if (subcategoriasFiltradas.length > 0) {
+            return { ...categoria, subcategorias: subcategoriasFiltradas };
+        } else {
+            return null; // Si no coincide, devolver null para descartarla
+        }
+    }).filter(categoria => categoria !== null);
+
+    displayProductos(categoriasFiltradas);
+}
 
 // Función para abrir el modal con la información del producto
 function openModal(producto) {
@@ -185,9 +234,16 @@ function openModal(producto) {
         <div class="descripcion_neumaticos">
             <h2>${producto.nombre}</h2>
             <p class="divPrecioGrande"><strong>$${Math.floor(producto.precio).toLocaleString('es-ES')}</strong> </p>
-            <select id="medidasSelectModal">
-                ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
-            </select>
+
+            <!-- Título de Medidas -->
+            <h3>Medidas</h3>
+            <!-- Aquí se crea el contenedor de medidas con botones -->
+            <div class="medidas-container">
+                ${producto.medidas.map(medida => `
+                    <button class="medida-btn" onclick="selectMedida(this, '${medida.id}')">${medida.nombre}</button>
+                `).join('')}
+            </div>
+
             <p><strong></strong> ${producto.descripcion}</p>
 
             <!-- Aquí añadimos el contador de cantidad -->
@@ -205,6 +261,19 @@ function openModal(producto) {
     // Mostrar el modal
     modal.style.display = 'flex';
 }
+
+// Función para seleccionar una medida
+function selectMedida(button, medidaId) {
+    // Desmarcar todos los botones
+    const allButtons = document.querySelectorAll('.medida-btn');
+    allButtons.forEach(btn => btn.classList.remove('selected'));
+
+    // Marcar el botón seleccionado
+    button.classList.add('selected');
+
+    // Puedes almacenar el 'medidaId' seleccionado en una variable si lo necesitas para otras funciones
+}
+
 
 // Funciones para incrementar y decrementar la cantidad en el modal
 function increaseQuantityModal() {

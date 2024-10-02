@@ -48,7 +48,6 @@ a {
 h1, h2, h3 {
     font-family: var(--fuenteHeading) !important;
     line-height: 1.2 !important;
-    text-transform: uppercase;
     color: black;
     text-align: center;
 }
@@ -123,11 +122,11 @@ p {
 /* Media Queries para tamaños de pantalla pequeños */
 @media (max-width: 480px) {
     h1 {
-        font-size: 3rem !important;
+        font-size: 2.5rem !important;
     }
 
     h2 {
-        font-size: 2.5rem !important;
+        font-size: 2.2rem !important;
     }
 
     h3 {
@@ -623,6 +622,11 @@ footer ul li{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.logo-footer img{
+    width: 250px;
+    height: 150px;
 }
 
 .content-footer{
@@ -1517,6 +1521,7 @@ footer p{
     .modal{
      align-items: flex-start;
     }
+
  }
 
 
@@ -1524,7 +1529,7 @@ footer p{
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    width: 90%;
+    width: 50%;
     position: relative;
 }
 
@@ -1532,14 +1537,29 @@ footer p{
     font-size: 30px !important;
 }
 
+.modal-content h3{
+    font-size: 25px !important;
+    
+}
+
 .divPrecioGrande{
     font-size: 20px;
 }
+
+@media (max-width: 1269px) {
+    .modal-content{
+     width: 90%;
+    }
+ }
 
 @media (max-width: 769px) {
     .modal-content{
      margin-top: 20px;
      margin-bottom: 20px;
+     width: 90%;
+    }
+    .modal-content h2{
+        margin-top: 20px;
     }
  }
 
@@ -1612,7 +1632,7 @@ footer p{
     overflow: scroll;
     color: black;
     z-index: 5000;
-    width: 75%;
+    width: 45%;
 }
 
 #pantallaCarrito ul li h1{
@@ -1645,7 +1665,6 @@ footer p{
     margin-top: 30px;
     border-top: 1px solid var(--color-secundario);
     padding-top: 20px;
-    border-bottom: 5px solid var(--gris);
     margin: 0 auto;
 }
 
@@ -1657,12 +1676,33 @@ footer p{
     color: white;
 }
 
+@media (max-width: 1750px) {
+    #pantallaCarrito{
+        width: 55%;
+    }
+}
+
+@media (max-width: 1300px) {
+    #pantallaCarrito{
+        width: 65%;
+    }
+}
+
+@media (max-width: 1050px) {
+    #pantallaCarrito{
+        width: 75%;
+    }
+}
+
 @media (max-width: 890px) {
     #pantallaCarrito ul li h1{
         font-size: 18px !important;
     }
     .precioCarrito, .cantidad{
         font-size: 18px !important;
+    }
+    #pantallaCarrito{
+        width: 75%;
     }
 }
 
@@ -1856,7 +1896,11 @@ footer p{
     font-size: 15px;
     margin-left: 0px !important;
     margin-right: 0px !important;
-    border-radius: none !important;
+    border-radius: unset ;
+}
+
+#compraFinal:hover, #vaciarCarrito:hover, #salirCarrito:hover{
+    background-color: #b80808;
 }
 
 #totalCarrito{
@@ -1969,19 +2013,18 @@ footer p{
 
 /* Barra de Busqueda */
 
-.categorias-contenedor {
+.categorias-contenedor, .marcas-contenedor {
     display: flex;
     justify-content: center; /* Alinea los botones al inicio */
     padding: 10px;
     background-color: var(--primario); /* Color de fondo */
-    margin-bottom: 20px;
     margin-top: 20px;
     width: 100%;
     overflow-x: auto; /* Habilita el scroll horizontal */
     white-space: nowrap; /* Evita que los botones salten a otra línea */
 }
 
-.categoria-btn {
+.categoria-btn, .marca-btn {
     padding: 10px 20px;
     background-color: #ffffff;
     border-radius: 20px;
@@ -1994,7 +2037,14 @@ footer p{
     flex-shrink: 0; /* Evita que los botones se reduzcan de tamaño */
 }
 
-.categoria-btn:hover {
+.marcas-contenedor{
+    margin-top: 0px;
+    justify-content: flex-start;
+}
+
+.marca-btn {}
+
+.categoria-btn:hover,  .marca-btn:hover{
     background-color: #d6d6d6; /* Color de hover */
     transform: scale(1.02);
 }
@@ -2133,3 +2183,28 @@ footer p{
 
 
 
+.medidas-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.medida-btn {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.medida-btn.selected {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+.medida-btn:hover {
+    background-color: #000;
+    color: var(--blanco);
+}
