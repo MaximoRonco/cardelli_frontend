@@ -90,7 +90,7 @@ function displayProductos(data) {
                             ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
                         </select>
                     </div>
-                    <div class="divPrecio">$${producto.precio}</div>
+                    <div class="divPrecio">$${Math.floor(producto.precio).toLocaleString('es-ES')}</div> <!-- Cambié aquí -->
                 `;
 
                 const verMasBtn = document.createElement('button');
@@ -184,7 +184,7 @@ function openModal(producto) {
         </div>
         <div class="descripcion_neumaticos">
             <h2>${producto.nombre}</h2>
-            <p class="divPrecioGrande"><strong></strong> $${producto.precio}</p>
+            <p class="divPrecioGrande"><strong>$${Math.floor(producto.precio).toLocaleString('es-ES')}</strong> </p>
             <select id="medidasSelectModal">
                 ${producto.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
             </select>

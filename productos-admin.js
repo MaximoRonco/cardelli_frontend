@@ -109,7 +109,7 @@ function displayProductos(data) {
                 productoInfoDiv.innerHTML = `
                     <strong>${producto.nombre}</strong> <br> 
                     <p class="producto_descripcion">${producto.descripcion}</p> 
-                    <div class="divPrecio">$${producto.precio}</div>
+                    <div class="divPrecio">$${Math.floor(producto.precio).toLocaleString('es-ES')}</div>
                 `;
 
                 // Medidas del producto (lista desplegable)
