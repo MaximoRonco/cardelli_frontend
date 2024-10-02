@@ -92,7 +92,7 @@ function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
                     </div>
                     <div>
                         <p class="cantidad">Cantidad: ${newProduct.cantidad}</p>
-                        <p class="precioCarrito">$${newProduct.precio.toFixed(2)}</p>
+                        <p class="precioCarrito">$${Math.floor(newProduct.precio).toLocaleString('es-ES')}</p>
                     </div> 
                     <button class="eliminar btn btn-danger" onclick="eliminarP(${newProduct.precio}, '${newProduct.id}', '${newProduct.medida}')">X</button>
                 </li>
@@ -115,7 +115,7 @@ const calcTotal = (precio) => {
     total += parseInt(precio);
     let redTotal = parseFloat(total);
     console.log("el total es: ", total);
-    totalCarrito.innerHTML = `$${redTotal}`;
+    totalCarrito.innerHTML = `$${Math.floor(redTotal).toLocaleString('es-ES')}`;
 }
 
 const eliminarP = (precio, productId, medida) => {
@@ -231,7 +231,7 @@ window.addEventListener('load', () => {
                 </div>
                 <div>
                     <p class="cantidad">Cantidad: ${item.cantidad}</p>
-                    <p class="precioCarrito">$${item.precio}</p>
+                    <p class="precioCarrito">$${Math.floor(item.precio).toLocaleString('es-ES')}</p>
                 </div>
                 <button class="eliminar btn btn-danger" onclick="eliminarP(${item.precio}, '${item.id}', '${item.medida}')">X</button>
             </li>

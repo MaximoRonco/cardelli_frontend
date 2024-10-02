@@ -31,6 +31,18 @@ function displayCarrusel(data) {
     });
 }
 
+//Establece la duracion del carrusel
+document.addEventListener('DOMContentLoaded', () => {
+    // Función para inicializar el carrusel
+    const initializeCarousel = () => {
+        const carousel = new bootstrap.Carousel(document.querySelector('#carouselExampleFade'), {
+            interval: 3000, // Intervalo de 2 segundos
+            ride: 'carousel'
+        });
+    };
+    initializeCarousel();
+});
+
 /* Fin Carrusel */
 
 
