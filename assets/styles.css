@@ -80,6 +80,12 @@ p {
     font-size: 1.8rem;
 }
 
+#encontra-tu-neumatico{
+    font-size: 3.2rem !important;
+    font-weight: 600;
+    color: #3f3f3f;
+}
+
 /* Media Queries para tamaños de pantalla medianos */
 @media (max-width: 768px) {
 
@@ -143,6 +149,12 @@ p {
 
     p {
         font-size: 1.5rem;
+    }
+
+    #encontra-tu-neumatico{
+        font-size: 2.2rem !important;
+        font-weight: 600;
+        color: #3f3f3f;
     }
 }
 
