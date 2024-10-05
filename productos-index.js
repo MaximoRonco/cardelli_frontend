@@ -70,6 +70,20 @@ function filtrarPorCategoria(categoriaId, data) {
     }
 }
 
+// Filtrar productos por marca (subcategoría)
+function filtrarPorMarca(subcategoriaId, data) {
+    const categoriasFiltradas = data.map(categoria => {
+        const subcategoriasFiltradas = categoria.subcategorias.filter(subcategoria => subcategoria.id === subcategoriaId);
+        if (subcategoriasFiltradas.length > 0) {
+            return { ...categoria, subcategorias: subcategoriasFiltradas };
+        } else {
+            return null;
+        }
+    }).filter(categoria => categoria !== null);
+
+    displayProductos(categoriasFiltradas);
+}
+
 // Mostrar productos filtrados o sin filtrar
 function displayProductos(data) {
     if (!Array.isArray(data)) {
