@@ -70,9 +70,15 @@ function displayPromociones(data) {
                 const ofertaInfoDiv = document.createElement('div');
                 ofertaInfoDiv.classList.add('oferta-info');
                 ofertaInfoDiv.innerHTML = `
-                    <strong>${oferta.nombre}</strong> <br> 
-                    <div class="divPrecio precioAnterior">$${oferta.precioSinOferta}</div>
-                    <div class="divPrecio">$${oferta.precioConOferta}</div>
+                    <strong>${oferta.nombre}</strong> <br>
+                    <div class="flex medidas">
+                        <p>Medidas:</p>
+                        <select id="medidasSelectModal">
+                            ${oferta.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
+                        </select>
+                    </div> 
+                    <div class="divPrecio precioAnterior">$${Math.floor(oferta.precioSinOferta).toLocaleString('es-ES')}</div>
+                    <div class="divPrecio">$${Math.floor(oferta.precioConOferta).toLocaleString('es-ES')}</div>
 
                 `;
 
@@ -131,11 +137,16 @@ function openModal(oferta) {
         </div>
         <div class="descripcion_neumaticos">
             <h2>${oferta.nombre}</h2>
-            <p class="divPrecioGrande precioAnterior"><strong></strong> $${oferta.precioSinOferta}</p>
-            <p class="divPrecioGrande"><strong></strong> $${oferta.precioConOferta}</p>
-            <select id="medidasSelectModal">
-                ${oferta.medidas.map(medida => `<option value="${medida.id}">${medida.nombre}</option>`).join('')}
-            </select>
+            <p class="divPrecioGrande precioAnterior"><strong></strong> $${Math.floor(oferta.precioSinOferta).toLocaleString('es-ES')}</p>
+            <p class="divPrecioGrande"><strong></strong> $${Math.floor(oferta.precioConOferta).toLocaleString('es-ES')}</p>
+                        <!-- Título de Medidas -->
+            <h3>Medidas</h3>
+            <!-- Aquí se crea el contenedor de medidas con botones -->
+            <div class="medidas-container">
+                ${oferta.medidas.map(medida => `
+                    <button class="medida-btn" onclick="selectMedida(this, '${medida.id}')">${medida.nombre}</button>
+                `).join('')}
+            </div>
             <p><strong></strong> ${oferta.descripcion}</p>
 
                         <!-- Aquí añadimos el contador de cantidad -->
@@ -154,6 +165,19 @@ function openModal(oferta) {
     // Mostrar el modal
     modal.style.display = 'flex';
 }
+
+// Función para seleccionar una medida
+function selectMedida(button, medidaId) {
+    // Desmarcar todos los botones
+    const allButtons = document.querySelectorAll('.medida-btn');
+    allButtons.forEach(btn => btn.classList.remove('selected'));
+
+    // Marcar el botón seleccionado
+    button.classList.add('selected');
+
+    // Puedes almacenar el 'medidaId' seleccionado en una variable si lo necesitas para otras funciones
+}
+
 
 // Funciones para incrementar y decrementar la cantidad en el modal
 function increaseQuantityModal() {

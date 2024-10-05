@@ -126,7 +126,7 @@ const eliminarP = (precio, productId, medida) => {
 
     // Restar el precio al total
     total -= parseFloat(precio);
-    totalCarrito.innerHTML = `$${total.toFixed(2)}`;
+    totalCarrito.innerHTML = `$${Math.floor(total).toLocaleString('es-ES')}`;
     console.log("Total después de eliminar:", total);
 
     // Buscar el producto a eliminar en el carrito por su id y medida
