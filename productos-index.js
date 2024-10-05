@@ -46,26 +46,28 @@ function displayMarcas(data) {
     });
 }
 
+let categoriaSeleccionadaId = null;
+
 // Filtrar productos por categoría
 function filtrarPorCategoria(categoriaId, data) {
-    const categoriaFiltrada = data.find(categoria => categoria.id === categoriaId);
-    if (categoriaFiltrada) {
-        displayProductos([categoriaFiltrada]);
-    }
-}
+    const marcasContenedor = document.getElementById('marcas-contenedor');
 
-// Filtrar productos por marca (subcategoría)
-function filtrarPorMarca(subcategoriaId, data) {
-    const categoriasFiltradas = data.map(categoria => {
-        const subcategoriasFiltradas = categoria.subcategorias.filter(subcategoria => subcategoria.id === subcategoriaId);
-        if (subcategoriasFiltradas.length > 0) {
-            return { ...categoria, subcategorias: subcategoriasFiltradas };
-        } else {
-            return null;
+    if (categoriaSeleccionadaId === categoriaId) {
+        // Si se hace clic en la misma categoría, ocultar el contenedor de marcas
+        marcasContenedor.style.display = 'none';
+        categoriaSeleccionadaId = null;
+        marcasContenedor.innerHTML = ''; // Limpiar marcas
+    } else {
+        // Actualizar la categoría seleccionada
+        categoriaSeleccionadaId = categoriaId;
+        const categoriaFiltrada = data.find(categoria => categoria.id === categoriaId);
+        if (categoriaFiltrada) {
+            // Mostrar el contenedor de marcas (subcategorías)
+            marcasContenedor.style.display = 'block';
+            displayMarcas([categoriaFiltrada]);
+            displayProductos([categoriaFiltrada]);
         }
-    }).filter(categoria => categoria !== null);
-
-    displayProductos(categoriasFiltradas);
+    }
 }
 
 // Mostrar productos filtrados o sin filtrar
