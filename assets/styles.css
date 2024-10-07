@@ -386,6 +386,7 @@ header .navegacion-enlace:hover{
     justify-content: center;
     height: 20%;
     overflow: hidden;
+    margin-bottom: 40px;
 }
 
 /*Animacion menu hamburguesa*/
@@ -985,7 +986,7 @@ footer p{
     padding: 20px 0;
     margin: 0 auto;
     background-color: var(--gris);
-    margin-bottom: 25px;
+    
     overflow: hidden; /* Ocultar contenido desbordado */
     gap: 2rem;
 }
