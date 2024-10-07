@@ -384,8 +384,7 @@ header .navegacion-enlace:hover{
 #contenedor-oferta-banner{
     display: flex;
     justify-content: center;
-    
-    height: 500px;
+    height: 20%;
     overflow: hidden;
 }
 
