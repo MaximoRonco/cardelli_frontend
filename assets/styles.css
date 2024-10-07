@@ -269,6 +269,10 @@ header .navegacion-enlace:hover{
     display: none;
 }
 
+#btnIniciarSesion:hover{
+    cursor: pointer;
+}
+
 @media (max-width: 975px){
     .links-header{
         display: flex;
@@ -377,7 +381,13 @@ header .navegacion-enlace:hover{
 }
 
 
-
+#contenedor-oferta-banner{
+    display: flex;
+    justify-content: center;
+    
+    height: 500px;
+    overflow: hidden;
+}
 
 /*Animacion menu hamburguesa*/
 
