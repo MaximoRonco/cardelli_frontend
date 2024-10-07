@@ -387,6 +387,7 @@ header .navegacion-enlace:hover{
     height: 20%;
     overflow: hidden;
     margin-bottom: 40px;
+    cursor: pointer;
 }
 
 /*Animacion menu hamburguesa*/
