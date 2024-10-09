@@ -798,6 +798,11 @@ footer p{
     width: 80%;
 }
 
+/*.iconoUser{
+    margin-top: 9px;
+}*/
+
+
 #iniciar-Sesion{
     height: 500px;
     width: 50%;
@@ -1511,10 +1516,15 @@ footer p{
 }
 
 .iconos-header {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative; /* Hacer que el contenedor del icono sea el contenedor relativo */
 }
 
 .shop-cart-icono {
+    height: 100%;
     position: relative; /* Hacer que el icono del carrito sea el contenedor relativo para el contador */
 }
 

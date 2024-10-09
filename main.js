@@ -190,5 +190,5 @@ const contenedorOferta = document.getElementById('contenedor-oferta-banner');
 // Agrega un evento de clic al div
 contenedorOferta.addEventListener('click', function() {
     // Redirige a la URL deseada
-    window.location.href = 'ofertas-index.html'; // Reemplaza con la URL a la que deseas redirigir
+    window.location.href = 'ofertas.html'; // Reemplaza con la URL a la que deseas redirigir
 });
