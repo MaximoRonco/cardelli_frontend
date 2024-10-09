@@ -41,7 +41,16 @@
             </div>
         </div>
     </header>
-
+    <div id="barra-busqueda">
+        <div id="input-busqueda">
+            <input type="text" id="buscar-input" placeholder="Buscar" onkeyup="filtrarPorBusqueda()">
+            <button id="buscar-btn">
+                <i class="fa-solid fa-magnifying-glass" style="color: #2f2f8f;"></i>
+            </button>
+        </div>
+        <div id="categorias-contenedor" class="categorias-contenedor"></div> <!-- Contenedor para las categorías -->
+        <div id="marcas-contenedor" class="marcas-contenedor" style="display: none;"></div> <!-- Contenedor para las marcas (subcategorías) -->    
+    </div>    
     <div id="btnAddCategory">
         <button id="agregarCate" onclick="addCategory()"><i class="bi bi-plus-circle"></i> Agregar Categoría</button>
     </div>

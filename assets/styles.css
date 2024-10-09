@@ -1145,6 +1145,11 @@ footer p{
     cursor: pointer;
 }
 
+.contenedorBotonesCat{
+    display: flex;
+    justify-content: center;
+}
+
 .edit {
     background-color: #007bff;
     color: white;
@@ -2230,4 +2235,27 @@ footer p{
 .medida-btn:hover {
     background-color: #000;
     color: var(--blanco);
+}
+
+
+/* Botones admin */
+
+.addProduct, .addOferta{
+    background-color: #0b642c !important;
+}
+
+.delSub{
+    background-color: #8b1420;
+}
+
+.modSub{
+    background-color: #014691;
+}
+
+.delOferta, .delProducto {
+    background-color: #8f021e;
+}
+
+.modOferta, .modProducto{
+    background-color: #02356b;
 }

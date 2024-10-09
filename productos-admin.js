@@ -10,9 +10,79 @@ async function fetchProductos() {
         }
         const data = await response.json();  // Convertimos la respuesta a JSON
         displayProductos(data);
+        displayMarcas(data);     // Mostrar las marcas (subcategorías) en la barra
+        displayCategorias(data)
     } catch (error) {
         console.error('Error fetching productos:', error);
     }
+}
+
+// Mostrar categorías en la barra
+function displayCategorias(data) {
+    const categoriasContenedor = document.getElementById('categorias-contenedor');
+    categoriasContenedor.innerHTML = ''; // Limpiar cualquier contenido previo
+
+    data.forEach(categoria => {
+        const categoriaBtn = document.createElement('button');
+        categoriaBtn.className = 'categoria-btn';
+        categoriaBtn.textContent = categoria.nombre;
+        categoriaBtn.onclick = () => filtrarPorCategoria(categoria.id, data);
+        categoriasContenedor.appendChild(categoriaBtn);
+    });
+}
+
+// Mostrar marcas (subcategorías) en la barra
+function displayMarcas(data) {
+    const marcasContenedor = document.getElementById('marcas-contenedor');
+    marcasContenedor.innerHTML = ''; // Limpiar cualquier contenido previo
+
+    data.forEach(categoria => {
+        categoria.subcategorias.forEach(subcategoria => {
+            const marcaBtn = document.createElement('button');
+            marcaBtn.className = 'marca-btn';
+            marcaBtn.textContent = subcategoria.nombre;
+            marcaBtn.onclick = () => filtrarPorMarca(subcategoria.id, data);
+            marcasContenedor.appendChild(marcaBtn);
+        });
+    });
+}
+
+let categoriaSeleccionadaId = null;
+
+// Filtrar productos por categoría
+function filtrarPorCategoria(categoriaId, data) {
+    const marcasContenedor = document.getElementById('marcas-contenedor');
+
+    if (categoriaSeleccionadaId === categoriaId) {
+        // Si se hace clic en la misma categoría, ocultar el contenedor de marcas
+        marcasContenedor.style.display = 'none';
+        categoriaSeleccionadaId = null;
+        marcasContenedor.innerHTML = ''; // Limpiar marcas
+    } else {
+        // Actualizar la categoría seleccionada
+        categoriaSeleccionadaId = categoriaId;
+        const categoriaFiltrada = data.find(categoria => categoria.id === categoriaId);
+        if (categoriaFiltrada) {
+            // Mostrar el contenedor de marcas (subcategorías)
+            marcasContenedor.style.display = 'block';
+            displayMarcas([categoriaFiltrada]);
+            displayProductos([categoriaFiltrada]);
+        }
+    }
+}
+
+// Filtrar productos por marca (subcategoría)
+function filtrarPorMarca(subcategoriaId, data) {
+    const categoriasFiltradas = data.map(categoria => {
+        const subcategoriasFiltradas = categoria.subcategorias.filter(subcategoria => subcategoria.id === subcategoriaId);
+        if (subcategoriasFiltradas.length > 0) {
+            return { ...categoria, subcategorias: subcategoriasFiltradas };
+        } else {
+            return null;
+        }
+    }).filter(categoria => categoria !== null);
+
+    displayProductos(categoriasFiltradas);
 }
 
 function displayProductos(data) {
@@ -157,7 +227,69 @@ function displayProductos(data) {
     });
 }
 
+let productosData = [];
 
+// Obtener los datos iniciales al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('https://cardelli-backend.vercel.app/api/cardelli/productos/')
+        .then(response => response.json())
+        .then(data => {
+            productosData = data; // Almacenar los datos obtenidos
+            displayProductos(productosData); // Mostrar todos los productos inicialmente
+        })
+        .catch(error => {
+            console.error('Error al obtener productos:', error);
+        });
+
+    const buscarInput = document.getElementById('buscar-input');
+    buscarInput.addEventListener('input', filtrarPorBusqueda);
+});
+
+
+// Filtrar productos por búsqueda en tiempo real
+function filtrarPorBusqueda() {
+    const inputBusqueda = document.getElementById('buscar-input').value.toLowerCase();
+
+    // Filtrar categorías, subcategorías y productos según la búsqueda
+    const categoriasFiltradas = productosData.map(categoria => {
+        // Coincidencia en el nombre de la categoría
+        const categoriaMatch = categoria.nombre.toLowerCase().includes(inputBusqueda);
+
+        // Si la categoría coincide, devolvemos toda la categoría sin modificar
+        if (categoriaMatch) {
+            return categoria;
+        }
+
+        // Filtrar subcategorías según la búsqueda
+        const subcategoriasFiltradas = categoria.subcategorias.map(subcategoria => {
+            // Coincidencia en el nombre de la subcategoría
+            const subcategoriaMatch = subcategoria.nombre.toLowerCase().includes(inputBusqueda);
+
+            // Filtrar productos según la búsqueda
+            const productosFiltrados = subcategoria.productos.filter(producto =>
+                producto.nombre.toLowerCase().includes(inputBusqueda)
+            );
+
+            // Si la subcategoría coincide, devolvemos todos sus productos; si no, solo los productos coincidentes
+            if (subcategoriaMatch) {
+                return { ...subcategoria };
+            } else if (productosFiltrados.length > 0) {
+                return { ...subcategoria, productos: productosFiltrados };
+            } else {
+                return null; // Si no coincide, devolver null para descartarla
+            }
+        }).filter(subcategoria => subcategoria !== null);
+
+        // Devolver categoría solo si tiene subcategorías coincidentes
+        if (subcategoriasFiltradas.length > 0) {
+            return { ...categoria, subcategorias: subcategoriasFiltradas };
+        } else {
+            return null; // Si no coincide, devolver null para descartarla
+        }
+    }).filter(categoria => categoria !== null);
+
+    displayProductos(categoriasFiltradas);
+}
 
 /*CATEGORIAS */
 /*AGREGAR CATEGORIA */
