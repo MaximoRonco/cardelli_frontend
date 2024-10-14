@@ -153,8 +153,18 @@ function logout() {
 }
 /* FIN INCIO DE SESION */
 
+/* Funcionalidad btn wpp */
 
+document.getElementById('btnWpp').addEventListener('click', function() {
+    const phoneNumber = '3572525119'; 
+    const message = encodeURIComponent('Hola, me gustaría obtener más información sobre los neumáticos y promociones disponibles en Cardelli Neumáticos. ¡Gracias!'); 
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
 
+    // Redirige a la URL de WhatsApp
+    window.open(whatsappURL, '_blank');
+});
+
+/* Fin btn wpp */
 
 
 /* Carousel Marcas */
