@@ -321,7 +321,7 @@ function comprar() {
 
     mensaje += `Total: $${total}`; // Añadir el total al mensaje
 
-    const numeroTelefono = "3572538967"; // Número de WhatsApp al que enviar el mensaje
+    const numeroTelefono = "3572525119"; // Número de WhatsApp al que enviar el mensaje
     const mensajeEncoded = encodeURIComponent(mensaje);
     const urlWhatsApp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${mensajeEncoded}`;
 
