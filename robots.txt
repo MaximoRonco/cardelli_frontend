@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cardelli-neumaticos.vercel.app/sitemap.xml
