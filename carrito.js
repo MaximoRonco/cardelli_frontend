@@ -87,7 +87,7 @@ function addToCartFromModal(productoId, precioUnitario, esOferta = false) {
                 <li>
                     <img src="${newProduct.imagen}" alt="${newProduct.nombre}"/>
                     <div class="producto-carrito">
-                        <h1>${newProduct.nombre}</h1>
+                        <h2>${newProduct.nombre}</h2>
                         <p class="centrar">${newProduct.medida}</p>
                     </div>
                     <div>
@@ -226,7 +226,7 @@ window.addEventListener('load', () => {
             <li>
                 <img src="${item.imagen}"/>
                 <div class="producto-carrito">
-                    <h1>${item.nombre}</h1>
+                    <h2>${item.nombre}</h2>
                     <p class="centrar">${item.medida}</p>
                 </div>
                 <div>
@@ -321,7 +321,7 @@ function comprar() {
 
     mensaje += `Total: $${total}`; // Añadir el total al mensaje
 
-    const numeroTelefono = "3572525119"; // Número de WhatsApp al que enviar el mensaje
+    const numeroTelefono = "3572525119"; // Número de WhatsApp al que enviar el mensaje 
     const mensajeEncoded = encodeURIComponent(mensaje);
     const urlWhatsApp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${mensajeEncoded}`;
 

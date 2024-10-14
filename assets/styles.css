@@ -1673,8 +1673,8 @@ footer p{
     width: 45%;
 }
 
-#pantallaCarrito ul li h1{
-    font-size: 20px ;
+#pantallaCarrito ul li h2{
+    font-size: 20px !important;
     padding-right: 10px;
     color: black;
     font-weight: 600;
@@ -1733,8 +1733,8 @@ footer p{
 }
 
 @media (max-width: 890px) {
-    #pantallaCarrito ul li h1{
-        font-size: 18px !important;
+    #pantallaCarrito ul li h2{
+        font-size: 16px !important;
     }
     .precioCarrito, .cantidad{
         font-size: 18px !important;
@@ -1752,7 +1752,7 @@ footer p{
         display: flex;
     }
 
-    .producto-carrito h1{
+    .producto-carrito h2{
         font-size: 15px !important;
         font-weight: 600;
     }
@@ -1780,14 +1780,14 @@ footer p{
 }
 
 @media (max-width: 540px) {
-    #pantallaCarrito ul li h1{
+    #pantallaCarrito ul li h2{
         font-size: 12px !important;
     }
     #pantallaCarrito ul li{
         display: flex;
     }
 
-    .producto-carrito h1{
+    .producto-carrito h2{
         font-size: 12px !important;
         font-weight: 600;
     }
@@ -1811,7 +1811,7 @@ footer p{
         display: flex;
     }
 
-    .producto-carrito h1{
+    .producto-carrito h2{
         font-size: 10px !important;
         font-weight: 600;
     }
@@ -1877,7 +1877,7 @@ footer p{
     color: black;
 }
 
-#pantallaCarrito h1{
+#pantallaCarrito h2{
     display: block;
 }
 
