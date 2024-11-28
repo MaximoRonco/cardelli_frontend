@@ -209,6 +209,9 @@ img {
     height: 100px;
 }
 
+header .logo{ /* BORRAR CUANDO CAMBIE EL LOGO DE NAVIDAD AL NORMAL*/
+    margin-bottom: 15px;
+}
 
 .logo, .navegacion-enlace {
     display: flex;
